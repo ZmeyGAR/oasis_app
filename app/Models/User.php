@@ -49,9 +49,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
 
     public function canAccessFilament(): bool
     {
-        dump($this);
         return true;
-        // return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
     }
 
     public function getFilamentAvatarUrl(): ?string
