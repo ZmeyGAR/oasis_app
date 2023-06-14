@@ -19,6 +19,14 @@ return [
         'created_at' => 'Создан',
         'updated_at' => 'Обновлен',
     ],
+    'shiping'   => [
+        'isMain'            => 'Основной адрес',
+        'address_name'      => 'Краткое название',
+        'firstname'         => 'Имя',
+        'lastname'          => 'Фамилия',
+        'email'             => 'Email',
+        'phone'             => 'Телефон',
+    ],
     'detail'    => [
         'name'          => 'Юридическое название компании',
         'ownership'     => 'Форма собственности',

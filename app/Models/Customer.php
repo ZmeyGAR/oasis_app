@@ -28,4 +28,9 @@ class Customer extends Model
     {
         return $this->belongsToMany(Payment::class);
     }
+
+    public function shipings(): HasMany
+    {
+        return $this->hasMany(CustomerShiping::class);
+    }
 }

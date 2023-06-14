@@ -197,8 +197,6 @@ class CustomerResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->label(__('fields.customer.phone'))
-                    // ->tel()
-                    // ->mask(fn (TextInput\Mask $mask) => $mask->pattern('+{7} (000) 000-00-00'))
                     ->searchable(isIndividual: true, isGlobal: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('person_type')
@@ -229,9 +227,9 @@ class CustomerResource extends Resource
     {
         return [
             // RelationManagers\CustomerDetailRelationManager::class,
-            // RelationManagers\CustomerDetailRelationManager::class,
-            // RelationManagers\CustomerDetailRelationManager::class,
-            // RelationManagers\CustomerDetailRelationManager::class,
+            RelationManagers\ShipingsRelationManager::class,
+            RelationManagers\ShipingsRelationManager::class,
+
         ];
     }
 

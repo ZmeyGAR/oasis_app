@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Filament\Facades\Filament;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,5 +21,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+
+        Filament::serving(function () {
+            \Filament\Tables\Columns\ToggleColumn::macro('toggle', function () {
+                $this->action(function ($record, $column) {
+                    dump($record, $column);
+                });
+                return $this;
+            });
+        });
     }
 }

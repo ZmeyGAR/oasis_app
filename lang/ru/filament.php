@@ -5,6 +5,10 @@ return [
         'customer' => [
             'label' => 'Клиент',
             'plural_label' => 'Клиенты',
+        ],
+        'shiping' => [
+            'label'         => 'Адрес доставки',
+            'plural_label'  => 'Адреса доставки',
         ]
     ],
     'navigation' => [
