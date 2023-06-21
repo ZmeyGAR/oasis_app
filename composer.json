@@ -17,6 +17,7 @@
         "filament/spatie-laravel-tags-plugin": "^2.17",
         "filament/tables": "^2.17",
         "guzzlehttp/guzzle": "^7.2",
+        "jackmartin/laravel-yandex-geocode": "^1.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8"
@@ -37,7 +38,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/Helpers/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

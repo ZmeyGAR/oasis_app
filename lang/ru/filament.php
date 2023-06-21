@@ -7,8 +7,8 @@ return [
             'plural_label' => 'Клиенты',
         ],
         'shiping' => [
-            'label'         => 'Адрес доставки',
-            'plural_label'  => 'Адреса доставки',
+            'label'         => 'Точка доставки',
+            'plural_label'  => 'Точки доставки',
         ]
     ],
     'navigation' => [

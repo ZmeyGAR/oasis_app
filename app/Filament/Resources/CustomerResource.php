@@ -160,8 +160,9 @@ class CustomerResource extends Resource
                                         return $state['name'] ?
                                             $state['name']
                                             :
-                                            __('fields.forms.fieldset.detail');
+                                            __('fields.forms.fieldset.detail.label');
                                     })
+                                    ->createItemButtonLabel(__('fields.forms.fieldset.detail.addButton'))
                                     ->columnSpan([
                                         'default' => 1,
                                         'sm' => 1,
@@ -228,7 +229,7 @@ class CustomerResource extends Resource
         return [
             // RelationManagers\CustomerDetailRelationManager::class,
             RelationManagers\ShipingsRelationManager::class,
-            RelationManagers\ShipingsRelationManager::class,
+            // RelationManagers\ShipingsRelationManager::class,
 
         ];
     }

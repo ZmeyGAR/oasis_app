@@ -22,13 +22,5 @@ class AppServiceProvider extends ServiceProvider
     {
         //
 
-        Filament::serving(function () {
-            \Filament\Tables\Columns\ToggleColumn::macro('toggle', function () {
-                $this->action(function ($record, $column) {
-                    dump($record, $column);
-                });
-                return $this;
-            });
-        });
     }
 }

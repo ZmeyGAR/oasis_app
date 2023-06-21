@@ -23,6 +23,24 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
 
+            $table->string('full_address')->nullable();
+            $table->string('country')->nullable();
+            $table->string('region')->nullable();
+            $table->string('district')->nullable();
+            $table->string('locality')->nullable();
+            $table->string('street')->nullable();
+            $table->string('house_number')->nullable();
+            $table->string('house_frontway')->nullable();
+            $table->string('house_floor')->nullable();
+            $table->string('apartment')->nullable();
+            $table->string('intercom_code')->nullable();
+
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->string('type')->nullable();
+
+            $table->text('comment')->nullable();
+
             $table->timestamps();
         });
     }

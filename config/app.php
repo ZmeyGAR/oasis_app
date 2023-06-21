@@ -159,7 +159,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        Yandex\Geocode\YandexGeocodeServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -183,6 +183,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'YaGeo' => Yandex\Geocode\Facades\YandexGeocodeFacade::class
     ])->toArray(),
 
 ];
