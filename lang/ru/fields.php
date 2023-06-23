@@ -78,7 +78,8 @@ return [
             'label'     => 'Баланс точки',
             'balance'   => 'Баланс',
             'total_balance'   => 'Текущий баланс точки',
-            'description'   => 'Description',
+            'description'  => 'Основание',
+            'created_at'   => 'Время',
         ],
     ],
     'detail'    => [

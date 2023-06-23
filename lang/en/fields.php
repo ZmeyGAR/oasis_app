@@ -80,6 +80,7 @@ return [
             'balance'   => 'Баланс',
             'total_balance'   => 'Текущий баланс точки',
             'description'   => 'Description',
+            'created_at'   => 'Created at',
         ],
     ],
     'detail'    => [

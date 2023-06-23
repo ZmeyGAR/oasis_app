@@ -32,11 +32,15 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Contracts\HasRelationshipTable;
+
+use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
+use Illuminate\Support\HtmlString;
 
 class ShipingsRelationManager extends RelationManager
 {
@@ -327,35 +331,39 @@ class ShipingsRelationManager extends RelationManager
                                     ->schema([
                                         Placeholder::make('shiping_balance')
                                             ->label(__('fields.shiping.balance.total_balance'))
-                                            ->content(fn (CustomerShiping $record): ?string => $record->balance()->sum('balance'))
+                                            ->content(fn (CustomerShiping $record) => new HtmlString('<b>' . $record->balance()->sum('balance') . '</b>'))
                                             ->columnSpan(1),
                                     ])
                                     ->hidden(fn (?CustomerShiping $record) => $record === null),
 
-                                Repeater::make('balance')
+                                TableRepeater::make('balance')
                                     ->label(__('fields.shiping.balance.label'))
                                     ->relationship()
                                     ->schema([
+                                        Placeholder::make('created_at')
+                                            ->label(__('fields.shiping.balance.created_at'))
+                                            ->content(fn (?ShipingAddressBalance $record): ?string => $record !== null ? $record->created_at->isoFormat('D MMMM Y г. H:m:s') : '')
+                                            ->columnSpan(1),
 
-                                        Grid::make()
-                                            ->schema([
+                                        TextInput::make('balance')
+                                            ->label(__('fields.shiping.balance.balance'))
+                                            ->numeric()
+                                            ->default(0)
+                                            ->columnSpan(1),
 
-                                                TextInput::make('balance')
-                                                    ->label('')
-                                                    ->numeric()
-                                                    ->minValue(0)
-                                                    ->default(0),
+                                        TextArea::make('description')
+                                            ->label(__('fields.shiping.balance.description'))
+                                            ->rows(1)
+                                            ->columnSpan(3),
 
-                                                Textarea::make('description')
-                                                    ->label(__('fields.shiping.balance.description'))
-                                                    ->columnSpan(3),
-
-
-                                            ])
-                                            ->columns(4)
-                                            ->columnSpan('full'),
 
                                     ])
+                                    ->colStyles([
+                                        'balance' => 'width: 150px;',
+                                        'description' => 'width: auto',
+                                        'created_at' => 'width: 150px;',
+                                    ])
+                                    ->collapsible()
                                     // ->disableItemCreation()
                                     // ->disableItemDeletion()
                                     ->disableItemMovement()
