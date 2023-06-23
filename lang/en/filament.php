@@ -2,15 +2,39 @@
 
 return [
     'pages' => [
-        'customer' => [
-            'label' => 'customer',
-            'plural_label' => 'customers',
-        ]
+        'customer'          => [
+            'label'         => 'Customer',
+            'plural_label'  => 'Customers',
+        ],
+        'shiping'           => [
+            'label'         => 'Shiping',
+            'plural_label'  => 'Shipings',
+        ],
+        'product'           => [
+            'label'         => 'Product',
+            'plural_label'  => 'Products',
+        ],
+        'car'               => [
+            'label'         => 'Car',
+            'plural_label'  => 'Cars',
+        ],
     ],
-    'navigation' => [
-        'shop' => [
-            'label' => 'Магазин',
-            'plural_label' => 'Магазины',
-        ]
+    'navigation'        => [
+        'shop'              => [
+            'label'         => 'Shop',
+            'plural_label'  => 'Shops',
+        ],
+        'customer'          => [
+            'label'         => 'Customer',
+            'plural_label'  => 'Customers',
+        ],
+        'product'           => [
+            'label'         => 'Product',
+            'plural_label'  => 'Products',
+        ],
+        'car'               => [
+            'label'         => 'Car',
+            'plural_label'  => 'Cars',
+        ],
     ],
 ];

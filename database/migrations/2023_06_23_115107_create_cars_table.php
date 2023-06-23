@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('cars', function (Blueprint $table) {
             $table->id();
-
-            $table->bigInteger('wp_id', false, true)->nullable();
             $table->string('name');
-            $table->enum('type', ['PRODUCT', 'SERVICE']);
-            $table->integer('price')->default(0);
-            $table->integer('quantity')->default(0)->nullable();
+            $table->string('reg_name');
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('cars');
     }
 };

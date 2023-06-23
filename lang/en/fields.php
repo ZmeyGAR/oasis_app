@@ -91,4 +91,16 @@ return [
         'legal_address' => 'Юр. адрес',
         'KBE'           => 'КБЕ',
     ],
+
+    'product'   => [
+        'name'          => 'Name',
+        'price'         => 'Price',
+        'quantity'      => 'Quantity',
+        'type'          => 'type',
+        'wp_id'         => 'WP product id',
+    ],
+    'car'       => [
+        'name'          => 'Name',
+        'reg_name'      => 'Registration number',
+    ],
 ];

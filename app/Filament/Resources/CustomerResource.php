@@ -23,6 +23,12 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -48,7 +54,7 @@ class CustomerResource extends Resource
                     ->schema([
                         TextInput::make('name')
                             ->label(__('fields.customer.name'))
-                            ->maxValue(50)
+                            ->maxValue(255)
                             ->autofocus()
                             ->required(),
 
@@ -63,8 +69,7 @@ class CustomerResource extends Resource
                             ->placeholder('+7 (***) *** - ** - **')
                             ->tel()
                             ->mask(fn (TextInput\Mask $mask) => $mask->pattern('+{7} (000) 000-00-00'))
-                            ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
-                            ->maxValue(50),
+                            ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/'),
 
                         Select::make('person_type')
                             ->label(__('fields.customer.person_type'))
@@ -86,34 +91,9 @@ class CustomerResource extends Resource
                                     ->relationship('payments', 'name')
                                     ->getOptionLabelFromRecordUsing(fn (Model $record) => __("payment.method.$record->name"))
                                     ->preload(),
-
-
-                                // Placeholder::make('created_at')
-                                //     ->label(__('fields.customer.created_at'))
-                                //     ->content(fn (Customer $record): ?string => $record->created_at?->diffForHumans()),
-
-                                // Placeholder::make('updated_at')
-                                //     ->label(__('fields.customer.updated_at'))
-                                //     ->content(fn (Customer $record): ?string => $record->updated_at?->diffForHumans()),
                             ]),
                     ])
-                    ->columnSpan(['lg' => 1])
-                // ->hidden(fn (?Customer $record) => $record === null)
-                ,
-
-                // Card::make()
-                //     ->schema([
-                //         Placeholder::make('created_at')
-                //             ->label(__('fields.customer.created_at'))
-                //             ->content(fn (Customer $record): ?string => $record->created_at?->diffForHumans()),
-
-                //         Placeholder::make('updated_at')
-                //             ->label(__('fields.customer.updated_at'))
-                //             ->content(fn (Customer $record): ?string => $record->updated_at?->diffForHumans()),
-                //     ])
-                //     ->columnSpan(['lg' => 1])
-                //     ->hidden(fn (?Customer $record) => $record === null),
-
+                    ->columnSpan(['lg' => 1]),
 
                 Section::make(__('fields.section.heading.detail'))
                     ->schema([
@@ -177,7 +157,7 @@ class CustomerResource extends Resource
                                     ->cloneable()
                             ])
                     ])
-                    ->hidden(fn (Closure $get) => $get('person_type') === 'INDIVIDUAL_PERSON'),
+                    ->hidden(fn (Closure $get) => $get('person_type') !== 'LEGAL_PERSON'),
 
 
 
@@ -188,19 +168,19 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->label(__('fields.customer.name'))
                     ->searchable(isIndividual: true, isGlobal: true)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('email')
+                TextColumn::make('email')
                     ->label(__('fields.customer.email'))
                     ->searchable(isIndividual: true, isGlobal: true)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('phone')
+                TextColumn::make('phone')
                     ->label(__('fields.customer.phone'))
                     ->searchable(isIndividual: true, isGlobal: true)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('person_type')
+                TextColumn::make('person_type')
                     ->label('Юр/Физ лицо')
                     ->formatStateUsing(function ($state) {
                         $person_types = [
@@ -216,11 +196,14 @@ class CustomerResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 
