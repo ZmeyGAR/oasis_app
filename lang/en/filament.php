@@ -18,6 +18,14 @@ return [
             'label'         => 'Car',
             'plural_label'  => 'Cars',
         ],
+        'individual_price'  => [
+            'label'         => 'Individual price',
+            'plural_label'  => 'Individual prices',
+        ],
+        'talons'  => [
+            'label'         => 'Talon balance',
+            'plural_label'  => 'Talon balances',
+        ],
     ],
     'navigation'        => [
         'shop'              => [
@@ -35,6 +43,14 @@ return [
         'car'               => [
             'label'         => 'Car',
             'plural_label'  => 'Cars',
+        ],
+        'individual_price'  => [
+            'label'         => 'Individual price',
+            'plural_label'  => 'Individual prices',
+        ],
+        'talons'  => [
+            'label'         => 'Talon balance',
+            'plural_label'  => 'Talon balances',
         ],
     ],
 ];

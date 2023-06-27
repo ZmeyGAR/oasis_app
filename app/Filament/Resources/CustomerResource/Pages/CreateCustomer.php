@@ -9,4 +9,11 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateCustomer extends CreateRecord
 {
     protected static string $resource = CustomerResource::class;
+
+    protected $listeners = ['refresh' => 'refreshForm'];
+
+    public function refreshForm()
+    {
+        $this->fillForm();
+    }
 }

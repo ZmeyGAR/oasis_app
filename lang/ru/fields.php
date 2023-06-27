@@ -32,6 +32,7 @@ return [
         ],
         'isMain'            => 'Основной адрес',
         'address_name'      => 'Краткое название',
+        'fullname'          => 'ФИО',
         'firstname'         => 'Имя',
         'lastname'          => 'Фамилия',
         'email'             => 'Email',
@@ -102,5 +103,21 @@ return [
     'car'       => [
         'name'          => 'Название (марка авто)',
         'reg_name'      => 'Гос. номер',
+    ],
+
+    'individual_price'  => [
+        'price'         => 'Спец. цена',
+        'product_name'  => 'Продукт',
+    ],
+
+    'talons'            => [
+        'section'       => [
+            'title'     => 'Баланс талонов'
+        ],
+        'total_balance' => 'Текущий баланс талонов пользователя',
+
+        'balance'       => 'Баланс',
+        'description'   => 'Основание',
+        'created_at'    => 'Создано',
     ],
 ];

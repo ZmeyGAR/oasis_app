@@ -32,6 +32,7 @@ use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 
 class CustomerResource extends Resource
 {
@@ -42,7 +43,7 @@ class CustomerResource extends Resource
     protected static ?string $slug = 'shop/customers';
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-
+    protected $listeners = ['refresh' => '$refresh'];
 
 
     public static function form(Form $form): Form
@@ -64,6 +65,12 @@ class CustomerResource extends Resource
                             ->email()
                             ->unique(ignoreRecord: true),
 
+                        Select::make('person_type')
+                            ->label(__('fields.customer.person_type'))
+                            ->options(['LEGAL_PERSON' => 'Юр. лицо', 'INDIVIDUAL_PERSON' => 'Физ. лицо',])
+                            ->required()
+                            ->reactive(),
+
                         TextInput::make('phone')
                             ->label(__('fields.customer.phone'))
                             ->placeholder('+7 (***) *** - ** - **')
@@ -71,10 +78,6 @@ class CustomerResource extends Resource
                             ->mask(fn (TextInput\Mask $mask) => $mask->pattern('+{7} (000) 000-00-00'))
                             ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/'),
 
-                        Select::make('person_type')
-                            ->label(__('fields.customer.person_type'))
-                            ->options(['LEGAL_PERSON' => 'Юр. лицо', 'INDIVIDUAL_PERSON' => 'Физ. лицо',])
-                            ->reactive(),
 
                     ])
                     ->columns(2)
@@ -83,7 +86,7 @@ class CustomerResource extends Resource
                 Group::make()
                     ->schema([
                         Section::make(__('payment.section.title'))
-                            ->label('Платежи')
+                            ->label(__('payment.section.title'))
                             ->schema([
                                 Select::make('payments')
                                     ->multiple()
@@ -92,6 +95,18 @@ class CustomerResource extends Resource
                                     ->getOptionLabelFromRecordUsing(fn (Model $record) => __("payment.method.$record->name"))
                                     ->preload(),
                             ]),
+
+                        Section::make(__('fields.talons.section.title'))
+                            ->label(__('fields.talons.section.title'))
+                            ->schema([
+
+                                Placeholder::make('total_balance')
+                                    ->label(__('fields.talons.total_balance'))
+                                    ->content(function (?Model $record) {
+                                        return !is_null($record) ? new HtmlString("<b>{$record->refresh()->talons()->sum('balance')}</b>") : new HtmlString("<b>0</b>");
+                                    })
+                            ])
+                            ->hiddenOn('create'),
                     ])
                     ->columnSpan(['lg' => 1]),
 
@@ -172,14 +187,7 @@ class CustomerResource extends Resource
                     ->label(__('fields.customer.name'))
                     ->searchable(isIndividual: true, isGlobal: true)
                     ->sortable(),
-                TextColumn::make('email')
-                    ->label(__('fields.customer.email'))
-                    ->searchable(isIndividual: true, isGlobal: true)
-                    ->sortable(),
-                TextColumn::make('phone')
-                    ->label(__('fields.customer.phone'))
-                    ->searchable(isIndividual: true, isGlobal: true)
-                    ->sortable(),
+
                 TextColumn::make('person_type')
                     ->label('Юр/Физ лицо')
                     ->formatStateUsing(function ($state) {
@@ -190,7 +198,27 @@ class CustomerResource extends Resource
                         return $person_types[$state];
                     })
                     ->sortable()
-                    ->toggleable()
+                    ->toggleable(),
+
+                TextColumn::make('email')
+                    ->label(__('fields.customer.email'))
+                    ->searchable(isIndividual: true, isGlobal: true)
+                    ->icon('heroicon-o-mail')
+                    ->sortable(),
+
+                TextColumn::make('phone')
+                    ->label(__('fields.customer.phone'))
+                    ->formatStateUsing(function ($state) {
+                        return preg_replace(
+                            '/^(\d)(\d{3})(\d{3})(\d{2})(\d{2})$/',
+                            '+\1 (\2) \3-\4-\5',
+                            (string)$state
+                        );
+                    })
+                    ->icon('heroicon-o-phone')
+                    ->searchable(isIndividual: true, isGlobal: true)
+                    ->sortable(),
+
             ])
             ->filters([
                 //
@@ -210,10 +238,9 @@ class CustomerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // RelationManagers\CustomerDetailRelationManager::class,
             RelationManagers\ShipingsRelationManager::class,
-            // RelationManagers\ShipingsRelationManager::class,
-
+            RelationManagers\IndividualPriceRelationManager::class,
+            RelationManagers\TalonsRelationManager::class,
         ];
     }
 

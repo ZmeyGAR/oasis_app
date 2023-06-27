@@ -18,6 +18,14 @@ return [
             'label' => 'Машина',
             'plural_label' => 'Машины',
         ],
+        'individual_price'  => [
+            'label'         => 'Инд. цена на продукцию',
+            'plural_label'  => 'Инд. цены на продукцию',
+        ],
+        'talons'  => [
+            'label'         => 'Баланс талонов',
+            'plural_label'  => 'Баланс талонов',
+        ],
     ],
     'navigation' => [
         'shop' => [
@@ -35,6 +43,14 @@ return [
         'car'       => [
             'label' => 'Транспорт',
             'plural_label' => 'Транспорт',
+        ],
+        'individual_price'  => [
+            'label'         => 'Инд. цена на продукцию',
+            'plural_label'  => 'Инд. цены на продукцию',
+        ],
+        'talons'  => [
+            'label'         => 'Баланс талонов',
+            'plural_label'  => 'Баланс талонов',
         ],
     ],
 ];

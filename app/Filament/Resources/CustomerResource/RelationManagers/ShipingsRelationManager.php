@@ -4,6 +4,7 @@ namespace App\Filament\Resources\CustomerResource\RelationManagers;
 
 
 use App\Models\CustomerShiping;
+use App\Models\Customer;
 use App\Models\ShipingAddressBalance;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Modal\Actions\Action;
@@ -31,6 +32,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Contracts\HasRelationshipTable;
 
 use Icetalker\FilamentTableRepeater\Forms\Components\TableRepeater;
@@ -73,9 +75,11 @@ class ShipingsRelationManager extends RelationManager
                                             ->label(__('fields.shiping.address_name'))
                                             ->disableAutocomplete()
                                             ->maxLength(255),
-                                        Toggle::make('isMain')
-                                            ->inline(false)
-                                            ->label(__('fields.shiping.isMain')),
+
+                                        Select::make('isMain')
+                                            ->label(__('fields.shiping.isMain'))
+                                            ->options([true => 'Основной адрес', false => 'Доп. адрес',])
+                                            ->required(),
 
                                         TextInput::make('firstname')
                                             ->required()
@@ -104,7 +108,7 @@ class ShipingsRelationManager extends RelationManager
                                             ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
                                             ->maxValue(50),
 
-                                        RichEditor::make('comment')
+                                        TextArea::make('comment')
                                             ->label(__('fields.shiping.comment'))
                                             ->columnSpan('full'),
                                     ]),
@@ -179,7 +183,6 @@ class ShipingsRelationManager extends RelationManager
                                     ]),
                                 Grid::make()
                                     ->schema([
-
 
                                         TextInput::make('country')
                                             ->label(__('fields.shiping.country'))
@@ -388,25 +391,48 @@ class ShipingsRelationManager extends RelationManager
 
                 TextColumn::make('address_name')
                     ->label(__('fields.shiping.address_name')),
-                TextColumn::make('firstname')
-                    ->label(__('fields.shiping.firstname')),
-                TextColumn::make('lastname')
-                    ->label(__('fields.shiping.lastname')),
+
+                TextColumn::make('fullname')
+                    ->getStateUsing(function (Model $record) {
+                        return $record->firstname . ' ' . $record->lastname;
+                    })
+                    ->label(__('fields.shiping.fullname')),
+
                 TextColumn::make('email')
                     ->label(__('fields.shiping.email')),
+
                 TextColumn::make('phone')
-                    ->label(__('fields.shiping.phone')),
+                    ->label(__('fields.shiping.phone'))
+                    ->formatStateUsing(function ($state) {
+                        return preg_replace(
+                            '/^(\d)(\d{3})(\d{3})(\d{2})(\d{2})$/',
+                            '+\1 (\2) \3-\4-\5',
+                            (string)$state
+                        );
+                    })
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->after(function (CustomerShiping $record, array $data): void {
+                        $record->save();
+                        if ((bool)$record->isMain) {
+                            CustomerShiping::whereNot('id', $record->id)->where('isMain', true)->where('customer_id', $record->customer_id)->update(['isMain' => false]);
+                        }
+                    }),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->after(function (CustomerShiping $record, array $data): void {
+                            $record->save();
+                            if ((bool)$record->isMain) {
+                                CustomerShiping::whereNot('id', $record->id)->where('isMain', true)->where('customer_id', $record->customer_id)->update(['isMain' => false]);
+                            }
+                        }),
                     Tables\Actions\DeleteAction::make(),
                 ])
             ])

@@ -34,6 +34,8 @@ return [
 
         'isMain'            => 'Основной адрес',
         'address_name'      => 'Краткое название',
+
+        'fullname'          => 'Full name',
         'firstname'         => 'Имя',
         'lastname'          => 'Фамилия',
         'email'             => 'Email',
@@ -102,5 +104,21 @@ return [
     'car'       => [
         'name'          => 'Name',
         'reg_name'      => 'Registration number',
+    ],
+
+    'individual_price'  => [
+        'price'         => 'Individual price',
+        'product_name'  => 'Product',
+    ],
+
+    'talons'            => [
+
+        'section'       => [
+            'title'     => 'Total talon balance'
+        ],
+        'total_balance' => 'Total talon balance',
+        'balance'       => 'Balance',
+        'description'   => 'Description',
+        'created_at'    => 'Created at',
     ],
 ];

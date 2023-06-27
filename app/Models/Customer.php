@@ -33,4 +33,14 @@ class Customer extends Model
     {
         return $this->hasMany(CustomerShiping::class);
     }
+
+    public function individual_price(): HasMany
+    {
+        return $this->hasMany(CustomerIndividualPrice::class);
+    }
+
+    public function talons(): HasMany
+    {
+        return $this->hasMany(CustomerTalonBalance::class);
+    }
 }

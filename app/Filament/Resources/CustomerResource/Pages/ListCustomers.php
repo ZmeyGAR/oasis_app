@@ -16,4 +16,11 @@ class ListCustomers extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected $listeners = ['refresh' => 'refreshForm'];
+
+    public function refreshForm()
+    {
+        $this->fillForm();
+    }
 }

@@ -16,4 +16,11 @@ class EditCustomer extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected $listeners = ['refresh' => 'refreshForm'];
+
+    public function refreshForm()
+    {
+        $this->fillForm();
+    }
 }

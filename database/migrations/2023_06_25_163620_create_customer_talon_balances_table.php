@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Customer;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,14 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('customer_talon_balances', function (Blueprint $table) {
             $table->id();
-
-            $table->bigInteger('wp_id', false, true)->nullable();
-            $table->string('name');
-            $table->enum('type', ['PRODUCT', 'SERVICE']);
-            $table->decimal('price')->default(0);
-            $table->integer('quantity')->default(0)->nullable();
+            $table->foreignIdFor(Customer::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->integer('balance')->default(0);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('customer_talon_balances');
     }
 };

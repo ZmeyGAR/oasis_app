@@ -52,7 +52,6 @@ class ProductResource extends Resource
                                     ->required(),
                                 TextInput::make('wp_id')
                                     ->label(__('fields.product.wp_id'))
-                                    ->maxValue(255)
                                     ->type('number'),
                                 Select::make('type')
                                     ->label(__('fields.product.type'))
@@ -120,7 +119,8 @@ class ProductResource extends Resource
 
                 Tables\Columns\TextColumn::make('price')
                     ->label(__('fields.product.price'))
-                    ->sortable(),
+                    ->sortable()
+                    ->money('KZT', true),
 
                 Tables\Columns\TextColumn::make('quantity')
                     ->label(__('fields.product.quantity'))
