@@ -89,7 +89,8 @@ class UserResource extends Resource
                                 ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
                                 ->maxValue(50),
 
-                            Forms\Components\TextInput::make('password')->label(trans('filament-user::user.resource.password'))
+                            Forms\Components\TextInput::make('password')
+                                ->label(trans('filament-user::user.resource.password'))
                                 ->password()
                                 ->maxLength(255)
                                 ->dehydrateStateUsing(static function ($state) use ($form) {
@@ -399,15 +400,12 @@ class UserResource extends Resource
                             Grid::make()
                                 ->relationship('passport')
                                 ->schema([
-
                                     TextInput::make('number')
                                         ->label(trans('filament-user::user.section.passport.number')),
                                     TextInput::make('granted')
                                         ->label(trans('filament-user::user.section.passport.granted')),
                                     DatePicker::make('granted_at')
                                         ->label(trans('filament-user::user.section.passport.granted_at')),
-
-
                                 ]),
                         ]),
                 ])
@@ -442,14 +440,18 @@ class UserResource extends Resource
                     ->searchable()
                     ->label(trans('filament-user::user.resource.email')),
 
+                Tables\Columns\TagsColumn::make('roles.name')
+                    ->label(trans('filament-user::user.resource.roles')),
 
 
                 // BooleanColumn::make('email_verified_at')->sortable()->searchable()->label(trans('filament-user::user.resource.email_verified_at')),
                 Tables\Columns\TextColumn::make('created_at')->label(trans('filament-user::user.resource.created_at'))
                     ->dateTime('M j, Y')
+                    ->toggleable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')->label(trans('filament-user::user.resource.updated_at'))
                     ->dateTime('M j, Y')
+                    ->toggleable()
                     ->sortable(),
 
             ])

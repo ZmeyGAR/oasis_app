@@ -20,6 +20,9 @@ return [
             "list" => "Users",
             "home" => "Users"
         ],
+        'current_password'                  => 'Текущий пароль',
+        'new_password'                      => 'Новый пароль',
+        'new_password_confirmation'         => 'Подтвердить новый пароль',
     ],
     'section' => [
         'general' => [
@@ -40,5 +43,15 @@ return [
             'granted' => 'Кем выдан',
             'granted_at' => 'Выдан (дата)',
         ],
+        'update_password' => [
+            'title'     => 'Обновить пароль'
+        ],
+    ],
+
+    'profile' => [
+        'label'         =>  'Мой профиль',
+        'plural_label'  =>  'Мой профиль',
+        'single'        =>  'Мой профиль',
+        'title'         =>  'Мой профиль',
     ],
 ];
