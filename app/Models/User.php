@@ -8,6 +8,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -61,5 +62,20 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
     public function getFilamentName(): string
     {
         return $this->name;
+    }
+
+    public function address_resident(): HasOne
+    {
+        return $this->hasOne(UserAddressResident::class);
+    }
+
+    public function address_place(): HasOne
+    {
+        return $this->hasOne(UserAddressPlace::class);
+    }
+
+    public function passport(): HasOne
+    {
+        return $this->hasOne(UserPassport::class);
     }
 }

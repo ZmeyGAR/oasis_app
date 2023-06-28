@@ -255,6 +255,7 @@ class ShipingsRelationManager extends RelationManager
 
 
 
+
                             ]),
                         Tab::make(__('fields.shiping.tab.work_time'))
                             ->schema([
