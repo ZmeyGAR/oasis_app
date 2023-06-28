@@ -26,6 +26,10 @@ return [
             'label'         => 'Talon balance',
             'plural_label'  => 'Talon balances',
         ],
+        'courier'  => [
+            'label'         => 'courier',
+            'plural_label'  => 'couriers',
+        ],
     ],
     'navigation'        => [
         'shop'              => [
@@ -51,6 +55,10 @@ return [
         'talons'  => [
             'label'         => 'Talon balance',
             'plural_label'  => 'Talon balances',
+        ],
+        'courier'  => [
+            'label'         => 'courier',
+            'plural_label'  => 'couriers',
         ],
     ],
 ];

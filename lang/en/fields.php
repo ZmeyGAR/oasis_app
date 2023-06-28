@@ -121,4 +121,9 @@ return [
         'description'   => 'Description',
         'created_at'    => 'Created at',
     ],
+
+    'courier'           => [
+        'users'         => 'Сотрудник',
+        'transport'     => 'Транспорт',
+    ]
 ];

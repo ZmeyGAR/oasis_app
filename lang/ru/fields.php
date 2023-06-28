@@ -120,4 +120,9 @@ return [
         'description'   => 'Основание',
         'created_at'    => 'Создано',
     ],
+
+    'courier'           => [
+        'users'         => 'Сотрудник',
+        'transport'     => 'Транспорт',
+    ]
 ];

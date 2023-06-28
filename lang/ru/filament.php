@@ -26,6 +26,10 @@ return [
             'label'         => 'Баланс талонов',
             'plural_label'  => 'Баланс талонов',
         ],
+        'courier'  => [
+            'label'         => 'Курьер',
+            'plural_label'  => 'Курьеры',
+        ],
     ],
     'navigation' => [
         'shop' => [
@@ -51,6 +55,10 @@ return [
         'talons'  => [
             'label'         => 'Баланс талонов',
             'plural_label'  => 'Баланс талонов',
+        ],
+        'courier'  => [
+            'label'         => 'Курьер',
+            'plural_label'  => 'Курьеры',
         ],
     ],
 ];
