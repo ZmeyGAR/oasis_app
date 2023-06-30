@@ -36,10 +36,8 @@ class TalonsRelationManager extends RelationManager
             ->schema([
                 TextInput::make('balance')
                     ->label(__('fields.talons.balance'))
-                    ->numeric()
                     ->default(0)
                     ->required()
-                    ->maxLength(255)
                     ->columnSpan('full'),
 
                 Textarea::make('description')
