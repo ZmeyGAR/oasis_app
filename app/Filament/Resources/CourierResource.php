@@ -19,6 +19,7 @@ use Filament\Forms\Components\Select;
 
 
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -64,7 +65,21 @@ class CourierResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([])
+            ->columns([
+
+                TextColumn::make('user_id')
+                    ->label(__('fields.courier.users'))
+                    ->formatStateUsing(fn (string $state) => User::find($state)?->name)
+                    ->searchable(isIndividual: true, isGlobal: true)
+                    ->sortable(),
+
+                TextColumn::make('car_id')
+                    ->label(__('fields.courier.transport'))
+                    ->formatStateUsing(fn (string $state) => Car::find($state)?->name)
+                    ->searchable(isIndividual: true, isGlobal: true)
+                    ->sortable(),
+
+            ])
             ->filters([
                 //
             ])

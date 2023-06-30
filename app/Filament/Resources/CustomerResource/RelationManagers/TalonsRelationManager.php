@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\CustomerResource\RelationManagers;
 
 use Filament\Forms;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
@@ -11,6 +13,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -31,7 +34,7 @@ class TalonsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('balance')
+                TextInput::make('balance')
                     ->label(__('fields.talons.balance'))
                     ->numeric()
                     ->default(0)
@@ -39,7 +42,7 @@ class TalonsRelationManager extends RelationManager
                     ->maxLength(255)
                     ->columnSpan('full'),
 
-                Forms\Components\TextArea::make('description')
+                Textarea::make('description')
                     ->label(__('fields.talons.description'))
                     ->columnSpan('full'),
             ]);
@@ -49,12 +52,12 @@ class TalonsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label(__('fields.talons.created_at'))
                     ->dateTime(),
-                Tables\Columns\TextColumn::make('balance')
+                TextColumn::make('balance')
                     ->label(__('fields.talons.balance')),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->label(__('fields.talons.description')),
             ])
             ->filters([
