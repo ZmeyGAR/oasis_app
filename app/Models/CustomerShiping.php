@@ -37,9 +37,9 @@ class CustomerShiping extends Model
         'comment',
     ];
 
-    public function customer(): HasOne
+    public function customer(): BelongsTo
     {
-        return $this->hasOne(Customer::class);
+        return $this->belongsTo(Customer::class);
     }
 
     public function deliveries(): HasOne

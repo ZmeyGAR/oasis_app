@@ -124,5 +124,8 @@ return [
     'courier'           => [
         'users'         => 'Сотрудник',
         'transport'     => 'Транспорт',
-    ]
+    ],
+    'order'           => [
+        'customer_shiping'         => 'Поиск адреса (автозаполнение)',
+    ],
 ];
