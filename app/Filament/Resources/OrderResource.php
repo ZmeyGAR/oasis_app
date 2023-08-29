@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Closure;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Models\Customer;
@@ -15,7 +16,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
-
+use Filament\Forms\Components\MorphToSelect;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
 use Illuminate\Support\HtmlString;
@@ -42,225 +43,222 @@ class OrderResource extends Resource
         return $form
             ->schema([
 
-                Tabs::make('Shiping address')
-                    ->tabs([
-                        Tab::make(__('fields.shiping.tab.address'))
+                Section::make('Укажите адрес доставки, используя справочники или укажите новый адрес доставки')
+                    ->schema([
+                        Grid::make()
                             ->schema([
 
-                                Section::make('Укажите адрес доставки, используя справочники или укажите новый адрес доставки')
+                                Grid::make()
                                     ->schema([
-                                        Grid::make()
-                                            ->schema([
-                                                Select::make('customer_shiping')
-                                                    ->label(__('fields.order.customer_shiping'))
-                                                    ->searchable()
-                                                    ->allowHtml()
-                                                    ->searchDebounce(1000)
-                                                    ->helperText('ПОИСК В СПРАВОЧНИКАX')
-                                                    ->placeholder('Поиск телефона\адреса доставки или название точки')
-                                                    ->getSearchResultsUsing(function ($query) {
-                                                        if (strlen($query) >= 5) {
-
-                                                            $customer_shipings = CustomerShiping::where('address_name', 'LIKE', "%$query%")
-                                                                ->orWhere('full_address', 'LIKE', "%$query%")
-                                                                ->orWhere(function (Builder $q) use ($query) {
-                                                                    $phone = preg_replace('/[^0-9]/', '', $query);
-                                                                    if (trim($phone)) $q->where('phone', 'LIKE', "%$phone%");
-                                                                })
-                                                                ->limit(10)
-                                                                ->get();
-
-                                                            return $customer_shipings->mapWithKeys(function ($customer_shiping) {
-                                                                return [$customer_shiping->getKey() => static::getCleanOptionString($customer_shiping)];
-                                                            })->toArray();
-                                                        }
-                                                        return [];
-                                                    })
-                                                    ->reactive()
-                                                    ->afterStateUpdated(function ($state, $set) {
-
-                                                        $ship_address = CustomerShiping::find($state);
-                                                        if ($ship_address) {
-                                                            $set('geocoding', '');
-                                                            // $set('latLong', $state->latitude . ', ' . $state->longitude);
-                                                            $set('full_address', $ship_address->full_address);
-                                                            $set('country', $ship_address->country);
-                                                            $set('region', $ship_address->region);
-                                                            $set('district', $ship_address->district);
-                                                            $set('locality', $ship_address->locality);
-                                                            $set('street', $ship_address->street);
-                                                            $set('house_number', $ship_address->houseNumber);
-                                                            $set('latitude', $ship_address->latitude);
-                                                            $set('longitude', $ship_address->longitude);
-                                                            $set('type', $ship_address->type);
-                                                        } else {
-                                                            // $set('latLong', '');
-                                                            $set('full_address', '');
-                                                            $set('country', '');
-                                                            $set('region', '');
-                                                            $set('district', '');
-                                                            $set('locality', '');
-                                                            $set('street', '');
-                                                            $set('house_number', '');
-                                                            $set('latitude', '');
-                                                            $set('longitude', '');
-                                                            $set('type', '');
-                                                        }
-                                                    }),
 
 
-                                                Select::make('geocoding')
-                                                    ->label(__('fields.shiping.search_address'))
-                                                    ->helperText('УКАЗАТЬ НОВЫЙ АДРЕС')
-                                                    ->searchable()
-                                                    ->reactive()
-                                                    ->dehydrated(false)
-                                                    ->searchDebounce(2000)
-                                                    ->disablePlaceholderSelection()
-                                                    ->getOptionLabelUsing(function ($value) {
-                                                        if ($value) {
-                                                            return $value;
-                                                        }
-                                                    })
-                                                    ->getSearchResultsUsing(function ($query) {
-                                                        if (strlen($query) >= 5) {
-                                                            $results = [];
-                                                            foreach (YaGeo($query) as $result) {
-                                                                $results[json_encode($result, JSON_UNESCAPED_UNICODE)] = $result->full_address;
-                                                            }
-                                                            return $results;
-                                                        }
-                                                        return [];
-                                                    })
-                                                    ->afterStateUpdated(function ($state, $set) {
+                                        Select::make('customer_and_shiping')
+                                            ->hint('ПОИСК В СПРАВОЧНИКЕ')
+                                            ->helperText('Поиск по адресу доставки')
+                                            ->reactive()
+                                            ->dehydrated(false)
+                                            ->allowHtml()
+                                            ->searchable()
+                                            ->searchDebounce(1000)
+                                            ->getSearchResultsUsing(function ($query) {
+                                                if (strlen($query) >= 3) {
 
-                                                        if (is_valid_json($state)) {
-                                                            $state = json_decode($state);
+                                                    $customer_shipings = CustomerShiping::where('address_name', 'LIKE', "%$query%")
+                                                        ->orWhere('full_address', 'LIKE', "%$query%")
+                                                        ->orWhere(function (Builder $q) use ($query) {
+                                                            $phone = preg_replace('/[^0-9]/', '', $query);
+                                                            if (trim($phone)) $q->where('phone', 'LIKE', "%$phone%");
+                                                        })
+                                                        ->limit(10)
+                                                        ->get();
 
-                                                            $set('customer_shiping_id', '');
-
-                                                            // $set('latLong', $state->latitude . ', ' . $state->longitude);
-                                                            $set('full_address', $state->full_address);
-                                                            $set('country', $state->country);
-                                                            $set('region', $state->region);
-                                                            $set('district', $state->district);
-                                                            $set('locality', $state->locality);
-                                                            $set('street', $state->street);
-                                                            $set('house_number', $state->houseNumber);
-                                                            $set('latitude', $state->latitude);
-                                                            $set('longitude', $state->longitude);
-                                                            $set('type', $state->type);
-                                                        } else {
-                                                            // $set('latLong', '');
-                                                            $set('full_address', '');
-                                                            $set('country', '');
-                                                            $set('region', '');
-                                                            $set('district', '');
-                                                            $set('locality', '');
-                                                            $set('street', '');
-                                                            $set('house_number', '');
-                                                            $set('latitude', '');
-                                                            $set('longitude', '');
-                                                            $set('type', '');
-                                                        }
-                                                    }),
-
-                                            ])
-                                            ->columns(2),
-
-                                    ])
-                                    ->hiddenOn('view'),
-
-                                Section::make('Адрес доставки')
-                                    ->schema([
-                                        Grid::make()
-                                            ->schema([
-                                                TextInput::make('full_address')
-                                                    ->label(__('fields.shiping.full_address'))
-                                                    ->disableAutocomplete()
-                                                    ->maxLength(255)
-                                                    ->columnSpan('full'),
-                                            ]),
-                                        Grid::make()
-                                            ->schema([
-
-                                                TextInput::make('country')
-                                                    ->label(__('fields.shiping.country'))
-                                                    ->disableAutocomplete()
-                                                    ->maxLength(255),
-                                                TextInput::make('region')
-                                                    ->label(__('fields.shiping.region'))
-                                                    ->disableAutocomplete()
-                                                    ->maxLength(255),
-                                                TextInput::make('district')
-                                                    ->label(__('fields.shiping.district'))
-                                                    ->disableAutocomplete()
-                                                    ->maxLength(255),
-                                                TextInput::make('locality')
-                                                    ->label(__('fields.shiping.locality'))
-                                                    ->disableAutocomplete()
-                                                    ->maxLength(255),
-                                                TextInput::make('street')
-                                                    ->label(__('fields.shiping.street'))
-                                                    ->disableAutocomplete()
-                                                    ->maxLength(255),
-                                                TextInput::make('house_number')
-                                                    ->label(__('fields.shiping.house_number'))
-                                                    ->disableAutocomplete()
-                                                    ->maxLength(255),
+                                                    return $customer_shipings->mapWithKeys(function ($customer_shiping) {
+                                                        return [$customer_shiping->getKey() => static::getCleanOptionString($customer_shiping)];
+                                                    })->toArray();
+                                                }
+                                                return [];
+                                            })
+                                            ->afterStateUpdated(function ($state, $set) {
+                                                if (!blank($state)) {
+                                                    $customer_shiping = CustomerShiping::find($state);
+                                                    if ($customer_shiping instanceof CustomerShiping) {
+                                                        $customer = $customer_shiping->customer;
+                                                        $set('customer_id', $customer->id);
+                                                        $set('customer_shiping', $customer_shiping->id);
+                                                    }
+                                                }
+                                            })
 
 
-                                                TextInput::make('house_frontway')
-                                                    ->label(__('fields.shiping.house_frontway'))
-                                                    ->disableAutocomplete()
-                                                    ->maxLength(255),
-
-                                                TextInput::make('house_floor')
-                                                    ->label(__('fields.shiping.house_floor'))
-                                                    ->disableAutocomplete()
-                                                    ->maxLength(255),
-
-                                                TextInput::make('apartment')
-                                                    ->label(__('fields.shiping.apartment'))
-                                                    ->disableAutocomplete()
-                                                    ->maxLength(255),
-
-                                                TextInput::make('intercom_code')
-                                                    ->label(__('fields.shiping.intercom_code'))
-                                                    ->disableAutocomplete()
-                                                    ->maxLength(255),
-
-                                                Grid::make()
-                                                    ->schema([
-                                                        TextInput::make('latitude')
-                                                            ->label(__('fields.shiping.latitude'))
-                                                            ->disableAutocomplete()
-                                                            ->hint(__('fields.shiping.latitude'))
-                                                            ->hintIcon('heroicon-o-globe'),
-
-                                                        TextInput::make('longitude')
-                                                            ->label(__('fields.shiping.longitude'))
-                                                            ->disableAutocomplete()
-                                                            ->hint(__('fields.shiping.longitude'))
-                                                            ->hintIcon('heroicon-o-globe'),
-
-                                                    ]),
+                                            ->columnSpan('full'),
 
 
-                                                Hidden::make('type'),
-
-                                            ])
-                                            ->columns(2),
-
-                                    ])
-                                    ->collapsible(),
+                                    ]),
 
 
 
+                                Select::make('customer_id')
+                                    ->label(__('fields.order.customer'))
+                                    ->helperText('ПОИСК В СПРАВОЧНИКАX')
+                                    ->placeholder('Поиск по телефону\адресу доставки или названию точки')
+                                    ->required()
+                                    ->reactive()
+
+                                    ->searchable()
+                                    ->searchDebounce(1000)
+                                    ->allowHtml()
+
+                                    ->getSearchResultsUsing(function ($query) {
+                                        if (strlen($query) >= 3) {
+
+                                            $customer_shipings = Customer::where('name', 'like', "%$query%")
+                                                ->whereHas('shipings', function ($q) use ($query) {
+                                                    $q->where('address_name', 'LIKE', "%$query%")
+                                                        ->orWhere('full_address', 'LIKE', "%$query%")
+                                                        ->orWhere(function (Builder $q) use ($query) {
+                                                            $phone = preg_replace('/[^0-9]/', '', $query);
+                                                            if (trim($phone)) $q->where('phone', 'LIKE', "%$phone%");
+                                                        });
+                                                })
+                                                ->with(['shipings' => function ($q) use ($query) {
+                                                    $q->where('address_name', 'LIKE', "%$query%")
+                                                        ->orWhere('full_address', 'LIKE', "%$query%")
+                                                        ->orWhere(function (Builder $q) use ($query) {
+                                                            $phone = preg_replace('/[^0-9]/', '', $query);
+                                                            if (trim($phone)) $q->where('phone', 'LIKE', "%$phone%");
+                                                        });
+                                                }])
+
+                                                ->limit(10)
+                                                ->get();
+
+                                            return $customer_shipings->mapWithKeys(function ($customer_shiping) {
+                                                return [$customer_shiping->getKey() => static::getCleanOptionString($customer_shiping)];
+                                            })->toArray();
+                                        }
+                                        return [];
+                                    })
+                                    ->afterStateUpdated(function ($state, $set) {
+                                        if (!blank($state)) {
+                                            $customer_shiping = CustomerShiping::find($state);
+                                            if ($customer_shiping instanceof CustomerShiping) {
+                                                $customer = $customer_shiping->customer;
+                                                $set('customer_id', $customer->id);
+                                                $set('customer_shiping', $customer_shiping->id);
+                                            }
+                                        }
+                                    })
+                                    ->getOptionLabelUsing(function ($state) {
+                                        return Customer::find($state)?->name;
+                                    }),
 
 
-                            ]),
-                    ])->columnSpan('full'),
+                                Select::make('customer_shiping')
+                                    ->label(__('customer_shiping'))
+                                    ->helperText('ПОИСК В СПРАВОЧНИКАX')
+                                    ->reactive()
+                                    ->disabled(fn ($get) => !$get('customer_id'))
+                                    ->required()
+                                    ->options(function ($state, $get, $component) {
+                                        if ($get('customer_id')) {
+                                            $customer_shipings = CustomerShiping::where('customer_id', $get('customer_id'))->get();
+                                            $data = $customer_shipings->mapWithKeys(fn ($c_ship) => [$c_ship->getKey() => $c_ship->full_address])->toArray();
+                                            $data['custom_address'] = 'Указать другой адрес';
+
+                                            return $data;
+                                        }
+                                    })
+                                    ->disablePlaceholderSelection(),
+
+                            ])
+                            ->columns(2),
+
+                    ])
+                    ->hiddenOn('view'),
+
+                // Section::make('Адрес доставки')
+                //     ->schema([
+                //         Grid::make()
+                //             ->schema([
+                //                 TextInput::make('full_address')
+                //                     ->label(__('fields.shiping.full_address'))
+                //                     ->disableAutocomplete()
+                //                     ->maxLength(255)
+                //                     ->columnSpan('full'),
+                //             ]),
+                //         Grid::make()
+                //             ->schema([
+
+                //                 TextInput::make('country')
+                //                     ->label(__('fields.shiping.country'))
+                //                     ->disableAutocomplete()
+                //                     ->maxLength(255),
+                //                 TextInput::make('region')
+                //                     ->label(__('fields.shiping.region'))
+                //                     ->disableAutocomplete()
+                //                     ->maxLength(255),
+                //                 TextInput::make('district')
+                //                     ->label(__('fields.shiping.district'))
+                //                     ->disableAutocomplete()
+                //                     ->maxLength(255),
+                //                 TextInput::make('locality')
+                //                     ->label(__('fields.shiping.locality'))
+                //                     ->disableAutocomplete()
+                //                     ->maxLength(255),
+                //                 TextInput::make('street')
+                //                     ->label(__('fields.shiping.street'))
+                //                     ->disableAutocomplete()
+                //                     ->maxLength(255),
+                //                 TextInput::make('house_number')
+                //                     ->label(__('fields.shiping.house_number'))
+                //                     ->disableAutocomplete()
+                //                     ->maxLength(255),
+
+
+                //                 TextInput::make('house_frontway')
+                //                     ->label(__('fields.shiping.house_frontway'))
+                //                     ->disableAutocomplete()
+                //                     ->maxLength(255),
+
+                //                 TextInput::make('house_floor')
+                //                     ->label(__('fields.shiping.house_floor'))
+                //                     ->disableAutocomplete()
+                //                     ->maxLength(255),
+
+                //                 TextInput::make('apartment')
+                //                     ->label(__('fields.shiping.apartment'))
+                //                     ->disableAutocomplete()
+                //                     ->maxLength(255),
+
+                //                 TextInput::make('intercom_code')
+                //                     ->label(__('fields.shiping.intercom_code'))
+                //                     ->disableAutocomplete()
+                //                     ->maxLength(255),
+
+                //                 Grid::make()
+                //                     ->schema([
+                //                         TextInput::make('latitude')
+                //                             ->label(__('fields.shiping.latitude'))
+                //                             ->disableAutocomplete()
+                //                             ->hint(__('fields.shiping.latitude'))
+                //                             ->hintIcon('heroicon-o-globe'),
+
+                //                         TextInput::make('longitude')
+                //                             ->label(__('fields.shiping.longitude'))
+                //                             ->disableAutocomplete()
+                //                             ->hint(__('fields.shiping.longitude'))
+                //                             ->hintIcon('heroicon-o-globe'),
+
+                //                     ]),
+
+
+                //                 Hidden::make('type'),
+
+                //             ])
+                //             ->columns(2),
+
+                //     ])
+                //     ->collapsible(),
 
             ]);
     }
@@ -300,9 +298,9 @@ class OrderResource extends Resource
     {
         return [
             'index' => Pages\ListOrders::route('/'),
-            'create' => Pages\CreateOrder::route('/create'),
-            'view' => Pages\ViewOrder::route('/{record}/view'),
-            'edit' => Pages\EditOrder::route('/{record}/edit'),
+            // 'create' => Pages\CreateOrder::route('/create'),
+            // 'view' => Pages\ViewOrder::route('/{record}/view'),
+            // 'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
 

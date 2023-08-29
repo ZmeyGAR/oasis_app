@@ -86,3 +86,14 @@ if (!function_exists('is_valid_json')) {
         return true;
     }
 }
+
+if (!function_exists('cdd')) {
+    function cdd(...$args)
+    {
+        ob_start();
+        print_r($args);
+        $result = json_encode(ob_get_clean());
+        echo "<script>console.log(`" . $result . "`);</script>";
+        ob_end_flush();
+    }
+}
