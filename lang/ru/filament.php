@@ -82,6 +82,10 @@ return [
             'label'         => 'Район',
             'plural_label'  => 'Районы',
         ],
+        'city'  => [
+            'label'         => 'Город',
+            'plural_label'  => 'Города',
+        ],
         'station'  => [
             'label'         => 'РТС',
             'plural_label'  => 'РТС',
@@ -175,6 +179,10 @@ return [
         'station'  => [
             'label'         => 'РТС',
             'plural_label'  => 'РТС',
+        ],
+        'city'  => [
+            'label'         => 'Город',
+            'plural_label'  => 'Города',
         ],
     ],
 ];

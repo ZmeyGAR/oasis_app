@@ -78,6 +78,10 @@ return [
             'label'         => 'District',
             'plural_label'  => 'Districts',
         ],
+        'city'  => [
+            'label'         => 'City',
+            'plural_label'  => 'City',
+        ],
         'station'  => [
             'label'         => 'Station',
             'plural_label'  => 'Stations',
@@ -163,6 +167,10 @@ return [
         'district'  => [
             'label'         => 'District',
             'plural_label'  => 'Districts',
+        ],
+        'city'  => [
+            'label'         => 'City',
+            'plural_label'  => 'City',
         ],
         'station'  => [
             'label'         => 'Station',

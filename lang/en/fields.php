@@ -166,6 +166,9 @@ return [
     'district'   => [
         'name'  => 'District name',
     ],
+    'city'   => [
+        'name'  => 'City name',
+    ],
     'station'   => [
         'name'  => 'Station name',
     ],
