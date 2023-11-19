@@ -90,6 +90,10 @@ return [
             'label'         => 'РТС',
             'plural_label'  => 'РТС',
         ],
+        'client'  => [
+            'label'         => 'Контрагент',
+            'plural_label'  => 'Контрагенты',
+        ],
     ],
     'navigation' => [
         'shop' => [
@@ -183,6 +187,10 @@ return [
         'city'  => [
             'label'         => 'Город',
             'plural_label'  => 'Города',
+        ],
+        'client'  => [
+            'label'         => 'Контрагент',
+            'plural_label'  => 'Контрагенты',
         ],
     ],
 ];

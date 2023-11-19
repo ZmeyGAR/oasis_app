@@ -86,6 +86,10 @@ return [
             'label'         => 'Station',
             'plural_label'  => 'Stations',
         ],
+        'client'  => [
+            'label'         => 'Client',
+            'plural_label'  => 'Clients',
+        ],
     ],
     'navigation'        => [
         'shop'              => [
@@ -175,6 +179,10 @@ return [
         'station'  => [
             'label'         => 'Station',
             'plural_label'  => 'Stations',
+        ],
+        'client'  => [
+            'label'         => 'Client',
+            'plural_label'  => 'Clients',
         ],
     ],
 ];

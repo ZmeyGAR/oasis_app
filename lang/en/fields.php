@@ -172,4 +172,21 @@ return [
     'station'   => [
         'name'  => 'Station name',
     ],
+
+    'client' => [
+        'name'  => 'Client name',
+        'type'  => [
+            'name' => 'Client type',
+            'COMMERCE'      => 'Commercial',
+            'GOVERMENTAL'   => 'Govermental',
+        ],
+        'city'  => 'Client city',
+        'address'  => 'Client address',
+        'RNN'  => 'Client RNN',
+        'IIK'  => 'Client IIK',
+        'BIN'  => 'Client BIN',
+        'BIK'  => 'Client BIK',
+        'BANK'  => 'Client BANK',
+        'KBE'  => 'Client KBE',
+    ],
 ];
