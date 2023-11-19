@@ -315,4 +315,25 @@ class OrderResource extends Resource
                 ->render()
         );
     }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament.pages.order.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.pages.order.plural_label');
+    }
+
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.navigation.order.plural_label');
+    }
+
+    protected static function getNavigationGroup(): ?string
+    {
+        return __('filament.navigation.shop.label');
+    }
 }

@@ -6,6 +6,10 @@ return [
             'label'         => 'Customer',
             'plural_label'  => 'Customers',
         ],
+        'order'          => [
+            'label'         => 'Order',
+            'plural_label'  => 'Orders',
+        ],
         'shiping'           => [
             'label'         => 'Shiping',
             'plural_label'  => 'Shipings',
@@ -30,6 +34,54 @@ return [
             'label'         => 'courier',
             'plural_label'  => 'couriers',
         ],
+        'program'  => [
+            'label'         => 'Program',
+            'plural_label'  => 'Programs',
+        ],
+        'indicator'  => [
+            'label'         => 'Indicator',
+            'plural_label'  => 'Indicators',
+        ],
+        'style'  => [
+            'label'         => 'Style',
+            'plural_label'  => 'Styles',
+        ],
+        'service'  => [
+            'label'         => 'Service',
+            'plural_label'  => 'Services',
+        ],
+        'contract'  => [
+            'label'         => 'Contract',
+            'plural_label'  => 'Contracts',
+        ],
+        'type'  => [
+            'label'         => 'Type',
+            'plural_label'  => 'Types',
+        ],
+        'activity'  => [
+            'label'         => 'Activity',
+            'plural_label'  => 'Activities',
+        ],
+        'service_types'  => [
+            'label'         => 'Service Type',
+            'plural_label'  => 'Service Types',
+        ],
+        'subservice'  => [
+            'label'         => 'Sub-Service',
+            'plural_label'  => 'Sub-Services',
+        ],
+        'state'  => [
+            'label'         => 'State',
+            'plural_label'  => 'States',
+        ],
+        'district'  => [
+            'label'         => 'District',
+            'plural_label'  => 'Districts',
+        ],
+        'station'  => [
+            'label'         => 'Station',
+            'plural_label'  => 'Stations',
+        ],
     ],
     'navigation'        => [
         'shop'              => [
@@ -39,6 +91,10 @@ return [
         'customer'          => [
             'label'         => 'Customer',
             'plural_label'  => 'Customers',
+        ],
+        'order'          => [
+            'label'         => 'Order',
+            'plural_label'  => 'Orders',
         ],
         'product'           => [
             'label'         => 'Product',
@@ -59,6 +115,58 @@ return [
         'courier'  => [
             'label'         => 'courier',
             'plural_label'  => 'couriers',
+        ],
+        'program'  => [
+            'label'         => 'Program',
+            'plural_label'  => 'Programs',
+        ],
+        'guide'  => [
+            'label'         => 'Guide',
+            'plural_label'  => 'Guides',
+        ],
+        'indicator'  => [
+            'label'         => 'Indicator',
+            'plural_label'  => 'Indicators',
+        ],
+        'style'  => [
+            'label'         => 'Style',
+            'plural_label'  => 'Styles',
+        ],
+        'service'  => [
+            'label'         => 'Service',
+            'plural_label'  => 'Services',
+        ],
+        'service_types'  => [
+            'label'         => 'Service Type',
+            'plural_label'  => 'Service Types',
+        ],
+        'contract'  => [
+            'label'         => 'Contract',
+            'plural_label'  => 'Contracts',
+        ],
+        'type'  => [
+            'label'         => 'Type',
+            'plural_label'  => 'Types',
+        ],
+        'activity'  => [
+            'label'         => 'Activity',
+            'plural_label'  => 'Activities',
+        ],
+        'subservice'  => [
+            'label'         => 'Sub-Service',
+            'plural_label'  => 'Sub-Services',
+        ],
+        'state'  => [
+            'label'         => 'State',
+            'plural_label'  => 'States',
+        ],
+        'district'  => [
+            'label'         => 'District',
+            'plural_label'  => 'Districts',
+        ],
+        'station'  => [
+            'label'         => 'Station',
+            'plural_label'  => 'Stations',
         ],
     ],
 ];

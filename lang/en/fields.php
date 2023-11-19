@@ -129,4 +129,44 @@ return [
     'order'           => [
         'customer_shiping'         => 'Поиск адреса (автозаполнение)',
     ],
+
+    'program'   => [
+        'name'  => 'Program name',
+    ],
+    'indicator'   => [
+        'name'  => 'Indicator name',
+    ],
+    'style'   => [
+        'name'  => 'Style name',
+    ],
+    'service'   => [
+        'name'  => 'Service name',
+    ],
+    'service_type'   => [
+        'name'  => 'Service Type name',
+    ],
+    'contract'   => [
+        'name'  => 'Contract name',
+    ],
+    'type'   => [
+        'name'  => 'Type name',
+    ],
+    'activity'   => [
+        'name'  => 'Activity name',
+    ],
+    'subservice'   => [
+        'name'  => 'Sub-Service name',
+    ],
+    'state'   => [
+        'name'  => 'State name',
+    ],
+    'area'   => [
+        'name'  => 'Area name',
+    ],
+    'district'   => [
+        'name'  => 'District name',
+    ],
+    'station'   => [
+        'name'  => 'Station name',
+    ],
 ];

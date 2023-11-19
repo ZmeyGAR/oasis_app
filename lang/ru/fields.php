@@ -128,4 +128,45 @@ return [
     'order'           => [
         'customer_shiping'         => 'Поиск адреса (автозаполнение)',
     ],
+
+    'program'   => [
+        'name'  => 'Название',
+    ],
+
+    'indicator'   => [
+        'name'  => 'Название',
+    ],
+    'style'   => [
+        'name'  => 'Название',
+    ],
+    'service'   => [
+        'name'  => 'Услуга',
+    ],
+    'service_types'   => [
+        'name'  => 'Вид Услуги',
+    ],
+    'contract'   => [
+        'name'  => 'Договор',
+    ],
+    'type'   => [
+        'name'  => 'Тип',
+    ],
+    'activity'   => [
+        'name'  => 'Деятельность',
+    ],
+    'subservice'   => [
+        'name'  => 'Подуслуга',
+    ],
+    'state'   => [
+        'name'  => 'ОДРТ',
+    ],
+    'area'   => [
+        'name'  => 'Область',
+    ],
+    'district'   => [
+        'name'  => 'Район',
+    ],
+    'station'   => [
+        'name'  => 'РТС',
+    ],
 ];

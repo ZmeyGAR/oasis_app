@@ -6,6 +6,10 @@ return [
             'label' => 'Клиент',
             'plural_label' => 'Клиенты',
         ],
+        'order' => [
+            'label' => 'Заказ',
+            'plural_label' => 'Заказы',
+        ],
         'shiping' => [
             'label'         => 'Точка доставки',
             'plural_label'  => 'Точки доставки',
@@ -30,6 +34,58 @@ return [
             'label'         => 'Курьер',
             'plural_label'  => 'Курьеры',
         ],
+        'program'  => [
+            'label'         => 'Программа',
+            'plural_label'  => 'Программы',
+        ],
+        'indicator'  => [
+            'label'         => 'Показатель',
+            'plural_label'  => 'Показатели',
+        ],
+        'style'  => [
+            'label'         => 'Вид',
+            'plural_label'  => 'Виды',
+        ],
+        'service'  => [
+            'label'         => 'Услуга',
+            'plural_label'  => 'Услуги',
+        ],
+        'service_types'  => [
+            'label'         => 'Вид Услуги',
+            'plural_label'  => 'Виды Услуг',
+        ],
+        'contract'  => [
+            'label'         => 'Договор',
+            'plural_label'  => 'Договоры',
+        ],
+        'type'  => [
+            'label'         => 'Тип',
+            'plural_label'  => 'Типы',
+        ],
+        'activity'  => [
+            'label'         => 'Деятельность',
+            'plural_label'  => 'Деятельности',
+        ],
+        'subservice'  => [
+            'label'         => 'Подуслуга',
+            'plural_label'  => 'Подуслуги',
+        ],
+        'state'  => [
+            'label'         => 'ОДРТ',
+            'plural_label'  => 'ОДРТ',
+        ],
+        'area'  => [
+            'label'         => 'Область',
+            'plural_label'  => 'Области',
+        ],
+        'district'  => [
+            'label'         => 'Район',
+            'plural_label'  => 'Районы',
+        ],
+        'station'  => [
+            'label'         => 'РТС',
+            'plural_label'  => 'РТС',
+        ],
     ],
     'navigation' => [
         'shop' => [
@@ -39,6 +95,10 @@ return [
         'customer' => [
             'label' => 'Клиент',
             'plural_label' => 'Клиенты',
+        ],
+        'order' => [
+            'label' => 'Заказ',
+            'plural_label' => 'Заказы',
         ],
         'product' => [
             'label' => 'Продукт',
@@ -59,6 +119,62 @@ return [
         'courier'  => [
             'label'         => 'Курьер',
             'plural_label'  => 'Курьеры',
+        ],
+        'program'  => [
+            'label'         => 'Программа',
+            'plural_label'  => 'Программы',
+        ],
+        'guide'  => [
+            'label'         => 'Cправочник',
+            'plural_label'  => 'Cправочники',
+        ],
+        'indicator'  => [
+            'label'         => 'Показатель',
+            'plural_label'  => 'Показатели',
+        ],
+        'style'  => [
+            'label'         => 'Вид',
+            'plural_label'  => 'Виды',
+        ],
+        'service'  => [
+            'label'         => 'Услуга',
+            'plural_label'  => 'Услуги',
+        ],
+        'service_types'  => [
+            'label'         => 'Вид Услуг',
+            'plural_label'  => 'Виды Услуг',
+        ],
+        'contract'  => [
+            'label'         => 'Договор',
+            'plural_label'  => 'Договоры',
+        ],
+        'type'  => [
+            'label'         => 'Тип',
+            'plural_label'  => 'Типы',
+        ],
+        'activity'  => [
+            'label'         => 'Деятельность',
+            'plural_label'  => 'Деятельности',
+        ],
+        'subservice'  => [
+            'label'         => 'Подуслуга',
+            'plural_label'  => 'Подуслуги',
+        ],
+        'state'  => [
+            'label'         => 'География',
+            'plural_label'  => 'География',
+        ],
+        'area'  => [
+            'label'         => 'Область',
+            'plural_label'  => 'Области',
+        ],
+        'district'  => [
+            'label'         => 'Район',
+            'plural_label'  => 'Районы',
+        ],
+        'station'  => [
+            'label'         => 'РТС',
+            'plural_label'  => 'РТС',
         ],
     ],
 ];
