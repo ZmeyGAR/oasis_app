@@ -28,7 +28,7 @@ class CourierResource extends Resource
     protected static ?string $model = Courier::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-truck';
-
+    protected static bool $shouldRegisterNavigation = false;
     public static function form(Form $form): Form
     {
         return $form

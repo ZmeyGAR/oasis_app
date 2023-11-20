@@ -44,7 +44,7 @@ class CustomerResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     protected $listeners = ['refresh' => '$refresh'];
-
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {

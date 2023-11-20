@@ -33,7 +33,7 @@ class ProductResource extends Resource
 
     protected static ?string $slug = 'shop/products';
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
-
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
