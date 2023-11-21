@@ -80,14 +80,14 @@ class UserResource extends Resource
                                 ->required()
                                 ->label(trans('filament-user::user.resource.email')),
 
-                            TextInput::make('phone')
-                                ->disableAutocomplete()
-                                ->label(__('filament-user::user.resource.phone'))
-                                ->placeholder('+7 (***) *** - ** - **')
-                                ->tel()
-                                ->mask(fn (Mask $mask) => $mask->pattern('+{7} (000) 000-00-00'))
-                                ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
-                                ->maxValue(50),
+                            // TextInput::make('phone')
+                            //     ->disableAutocomplete()
+                            //     ->label(__('filament-user::user.resource.phone'))
+                            //     ->placeholder('+7 (***) *** - ** - **')
+                            //     ->tel()
+                            //     ->mask(fn (Mask $mask) => $mask->pattern('+{7} (000) 000-00-00'))
+                            //     ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
+                            //     ->maxValue(50),
 
                             Forms\Components\TextInput::make('password')
                                 ->label(trans('filament-user::user.resource.password'))
@@ -120,296 +120,296 @@ class UserResource extends Resource
                 ->columnSpan(['lg' => 1])
                 ->hidden(fn () => !config('filament-user.shield')),
 
-            Tabs::make('User Details Info')
-                ->tabs([
-                    Tabs\Tab::make(__('filament-user::user.section.address_resident.title'))
-                        ->schema([
-                            Grid::make()
-                                ->relationship('address_resident')
-                                ->schema([
+            // Tabs::make('User Details Info')
+            //     ->tabs([
+            //         Tabs\Tab::make(__('filament-user::user.section.address_resident.title'))
+            //             ->schema([
+            //                 Grid::make()
+            //                     ->relationship('address_resident')
+            //                     ->schema([
 
-                                    Select::make('address_resident_geocoding')
-                                        ->label(__('fields.shiping.search_address'))
-                                        ->helperText(__('fields.shiping.search_address_description'))
-                                        ->searchable()
-                                        ->reactive()
-                                        ->dehydrated(false)
-                                        ->searchDebounce(2000)
-                                        ->disablePlaceholderSelection()
-                                        ->hiddenOn('view')
-                                        ->columnSpan('full')
-                                        ->getOptionLabelUsing(function ($value) {
-                                            if ($value) {
-                                                return $value;
-                                            }
-                                        })
-                                        ->getSearchResultsUsing(function ($query) {
-                                            if (strlen($query) >= 5) {
-                                                $results = [];
-                                                foreach (YaGeo($query) as $result) {
-                                                    $results[json_encode($result, JSON_UNESCAPED_UNICODE)] = $result->full_address;
-                                                }
-                                                return $results;
-                                            }
-                                            return [];
-                                        })
-                                        ->afterStateUpdated(function ($state, $set, $get) {
-                                            if (is_valid_json($state)) {
-                                                $state = json_decode($state);
+            //                         Select::make('address_resident_geocoding')
+            //                             ->label(__('fields.shiping.search_address'))
+            //                             ->helperText(__('fields.shiping.search_address_description'))
+            //                             ->searchable()
+            //                             ->reactive()
+            //                             ->dehydrated(false)
+            //                             ->searchDebounce(2000)
+            //                             ->disablePlaceholderSelection()
+            //                             ->hiddenOn('view')
+            //                             ->columnSpan('full')
+            //                             ->getOptionLabelUsing(function ($value) {
+            //                                 if ($value) {
+            //                                     return $value;
+            //                                 }
+            //                             })
+            //                             ->getSearchResultsUsing(function ($query) {
+            //                                 if (strlen($query) >= 5) {
+            //                                     $results = [];
+            //                                     foreach (YaGeo($query) as $result) {
+            //                                         $results[json_encode($result, JSON_UNESCAPED_UNICODE)] = $result->full_address;
+            //                                     }
+            //                                     return $results;
+            //                                 }
+            //                                 return [];
+            //                             })
+            //                             ->afterStateUpdated(function ($state, $set, $get) {
+            //                                 if (is_valid_json($state)) {
+            //                                     $state = json_decode($state);
 
-                                                $set('latLong', $state->latitude . ', ' . $state->longitude);
-                                                $set('full_address', $state->full_address);
-                                                $set('country', $state->country);
-                                                $set('region', $state->region);
-                                                $set('district', $state->district);
-                                                $set('locality', $state->locality);
-                                                $set('street', $state->street);
-                                                $set('house_number', $state->houseNumber);
-                                                $set('latitude', $state->latitude);
-                                                $set('longitude', $state->longitude);
-                                                $set('type', $state->type);
-                                            } else {
-                                                $set('latLong', '');
-                                                $set('full_address', '');
-                                                $set('country', '');
-                                                $set('region', '');
-                                                $set('district', '');
-                                                $set('locality', '');
-                                                $set('street', '');
-                                                $set('house_number', '');
-                                                $set('latitude', '');
-                                                $set('longitude', '');
-                                                $set('type', '');
-                                            }
-                                        }),
+            //                                     $set('latLong', $state->latitude . ', ' . $state->longitude);
+            //                                     $set('full_address', $state->full_address);
+            //                                     $set('country', $state->country);
+            //                                     $set('region', $state->region);
+            //                                     $set('district', $state->district);
+            //                                     $set('locality', $state->locality);
+            //                                     $set('street', $state->street);
+            //                                     $set('house_number', $state->houseNumber);
+            //                                     $set('latitude', $state->latitude);
+            //                                     $set('longitude', $state->longitude);
+            //                                     $set('type', $state->type);
+            //                                 } else {
+            //                                     $set('latLong', '');
+            //                                     $set('full_address', '');
+            //                                     $set('country', '');
+            //                                     $set('region', '');
+            //                                     $set('district', '');
+            //                                     $set('locality', '');
+            //                                     $set('street', '');
+            //                                     $set('house_number', '');
+            //                                     $set('latitude', '');
+            //                                     $set('longitude', '');
+            //                                     $set('type', '');
+            //                                 }
+            //                             }),
 
-                                    Grid::make()
-                                        ->schema([
-                                            TextInput::make('full_address')
-                                                ->label(__('fields.shiping.full_address'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255)
-                                                ->columnSpan('full'),
-                                        ]),
-                                    Grid::make()
-                                        ->schema([
+            //                         Grid::make()
+            //                             ->schema([
+            //                                 TextInput::make('full_address')
+            //                                     ->label(__('fields.shiping.full_address'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255)
+            //                                     ->columnSpan('full'),
+            //                             ]),
+            //                         Grid::make()
+            //                             ->schema([
 
-                                            TextInput::make('country')
-                                                ->label(__('fields.shiping.country'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-                                            TextInput::make('region')
-                                                ->label(__('fields.shiping.region'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-                                            TextInput::make('district')
-                                                ->label(__('fields.shiping.district'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-                                            TextInput::make('locality')
-                                                ->label(__('fields.shiping.locality'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-                                            TextInput::make('street')
-                                                ->label(__('fields.shiping.street'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-                                            TextInput::make('house_number')
-                                                ->label(__('fields.shiping.house_number'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-
-
-                                            TextInput::make('house_frontway')
-                                                ->label(__('fields.shiping.house_frontway'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-
-                                            TextInput::make('house_floor')
-                                                ->label(__('fields.shiping.house_floor'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-
-                                            TextInput::make('apartment')
-                                                ->label(__('fields.shiping.apartment'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-
-                                            Grid::make()
-                                                ->schema([
-                                                    TextInput::make('latitude')
-                                                        ->label(__('fields.shiping.latitude'))
-                                                        ->disableAutocomplete()
-                                                        ->hint(__('fields.shiping.latitude'))
-                                                        ->hintIcon('heroicon-o-globe'),
-
-                                                    TextInput::make('longitude')
-                                                        ->label(__('fields.shiping.longitude'))
-                                                        ->disableAutocomplete()
-                                                        ->hint(__('fields.shiping.longitude'))
-                                                        ->hintIcon('heroicon-o-globe'),
-
-                                                ]),
-
-                                            Hidden::make('type'),
-
-                                        ])
-                                        ->columns(2),
-
-                                ]),
-                        ]),
-                    Tabs\Tab::make(__('filament-user::user.section.address_place.title'))
-                        ->schema([
-                            Grid::make()
-                                ->relationship('address_place')
-                                ->schema([
-
-                                    Select::make('geocoding')
-                                        ->label(__('fields.shiping.search_address'))
-                                        ->helperText(__('fields.shiping.search_address_description'))
-                                        ->searchable()
-                                        ->reactive()
-                                        ->dehydrated(false)
-                                        ->searchDebounce(2000)
-                                        ->disablePlaceholderSelection()
-                                        ->hiddenOn('view')
-                                        ->columnSpan('full')
-                                        ->getOptionLabelUsing(function ($value) {
-                                            if ($value) {
-                                                return $value;
-                                            }
-                                        })
-                                        ->getSearchResultsUsing(function ($query) {
-                                            if (strlen($query) >= 5) {
-                                                $results = [];
-                                                foreach (YaGeo($query) as $result) {
-                                                    $results[json_encode($result, JSON_UNESCAPED_UNICODE)] = $result->full_address;
-                                                }
-                                                return $results;
-                                            }
-                                            return [];
-                                        })
-                                        ->afterStateUpdated(function ($state, $set) {
-
-                                            if (is_valid_json($state)) {
-                                                $state = json_decode($state);
-
-                                                $set('latLong', $state->latitude . ', ' . $state->longitude);
-                                                $set('full_address', $state->full_address);
-                                                $set('country', $state->country);
-                                                $set('region', $state->region);
-                                                $set('district', $state->district);
-                                                $set('locality', $state->locality);
-                                                $set('street', $state->street);
-                                                $set('house_number', $state->houseNumber);
-                                                $set('latitude', $state->latitude);
-                                                $set('longitude', $state->longitude);
-                                                $set('type', $state->type);
-                                            } else {
-                                                $set('latLong', '');
-                                                $set('full_address', '');
-                                                $set('country', '');
-                                                $set('region', '');
-                                                $set('district', '');
-                                                $set('locality', '');
-                                                $set('street', '');
-                                                $set('house_number', '');
-                                                $set('latitude', '');
-                                                $set('longitude', '');
-                                                $set('type', '');
-                                            }
-                                        }),
-
-                                    Grid::make()
-                                        ->schema([
-                                            TextInput::make('full_address')
-                                                ->label(__('fields.shiping.full_address'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255)
-                                                ->columnSpan('full'),
-                                        ]),
-                                    Grid::make()
-                                        ->schema([
-
-                                            TextInput::make('country')
-                                                ->label(__('fields.shiping.country'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-                                            TextInput::make('region')
-                                                ->label(__('fields.shiping.region'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-                                            TextInput::make('district')
-                                                ->label(__('fields.shiping.district'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-                                            TextInput::make('locality')
-                                                ->label(__('fields.shiping.locality'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-                                            TextInput::make('street')
-                                                ->label(__('fields.shiping.street'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
-                                            TextInput::make('house_number')
-                                                ->label(__('fields.shiping.house_number'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
+            //                                 TextInput::make('country')
+            //                                     ->label(__('fields.shiping.country'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+            //                                 TextInput::make('region')
+            //                                     ->label(__('fields.shiping.region'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+            //                                 TextInput::make('district')
+            //                                     ->label(__('fields.shiping.district'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+            //                                 TextInput::make('locality')
+            //                                     ->label(__('fields.shiping.locality'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+            //                                 TextInput::make('street')
+            //                                     ->label(__('fields.shiping.street'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+            //                                 TextInput::make('house_number')
+            //                                     ->label(__('fields.shiping.house_number'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
 
 
-                                            TextInput::make('house_frontway')
-                                                ->label(__('fields.shiping.house_frontway'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
+            //                                 TextInput::make('house_frontway')
+            //                                     ->label(__('fields.shiping.house_frontway'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
 
-                                            TextInput::make('house_floor')
-                                                ->label(__('fields.shiping.house_floor'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
+            //                                 TextInput::make('house_floor')
+            //                                     ->label(__('fields.shiping.house_floor'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
 
-                                            TextInput::make('apartment')
-                                                ->label(__('fields.shiping.apartment'))
-                                                ->disableAutocomplete()
-                                                ->maxLength(255),
+            //                                 TextInput::make('apartment')
+            //                                     ->label(__('fields.shiping.apartment'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
 
-                                            Grid::make()
-                                                ->schema([
-                                                    TextInput::make('latitude')
-                                                        ->label(__('fields.shiping.latitude'))
-                                                        ->disableAutocomplete()
-                                                        ->hint(__('fields.shiping.latitude'))
-                                                        ->hintIcon('heroicon-o-globe'),
+            //                                 Grid::make()
+            //                                     ->schema([
+            //                                         TextInput::make('latitude')
+            //                                             ->label(__('fields.shiping.latitude'))
+            //                                             ->disableAutocomplete()
+            //                                             ->hint(__('fields.shiping.latitude'))
+            //                                             ->hintIcon('heroicon-o-globe'),
 
-                                                    TextInput::make('longitude')
-                                                        ->label(__('fields.shiping.longitude'))
-                                                        ->disableAutocomplete()
-                                                        ->hint(__('fields.shiping.longitude'))
-                                                        ->hintIcon('heroicon-o-globe'),
+            //                                         TextInput::make('longitude')
+            //                                             ->label(__('fields.shiping.longitude'))
+            //                                             ->disableAutocomplete()
+            //                                             ->hint(__('fields.shiping.longitude'))
+            //                                             ->hintIcon('heroicon-o-globe'),
 
-                                                ]),
+            //                                     ]),
 
-                                            Hidden::make('type'),
+            //                                 Hidden::make('type'),
 
-                                        ])
-                                        ->columns(2),
+            //                             ])
+            //                             ->columns(2),
 
-                                ]),
-                        ]),
-                    Tabs\Tab::make(__('filament-user::user.section.passport.title'))
-                        ->schema([
-                            Grid::make()
-                                ->relationship('passport')
-                                ->schema([
-                                    TextInput::make('number')
-                                        ->label(trans('filament-user::user.section.passport.number')),
-                                    TextInput::make('granted')
-                                        ->label(trans('filament-user::user.section.passport.granted')),
-                                    DatePicker::make('granted_at')
-                                        ->label(trans('filament-user::user.section.passport.granted_at')),
-                                ]),
-                        ]),
-                ])
-                ->columnSpan('full'),
+            //                     ]),
+            //             ]),
+            //         Tabs\Tab::make(__('filament-user::user.section.address_place.title'))
+            //             ->schema([
+            //                 Grid::make()
+            //                     ->relationship('address_place')
+            //                     ->schema([
+
+            //                         Select::make('geocoding')
+            //                             ->label(__('fields.shiping.search_address'))
+            //                             ->helperText(__('fields.shiping.search_address_description'))
+            //                             ->searchable()
+            //                             ->reactive()
+            //                             ->dehydrated(false)
+            //                             ->searchDebounce(2000)
+            //                             ->disablePlaceholderSelection()
+            //                             ->hiddenOn('view')
+            //                             ->columnSpan('full')
+            //                             ->getOptionLabelUsing(function ($value) {
+            //                                 if ($value) {
+            //                                     return $value;
+            //                                 }
+            //                             })
+            //                             ->getSearchResultsUsing(function ($query) {
+            //                                 if (strlen($query) >= 5) {
+            //                                     $results = [];
+            //                                     foreach (YaGeo($query) as $result) {
+            //                                         $results[json_encode($result, JSON_UNESCAPED_UNICODE)] = $result->full_address;
+            //                                     }
+            //                                     return $results;
+            //                                 }
+            //                                 return [];
+            //                             })
+            //                             ->afterStateUpdated(function ($state, $set) {
+
+            //                                 if (is_valid_json($state)) {
+            //                                     $state = json_decode($state);
+
+            //                                     $set('latLong', $state->latitude . ', ' . $state->longitude);
+            //                                     $set('full_address', $state->full_address);
+            //                                     $set('country', $state->country);
+            //                                     $set('region', $state->region);
+            //                                     $set('district', $state->district);
+            //                                     $set('locality', $state->locality);
+            //                                     $set('street', $state->street);
+            //                                     $set('house_number', $state->houseNumber);
+            //                                     $set('latitude', $state->latitude);
+            //                                     $set('longitude', $state->longitude);
+            //                                     $set('type', $state->type);
+            //                                 } else {
+            //                                     $set('latLong', '');
+            //                                     $set('full_address', '');
+            //                                     $set('country', '');
+            //                                     $set('region', '');
+            //                                     $set('district', '');
+            //                                     $set('locality', '');
+            //                                     $set('street', '');
+            //                                     $set('house_number', '');
+            //                                     $set('latitude', '');
+            //                                     $set('longitude', '');
+            //                                     $set('type', '');
+            //                                 }
+            //                             }),
+
+            //                         Grid::make()
+            //                             ->schema([
+            //                                 TextInput::make('full_address')
+            //                                     ->label(__('fields.shiping.full_address'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255)
+            //                                     ->columnSpan('full'),
+            //                             ]),
+            //                         Grid::make()
+            //                             ->schema([
+
+            //                                 TextInput::make('country')
+            //                                     ->label(__('fields.shiping.country'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+            //                                 TextInput::make('region')
+            //                                     ->label(__('fields.shiping.region'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+            //                                 TextInput::make('district')
+            //                                     ->label(__('fields.shiping.district'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+            //                                 TextInput::make('locality')
+            //                                     ->label(__('fields.shiping.locality'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+            //                                 TextInput::make('street')
+            //                                     ->label(__('fields.shiping.street'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+            //                                 TextInput::make('house_number')
+            //                                     ->label(__('fields.shiping.house_number'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+
+
+            //                                 TextInput::make('house_frontway')
+            //                                     ->label(__('fields.shiping.house_frontway'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+
+            //                                 TextInput::make('house_floor')
+            //                                     ->label(__('fields.shiping.house_floor'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+
+            //                                 TextInput::make('apartment')
+            //                                     ->label(__('fields.shiping.apartment'))
+            //                                     ->disableAutocomplete()
+            //                                     ->maxLength(255),
+
+            //                                 Grid::make()
+            //                                     ->schema([
+            //                                         TextInput::make('latitude')
+            //                                             ->label(__('fields.shiping.latitude'))
+            //                                             ->disableAutocomplete()
+            //                                             ->hint(__('fields.shiping.latitude'))
+            //                                             ->hintIcon('heroicon-o-globe'),
+
+            //                                         TextInput::make('longitude')
+            //                                             ->label(__('fields.shiping.longitude'))
+            //                                             ->disableAutocomplete()
+            //                                             ->hint(__('fields.shiping.longitude'))
+            //                                             ->hintIcon('heroicon-o-globe'),
+
+            //                                     ]),
+
+            //                                 Hidden::make('type'),
+
+            //                             ])
+            //                             ->columns(2),
+
+            //                     ]),
+            //             ]),
+            //         Tabs\Tab::make(__('filament-user::user.section.passport.title'))
+            //             ->schema([
+            //                 Grid::make()
+            //                     ->relationship('passport')
+            //                     ->schema([
+            //                         TextInput::make('number')
+            //                             ->label(trans('filament-user::user.section.passport.number')),
+            //                         TextInput::make('granted')
+            //                             ->label(trans('filament-user::user.section.passport.granted')),
+            //                         DatePicker::make('granted_at')
+            //                             ->label(trans('filament-user::user.section.passport.granted_at')),
+            //                     ]),
+            //             ]),
+            //     ])
+            //     ->columnSpan('full'),
 
         ];
 
