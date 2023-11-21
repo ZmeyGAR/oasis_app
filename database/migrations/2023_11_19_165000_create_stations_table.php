@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Area;
+use App\Models\City;
 use App\Models\District;
 use App\Models\State;
 use Illuminate\Database\Migrations\Migration;
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->foreignIdFor(State::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->foreignIdFor(Area::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->foreignIdFor(District::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
+            $table->foreignIdFor(City::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
 
             $table->softDeletes();
             $table->timestamps();

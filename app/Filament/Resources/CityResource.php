@@ -4,8 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CityResource\Pages;
 use App\Filament\Resources\CityResource\RelationManagers;
+use App\Models\Area;
 use App\Models\City;
+use App\Models\State;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -30,6 +33,34 @@ class CityResource extends Resource
                     ->maxValue(255)
                     ->autofocus()
                     ->required(),
+
+                Select::make('state_id')
+                    ->label(__('fields.state.name'))
+                    ->relationship('state', 'name')
+                    ->reactive()
+                    ->required(),
+
+                Select::make('area_id')
+                    ->label(__('fields.area.name'))
+                    ->options(function (callable $get) {
+                        $state = State::find($get('state_id'));
+                        if (!$state) return [];
+                        return $state->areas()->pluck('name', 'id')->toArray();
+                    })
+                    ->reactive()
+                    ->disabled(fn (callable $get): bool => !$get('state_id'))
+                    ->required(),
+
+                Select::make('district_id')
+                    ->label(__('fields.district.name'))
+                    ->options(function (callable $get) {
+                        $area = Area::find($get('area_id'));
+                        if (!$area) return [];
+                        return $area->districts()->pluck('name', 'id')->toArray();
+                    })
+                    ->reactive()
+                    ->disabled(fn (callable $get): bool => !$get('area_id'))
+                    ->required()
             ]);
     }
 
@@ -41,6 +72,10 @@ class CityResource extends Resource
                     ->label(__('fields.city.name'))
                     ->sortable()
                     ->searchable(),
+
+                TextColumn::make('state.name')->label(__('fields.state.name')),
+                TextColumn::make('area.name')->label(__('fields.area.name')),
+                TextColumn::make('district.name')->label(__('fields.district.name')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

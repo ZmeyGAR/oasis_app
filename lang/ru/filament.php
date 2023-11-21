@@ -83,8 +83,8 @@ return [
             'plural_label'  => 'Районы',
         ],
         'city'  => [
-            'label'         => 'Город',
-            'plural_label'  => 'Города',
+            'label'         => 'Нас. пункт',
+            'plural_label'  => 'Нас. пункты',
         ],
         'station'  => [
             'label'         => 'РТС',
@@ -185,8 +185,8 @@ return [
             'plural_label'  => 'РТС',
         ],
         'city'  => [
-            'label'         => 'Город',
-            'plural_label'  => 'Города',
+            'label'         => 'Нас. пункт',
+            'plural_label'  => 'Нас. пункты',
         ],
         'client'  => [
             'label'         => 'Контрагент',

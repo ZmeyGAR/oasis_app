@@ -64,7 +64,19 @@ class StationResource extends Resource
                     })
                     ->reactive()
                     ->disabled(fn (callable $get): bool => !$get('area_id'))
-                    ->required()
+                    ->required(),
+
+
+                Select::make('city_id')
+                    ->label(__('fields.city.name'))
+                    ->options(function (callable $get) {
+                        $dictrict = District::find($get('area_id'));
+                        if (!$dictrict) return [];
+                        return $dictrict->cities()->pluck('name', 'id')->toArray();
+                    })
+                    ->reactive()
+                    ->disabled(fn (callable $get): bool => !$get('district_id'))
+                    ->required(),
             ]);
     }
 
@@ -80,6 +92,7 @@ class StationResource extends Resource
                 TextColumn::make('state.name')->label(__('fields.state.name')),
                 TextColumn::make('area.name')->label(__('fields.area.name')),
                 TextColumn::make('district.name')->label(__('fields.district.name')),
+                TextColumn::make('city.name')->label(__('fields.city.name')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

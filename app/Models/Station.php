@@ -12,7 +12,7 @@ class Station extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name', 'state_id', 'area_id', 'district_id'
+        'name', 'state_id', 'area_id', 'district_id', 'city_id'
     ];
 
     public function area(): BelongsTo
@@ -28,5 +28,10 @@ class Station extends Model
     public function district(): BelongsTo
     {
         return $this->belongsTo(District::class);
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
     }
 }
