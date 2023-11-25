@@ -35,12 +35,12 @@ return [
             'plural_label'  => 'Курьеры',
         ],
         'program'  => [
-            'label'         => 'Программа',
-            'plural_label'  => 'Программы',
+            'label'         => 'Канал',
+            'plural_label'  => 'Каналы',
         ],
         'indicator'  => [
-            'label'         => 'Показатель',
-            'plural_label'  => 'Показатели',
+            'label'         => 'Ед. измерения',
+            'plural_label'  => 'Ед. измерений',
         ],
         'style'  => [
             'label'         => 'Вид',
@@ -55,16 +55,16 @@ return [
             'plural_label'  => 'Виды Услуг',
         ],
         'contract'  => [
-            'label'         => 'Договор',
-            'plural_label'  => 'Договоры',
+            'label'         => 'Тип Договор',
+            'plural_label'  => 'Типы Договоров',
         ],
         'type'  => [
-            'label'         => 'Тип',
-            'plural_label'  => 'Типы',
+            'label'         => 'Тип Контрагента',
+            'plural_label'  => 'Типы Контрагентов',
         ],
         'activity'  => [
-            'label'         => 'Деятельность',
-            'plural_label'  => 'Деятельности',
+            'label'         => 'Вид Деятельности',
+            'plural_label'  => 'Виды Деятельности',
         ],
         'subservice'  => [
             'label'         => 'Подуслуга',
@@ -129,16 +129,16 @@ return [
             'plural_label'  => 'Курьеры',
         ],
         'program'  => [
-            'label'         => 'Программа',
-            'plural_label'  => 'Программы',
+            'label'         => 'Канал',
+            'plural_label'  => 'Каналы',
         ],
         'guide'  => [
             'label'         => 'Cправочник',
             'plural_label'  => 'Cправочники',
         ],
         'indicator'  => [
-            'label'         => 'Показатель',
-            'plural_label'  => 'Показатели',
+            'label'         => 'Ед. измерения',
+            'plural_label'  => 'Ед. измерений',
         ],
         'style'  => [
             'label'         => 'Вид',
@@ -153,16 +153,16 @@ return [
             'plural_label'  => 'Виды Услуг',
         ],
         'contract'  => [
-            'label'         => 'Договор',
-            'plural_label'  => 'Договоры',
+            'label'         => 'Тип Договор',
+            'plural_label'  => 'Типы Договоров',
         ],
         'type'  => [
-            'label'         => 'Тип',
-            'plural_label'  => 'Типы',
+            'label'         => 'Тип Контрагента',
+            'plural_label'  => 'Типы Контрагентов',
         ],
         'activity'  => [
-            'label'         => 'Деятельность',
-            'plural_label'  => 'Деятельности',
+            'label'         => 'Вид Деятельности',
+            'plural_label'  => 'Виды Деятельности',
         ],
         'subservice'  => [
             'label'         => 'Подуслуга',

@@ -4,6 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClientResource\Pages;
 use App\Filament\Resources\ClientResource\RelationManagers;
+use App\Models\State;
+use App\Models\Area;
+use App\Models\District;
 use App\Models\City;
 use App\Models\Client;
 use Filament\Forms;
@@ -16,6 +19,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Schema;
 
 class ClientResource extends Resource
 {
@@ -35,21 +39,40 @@ class ClientResource extends Resource
                     ->label(__('fields.client.type.name'))
                     ->options(['COMMERCE' => __('fields.client.type.COMMERCE'), 'GOVERMENTAL' => __('fields.client.type.GOVERMENTAL')]),
 
+                Select::make('area_id')
+                    ->label(__('fields.client.area'))
+                    ->options(fn () => Area::take(10)->get()->pluck('name', 'id')->toArray())
+                    ->getSearchResultsUsing(fn (string $search) => Area::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                    ->getOptionLabelUsing(fn ($value): ?string => Area::find($value)?->name)
+                    ->searchable()
+                    ->searchDebounce(500)
+                    ->reactive()
+                    ->preload(),
+
+                Select::make('district_id')
+                    ->label(__('fields.client.district'))
+                    ->options(function (callable $get) {
+                        $record = Area::find($get('area_id'));
+                        if (!$record) return [];
+                        return $record->districts()->pluck('name', 'id')->toArray();
+                    })
+                    ->reactive()
+                    ->disabled(fn (callable $get): bool => !$get('area_id'))
+                    ->preload(),
 
                 Select::make('city_id')
                     ->label(__('fields.client.city'))
-                    ->options(fn () => City::take(10)->get()->pluck('name', 'id')->toArray())
-                    ->getSearchResultsUsing(fn (string $search) => City::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
-                    ->getOptionLabelUsing(fn ($value): ?string => City::find($value)?->name)
-                    ->searchable()
-                    ->searchDebounce(500)
+                    ->options(function (callable $get) {
+                        $record = District::find($get('district_id'));
+                        if (!$record) return [];
+                        return $record->cities()->pluck('name', 'id')->toArray();
+                    })
+                    ->reactive()
+                    ->disabled(fn (callable $get): bool => !$get('district_id'))
                     ->preload(),
 
                 TextInput::make('address')
                     ->label(__('fields.client.address')),
-
-                TextInput::make('RNN')
-                    ->label(__('fields.client.RNN')),
 
                 TextInput::make('IIK')
                     ->label(__('fields.client.IIK')),
@@ -82,12 +105,15 @@ class ClientResource extends Resource
                     ->enum(['COMMERCE' => __('fields.client.type.COMMERCE'), 'GOVERMENTAL' => __('fields.client.type.GOVERMENTAL')])
                     ->sortable(),
 
+                TextColumn::make('city.area.name')
+                    ->label(__('fields.client.area')),
+                TextColumn::make('city.district.name')
+                    ->label(__('fields.client.district')),
                 TextColumn::make('city.name')
                     ->label(__('fields.client.city')),
                 TextColumn::make('address')
                     ->label(__('fields.client.address')),
-                TextColumn::make('RNN')
-                    ->label(__('fields.client.RNN')),
+
                 TextColumn::make('IIK')
                     ->label(__('fields.client.IIK')),
                 TextColumn::make('BIN')
