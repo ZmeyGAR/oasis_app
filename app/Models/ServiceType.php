@@ -8,15 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use SolutionForest\FilamentTree\Concern\ModelTree;
 
 class ServiceType extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ModelTree;
 
-    protected $fillable = ['name'];
-
-    public function services(): HasMany
-    {
-        return $this->hasMany(Service::class);
-    }
+    protected $fillable = ["parent_id", "name", "order"];
 }

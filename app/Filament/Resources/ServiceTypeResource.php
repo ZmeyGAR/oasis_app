@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\NoResource\Widgets\ServiceTypesWidget;
 use App\Filament\Resources\ServiceTypeResource\Pages;
 use App\Filament\Resources\ServiceTypeResource\RelationManagers;
 use App\Models\ServiceType;
@@ -14,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Livewire\Component;
 
 class ServiceTypeResource extends Resource
 {
@@ -48,16 +50,30 @@ class ServiceTypeResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     // Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                    Tables\Actions\RestoreAction::make(),
-                    Tables\Actions\ForceDeleteAction::make(),
+                    Tables\Actions\EditAction::make()->after(function (Component $livewire) {
+                        $livewire->emit('updateServiceTypesWidget');
+                    }),
+                    Tables\Actions\DeleteAction::make()->after(function (Component $livewire) {
+                        $livewire->emit('updateServiceTypesWidget');
+                    }),
+                    Tables\Actions\RestoreAction::make()->after(function (Component $livewire) {
+                        $livewire->emit('updateServiceTypesWidget');
+                    }),
+                    Tables\Actions\ForceDeleteAction::make()->after(function (Component $livewire) {
+                        $livewire->emit('updateServiceTypesWidget');
+                    }),
                 ])
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ForceDeleteBulkAction::make(),
-                Tables\Actions\RestoreBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()->after(function (Component $livewire) {
+                    $livewire->emit('updateServiceTypesWidget');
+                }),
+                Tables\Actions\ForceDeleteBulkAction::make()->after(function (Component $livewire) {
+                    $livewire->emit('updateServiceTypesWidget');
+                }),
+                Tables\Actions\RestoreBulkAction::make()->after(function (Component $livewire) {
+                    $livewire->emit('updateServiceTypesWidget');
+                }),
             ]);
     }
 
@@ -103,5 +119,11 @@ class ServiceTypeResource extends Resource
     protected static function getNavigationGroup(): ?string
     {
         return __('filament.navigation.service_types.label');
+    }
+    public static function getWidgets(): array
+    {
+        return [
+            ServiceTypesWidget::class,
+        ];
     }
 }
