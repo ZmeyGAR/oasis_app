@@ -145,8 +145,25 @@ return [
     'service_type'   => [
         'name'  => 'Service Type name',
     ],
+    'contract_type'   => [
+        'name'  => 'Contract Type name',
+    ],
     'contract'   => [
-        'name'  => 'Contract name',
+        'number'    => 'Contract number',
+        'date'      => 'Contract date',
+        'type'      => [
+            'label' => 'Contract type',
+            'values'    => [
+                'local'     => 'Local type',
+                'central'   => 'Сentralized type',
+            ]
+        ],
+        'client'    => [
+            'name'  => 'Client name',
+        ],
+        'date_start'    => 'Contract date start',
+        'date_end'  => 'Contract date end',
+        'comment'   => 'Contract comment',
     ],
     'type'   => [
         'name'  => 'Type name',

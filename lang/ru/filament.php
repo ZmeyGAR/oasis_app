@@ -50,13 +50,17 @@ return [
             'label'         => 'Услуга',
             'plural_label'  => 'Услуги',
         ],
-        'service_types'  => [
+        'service_type'  => [
             'label'         => 'Вид Услуги',
             'plural_label'  => 'Виды Услуг',
         ],
-        'contract'  => [
-            'label'         => 'Тип Договор',
+        'contract_type'  => [
+            'label'         => 'Тип Договорa',
             'plural_label'  => 'Типы Договоров',
+        ],
+        'contract'  => [
+            'label'         => 'Договор',
+            'plural_label'  => 'Договоры',
         ],
         'type'  => [
             'label'         => 'Тип Контрагента',
@@ -148,13 +152,17 @@ return [
             'label'         => 'Услуга',
             'plural_label'  => 'Услуги',
         ],
-        'service_types'  => [
-            'label'         => 'Вид Услуг',
+        'service_type'  => [
+            'label'         => 'Вид Услуги',
             'plural_label'  => 'Виды Услуг',
         ],
-        'contract'  => [
-            'label'         => 'Тип Договор',
+        'contract_type'  => [
+            'label'         => 'Тип Договорa',
             'plural_label'  => 'Типы Договоров',
+        ],
+        'contract'  => [
+            'label'         => 'Договор',
+            'plural_label'  => 'Договоры',
         ],
         'type'  => [
             'label'         => 'Тип Контрагента',

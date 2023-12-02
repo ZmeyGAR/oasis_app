@@ -28,7 +28,7 @@ class ServiceTypeResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
-                    ->label(__('fields.service_types.name'))
+                    ->label(__('fields.service_type.name'))
                     ->maxValue(255)
                     ->autofocus()
                     ->required(),
@@ -40,7 +40,7 @@ class ServiceTypeResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label(__('fields.service_types.name'))
+                    ->label(__('fields.service_type.name'))
                     ->sortable()
                     ->searchable(),
             ])
@@ -103,22 +103,22 @@ class ServiceTypeResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('filament.pages.service_types.label');
+        return __('filament.pages.service_type.label');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('filament.pages.service_types.plural_label');
+        return __('filament.pages.service_type.plural_label');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('filament.navigation.service_types.plural_label');
+        return __('filament.navigation.service_type.plural_label');
     }
 
     protected static function getNavigationGroup(): ?string
     {
-        return __('filament.navigation.service_types.label');
+        return __('filament.navigation.service_type.label');
     }
     public static function getWidgets(): array
     {

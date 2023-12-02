@@ -11,6 +11,17 @@ class Contract extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name'
+        'type',
+        'client_id',
+        'number',
+        'date',
+        'date_start',
+        'date_end',
+        'comment',
     ];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

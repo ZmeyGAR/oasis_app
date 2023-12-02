@@ -50,6 +50,10 @@ return [
             'label'         => 'Service',
             'plural_label'  => 'Services',
         ],
+        'contract_type'  => [
+            'label'         => 'Contract Type',
+            'plural_label'  => 'Contract Types',
+        ],
         'contract'  => [
             'label'         => 'Contract',
             'plural_label'  => 'Contracts',
@@ -62,7 +66,7 @@ return [
             'label'         => 'Activity',
             'plural_label'  => 'Activities',
         ],
-        'service_types'  => [
+        'service_type'  => [
             'label'         => 'Service Type',
             'plural_label'  => 'Service Types',
         ],

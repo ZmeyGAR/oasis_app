@@ -4,8 +4,13 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContractResource\Pages;
 use App\Filament\Resources\ContractResource\RelationManagers;
+use App\Models\Client;
 use App\Models\Contract;
 use Filament\Forms;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -25,11 +30,50 @@ class ContractResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label(__('fields.contract.name'))
-                    ->maxValue(255)
-                    ->autofocus()
-                    ->required(),
+                Card::make()->columns(2)->schema([
+
+                    TextInput::make('number')
+                        ->label(__('fields.contract.number'))
+                        ->required(),
+
+                    DateTimePicker::make('date')
+                        ->label(__('fields.contract.date'))
+                        ->required(),
+
+                    Select::make('type')
+                        ->label(__('fields.contract.type.label'))
+                        ->options([
+                            'local'     => __('fields.contract.type.values.local'),
+                            'central'   => __('fields.contract.type.values.central'),
+                        ])
+                        ->required(),
+
+                    Select::make('client_id')
+                        ->label(__('fields.contract.client.name'))
+                        ->options(fn () => Client::take(10)->get()->pluck('name', 'id'))
+                        ->getSearchResultsUsing(fn (string $search) => Client::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                        ->getOptionLabelUsing(fn ($value): ?string => Client::find($value)?->name)
+                        ->searchable()
+                        ->searchDebounce(500)
+                        ->required(),
+
+
+                    DateTimePicker::make('date_start')
+                        ->label(__('fields.contract.date_start'))
+                        ->required(),
+
+                    DateTimePicker::make('date_end')
+                        ->label(__('fields.contract.date_end'))
+                        ->required(),
+                ]),
+
+                Card::make()->schema([
+
+                    Textarea::make('comment')
+                        ->rows(3)
+                        ->cols(20)
+                        ->label(__('fields.contract.comment')),
+                ]),
             ]);
     }
 
@@ -37,10 +81,28 @@ class ContractResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
-                    ->label(__('fields.contract.name'))
-                    ->sortable()
+                TextColumn::make('number')
+                    ->label(__('fields.contract.number'))
                     ->searchable(),
+
+                TextColumn::make('type')
+                    ->label(__('fields.contract.type.label'))
+                    ->enum([
+                        'local'     => __('fields.contract.type.values.local'),
+                        'central'   => __('fields.contract.type.values.central'),
+                    ])
+                    ->sortable(),
+
+                TextColumn::make('client.name')
+                    ->label(__('fields.contract.client.name')),
+                TextColumn::make('date')
+                    ->label(__('fields.contract.date')),
+                TextColumn::make('date_start')
+                    ->label(__('fields.contract.date_start')),
+                TextColumn::make('date_end')
+                    ->label(__('fields.contract.date_end')),
+
+
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

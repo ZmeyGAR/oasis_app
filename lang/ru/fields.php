@@ -142,11 +142,28 @@ return [
     'service'   => [
         'name'  => 'Услуга',
     ],
-    'service_types'   => [
+    'service_type'   => [
         'name'  => 'Вид Услуги',
     ],
+    'contract_type'   => [
+        'name'  => 'Тип Договора',
+    ],
     'contract'   => [
-        'name'  => 'Договор',
+        'number'    => '№ Договора',
+        'date'      => 'Дата',
+        'type'      => [
+            'label' => 'Тип договора',
+            'values'    => [
+                'local'     => 'местный',
+                'central'   => 'централизованный',
+            ]
+        ],
+        'client'    => [
+            'name'  => 'Контрагент',
+        ],
+        'date_start'    => 'Срок действия с',
+        'date_end'  => 'Срок действия до',
+        'comment'   => 'Предмет договора',
     ],
     'type'   => [
         'name'  => 'Тип',
