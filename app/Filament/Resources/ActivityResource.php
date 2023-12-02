@@ -102,6 +102,6 @@ class ActivityResource extends Resource
 
     protected static function getNavigationGroup(): ?string
     {
-        return __('filament.navigation.service_types.label');
+        return __('filament.navigation.service_type.label');
     }
 }
