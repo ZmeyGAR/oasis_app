@@ -20,7 +20,7 @@ class ListServiceTypes extends ListRecords
         ];
     }
 
-    protected function getHeaderWidgets(): array
+    protected function getFooterWidgets(): array
     {
         return [
             ServiceTypesWidget::class,

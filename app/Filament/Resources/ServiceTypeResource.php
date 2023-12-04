@@ -8,6 +8,7 @@ use App\Filament\Resources\ServiceTypeResource\RelationManagers;
 use App\Models\ServiceType;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -32,6 +33,16 @@ class ServiceTypeResource extends Resource
                     ->maxValue(255)
                     ->autofocus()
                     ->required(),
+
+                Select::make('parent_id')
+                    ->label(__('fields.service_type.parent'))
+                    ->options(fn () => ServiceType::take(10)->get()->pluck('name', 'id'))
+                    ->getSearchResultsUsing(fn (string $search) => ServiceType::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                    ->getOptionLabelUsing(fn ($value): ?string => ServiceType::find($value)?->name)
+                    ->searchable()
+                    ->searchDebounce(500)
+                    ->reactive()
+                    ->required(),
             ]);
     }
 
@@ -43,6 +54,12 @@ class ServiceTypeResource extends Resource
                     ->label(__('fields.service_type.name'))
                     ->sortable()
                     ->searchable(),
+
+                TextColumn::make('parent.name')
+                    ->label(__('fields.service_type.parent'))
+                    ->sortable()
+                    ->searchable(),
+
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -103,23 +120,24 @@ class ServiceTypeResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('filament.pages.service_type.label');
+        return __('filament.pages.service.label');
     }
 
     public static function getPluralModelLabel(): string
     {
-        return __('filament.pages.service_type.plural_label');
+        return __('filament.pages.service.plural_label');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('filament.navigation.service_type.plural_label');
+        return __('filament.navigation.service.plural_label');
     }
 
     protected static function getNavigationGroup(): ?string
     {
-        return __('filament.navigation.service_type.label');
+        return __('filament.navigation.guide.label');
     }
+
     public static function getWidgets(): array
     {
         return [

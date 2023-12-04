@@ -16,7 +16,7 @@ class ServiceTypesWidget extends BaseWidget
 {
     protected static string $model = ServiceType::class;
 
-    protected static int $maxDepth = 3;
+    protected static int $maxDepth = 10;
 
     protected ?string $treeTitle = 'Иерархия Видов Услуг';
 

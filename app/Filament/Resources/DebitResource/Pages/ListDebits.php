@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\TypeResource\Pages;
+namespace App\Filament\Resources\DebitResource\Pages;
 
-use App\Filament\Resources\TypeResource;
+use App\Filament\Resources\DebitResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListTypes extends ListRecords
+class ListDebits extends ListRecords
 {
-    protected static string $resource = TypeResource::class;
+    protected static string $resource = DebitResource::class;
 
     protected function getActions(): array
     {

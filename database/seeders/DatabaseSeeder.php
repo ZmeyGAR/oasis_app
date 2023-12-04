@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             AddAdminSeeder::class,
-            PaymentSeeder::class,
+            // PaymentSeeder::class,
+            ProgramSeeder::class,
         ]);
     }
 }

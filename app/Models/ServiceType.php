@@ -15,4 +15,9 @@ class ServiceType extends Model
     use HasFactory, SoftDeletes, ModelTree;
 
     protected $fillable = ["parent_id", "name", "order"];
+
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
 }

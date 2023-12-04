@@ -144,6 +144,7 @@ return [
     ],
     'service_type'   => [
         'name'  => 'Service Type name',
+        'parent'    => 'Parent Service Type',
     ],
     'contract_type'   => [
         'name'  => 'Contract Type name',
@@ -208,5 +209,27 @@ return [
         'BIK'  => 'Client BIK',
         'BANK'  => 'Client BANK',
         'KBE'  => 'Client KBE',
+    ],
+
+    'debit' => [
+        'period'  => 'Period',
+        'contract'  => 'Contract number',
+        'activity_type' => [
+            'label'     => 'Activity type',
+            'values'    => [
+                'main'  => 'Main',
+                'non-main' => 'Non-main',
+            ]
+        ],
+        'indicator' => 'Indicator',
+        'program'   => 'Program',
+        'count'     => 'Count',
+        'state'     => 'State',
+        'area'     =>   'Area',
+        'district'     => 'Disctrict',
+        'city'     => 'City',
+        'station'     => 'Station',
+        'services'     => 'Services',
+        'status'        => 'Status',
     ],
 ];

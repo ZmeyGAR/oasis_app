@@ -98,6 +98,10 @@ return [
             'label'         => 'Контрагент',
             'plural_label'  => 'Контрагенты',
         ],
+        'debit' => [
+            'label'         => 'Дебит',
+            'plural_label'  => 'Дебит',
+        ],
     ],
     'navigation' => [
         'shop' => [
@@ -199,6 +203,10 @@ return [
         'client'  => [
             'label'         => 'Контрагент',
             'plural_label'  => 'Контрагенты',
+        ],
+        'debit' => [
+            'label'         => 'Дебит',
+            'plural_label'  => 'Дебит',
         ],
     ],
 ];

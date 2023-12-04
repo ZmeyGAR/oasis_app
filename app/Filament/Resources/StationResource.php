@@ -5,10 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\StationResource\Pages;
 use App\Filament\Resources\StationResource\RelationManagers;
 use App\Models\Area;
+use App\Models\City;
 use App\Models\District;
 use App\Models\State;
 use App\Models\Station;
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -38,44 +40,27 @@ class StationResource extends Resource
                     ->autofocus()
                     ->required(),
 
-                Select::make('state_id')
-                    ->label(__('fields.state.name'))
-                    ->relationship('state', 'name')
-                    ->reactive()
+                Hidden::make('state_id')
                     ->required(),
-
-                Select::make('area_id')
-                    ->label(__('fields.area.name'))
-                    ->options(function (callable $get) {
-                        $state = State::find($get('state_id'));
-                        if (!$state) return [];
-                        return $state->areas()->pluck('name', 'id')->toArray();
-                    })
-                    ->reactive()
-                    ->disabled(fn (callable $get): bool => !$get('state_id'))
+                Hidden::make('area_id')
                     ->required(),
-
-                Select::make('district_id')
-                    ->label(__('fields.district.name'))
-                    ->options(function (callable $get) {
-                        $area = Area::find($get('area_id'));
-                        if (!$area) return [];
-                        return $area->districts()->pluck('name', 'id')->toArray();
-                    })
-                    ->reactive()
-                    ->disabled(fn (callable $get): bool => !$get('area_id'))
+                Hidden::make('district_id')
                     ->required(),
-
 
                 Select::make('city_id')
                     ->label(__('fields.city.name'))
-                    ->options(function (callable $get) {
-                        $dictrict = District::find($get('area_id'));
-                        if (!$dictrict) return [];
-                        return $dictrict->cities()->pluck('name', 'id')->toArray();
-                    })
+                    ->options(fn () => City::take(10)->get()->pluck('name', 'id'))
+                    ->getSearchResultsUsing(fn (string $search) => City::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                    ->getOptionLabelUsing(fn ($value): ?string => City::find($value)?->name)
+                    ->searchable()
+                    ->searchDebounce(500)
                     ->reactive()
-                    ->disabled(fn (callable $get): bool => !$get('district_id'))
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $record = City::find($state);
+                        if ($record) $set('state_id', $record->state->id);
+                        if ($record) $set('area_id', $record->area->id);
+                        if ($record) $set('district_id', $record->district->id);
+                    })
                     ->required(),
             ]);
     }

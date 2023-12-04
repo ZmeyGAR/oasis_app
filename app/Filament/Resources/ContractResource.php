@@ -162,8 +162,8 @@ class ContractResource extends Resource
         return __('filament.navigation.contract.plural_label');
     }
 
-    protected static function getNavigationGroup(): ?string
-    {
-        return __('filament.navigation.guide.label');
-    }
+    // protected static function getNavigationGroup(): ?string
+    // {
+    //     return __('filament.navigation.guide.label');
+    // }
 }

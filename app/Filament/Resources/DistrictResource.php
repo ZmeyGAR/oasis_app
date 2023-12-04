@@ -8,6 +8,7 @@ use App\Models\Area;
 use App\Models\District;
 use App\Models\State;
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -36,22 +37,23 @@ class DistrictResource extends Resource
                     ->autofocus()
                     ->required(),
 
-                Select::make('state_id')
-                    ->label(__('fields.state.name'))
-                    ->relationship('state', 'name')
-                    ->reactive()
+                Hidden::make('state_id')
                     ->required(),
 
                 Select::make('area_id')
                     ->label(__('fields.area.name'))
-                    ->options(function (callable $get) {
-                        $state = State::find($get('state_id'));
-                        if (!$state) return [];
-                        return $state->areas()->pluck('name', 'id')->toArray();
-                    })
+                    ->options(fn () => Area::take(10)->get()->pluck('name', 'id'))
+                    ->getSearchResultsUsing(fn (string $search) => Area::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                    ->getOptionLabelUsing(fn ($value): ?string => Area::find($value)?->name)
+                    ->searchable()
+                    ->searchDebounce(500)
                     ->reactive()
-                    ->disabled(fn (callable $get): bool => !$get('state_id'))
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $record = Area::find($state);
+                        if ($record) $set('state_id', $record->state->id);
+                    })
                     ->required(),
+
             ]);
     }
 

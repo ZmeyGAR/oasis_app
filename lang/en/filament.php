@@ -94,6 +94,10 @@ return [
             'label'         => 'Client',
             'plural_label'  => 'Clients',
         ],
+        'debit' => [
+            'label'         => 'Debit report',
+            'plural_label'  => 'Debit reports',
+        ],
     ],
     'navigation'        => [
         'shop'              => [
@@ -187,6 +191,10 @@ return [
         'client'  => [
             'label'         => 'Client',
             'plural_label'  => 'Clients',
+        ],
+        'debit' => [
+            'label'         => 'Debit report',
+            'plural_label'  => 'Debit reports',
         ],
     ],
 ];
