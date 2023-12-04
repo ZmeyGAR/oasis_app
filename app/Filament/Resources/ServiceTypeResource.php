@@ -41,8 +41,7 @@ class ServiceTypeResource extends Resource
                     ->getOptionLabelUsing(fn ($value): ?string => ServiceType::find($value)?->name)
                     ->searchable()
                     ->searchDebounce(500)
-                    ->reactive()
-                    ->required(),
+                    ->reactive(),
             ]);
     }
 
