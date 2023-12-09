@@ -40,27 +40,43 @@ class StationResource extends Resource
                     ->autofocus()
                     ->required(),
 
-                Hidden::make('state_id')
+                Select::make('state_id')
+                    ->label(__('fields.state.name'))
+                    ->relationship('state', 'name')
+                    ->reactive()
                     ->required(),
-                Hidden::make('area_id')
+
+                Select::make('area_id')
+                    ->label(__('fields.area.name'))
+                    ->options(function (callable $get) {
+                        $state = State::find($get('state_id'));
+                        if (!$state) return [];
+                        return $state->areas()->pluck('name', 'id')->toArray();
+                    })
+                    ->reactive()
+                    ->disabled(fn (callable $get): bool => !$get('state_id'))
                     ->required(),
-                Hidden::make('district_id')
+
+                Select::make('district_id')
+                    ->label(__('fields.district.name'))
+                    ->options(function (callable $get) {
+                        $area = Area::find($get('area_id'));
+                        if (!$area) return [];
+                        return $area->districts()->pluck('name', 'id')->toArray();
+                    })
+                    ->reactive()
+                    ->disabled(fn (callable $get): bool => !$get('area_id'))
                     ->required(),
 
                 Select::make('city_id')
                     ->label(__('fields.city.name'))
-                    ->options(fn () => City::take(10)->get()->pluck('name', 'id'))
-                    ->getSearchResultsUsing(fn (string $search) => City::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
-                    ->getOptionLabelUsing(fn ($value): ?string => City::find($value)?->name)
-                    ->searchable()
-                    ->searchDebounce(500)
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        $record = City::find($state);
-                        if ($record) $set('state_id', $record->state->id);
-                        if ($record) $set('area_id', $record->area->id);
-                        if ($record) $set('district_id', $record->district->id);
+                    ->options(function (callable $get) {
+                        $dictrict = District::find($get('district_id'));
+                        if (!$dictrict) return [];
+                        return $dictrict->cities()->pluck('name', 'id')->toArray();
                     })
+                    ->reactive()
+                    ->disabled(fn (callable $get): bool => !$get('district_id'))
                     ->required(),
             ]);
     }

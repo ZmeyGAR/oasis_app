@@ -38,6 +38,10 @@ return [
             'label'         => 'Канал',
             'plural_label'  => 'Каналы',
         ],
+        'program_type'  => [
+            'label'         => 'Тип канала',
+            'plural_label'  => 'Типы каналов',
+        ],
         'indicator'  => [
             'label'         => 'Ед. измерения',
             'plural_label'  => 'Ед. измерений',
@@ -75,8 +79,8 @@ return [
             'plural_label'  => 'Подуслуги',
         ],
         'state'  => [
-            'label'         => 'ОДРТ',
-            'plural_label'  => 'ОДРТ',
+            'label'         => 'Филиал',
+            'plural_label'  => 'Филиалы',
         ],
         'area'  => [
             'label'         => 'Область',
@@ -139,6 +143,10 @@ return [
         'program'  => [
             'label'         => 'Канал',
             'plural_label'  => 'Каналы',
+        ],
+        'program_type'  => [
+            'label'         => 'Тип канала',
+            'plural_label'  => 'Типы каналов',
         ],
         'guide'  => [
             'label'         => 'Cправочник',

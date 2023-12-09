@@ -37,21 +37,21 @@ class DistrictResource extends Resource
                     ->autofocus()
                     ->required(),
 
-                Hidden::make('state_id')
+                Select::make('state_id')
+                    ->label(__('fields.state.name'))
+                    ->relationship('state', 'name')
+                    ->reactive()
                     ->required(),
 
                 Select::make('area_id')
                     ->label(__('fields.area.name'))
-                    ->options(fn () => Area::take(10)->get()->pluck('name', 'id'))
-                    ->getSearchResultsUsing(fn (string $search) => Area::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
-                    ->getOptionLabelUsing(fn ($value): ?string => Area::find($value)?->name)
-                    ->searchable()
-                    ->searchDebounce(500)
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        $record = Area::find($state);
-                        if ($record) $set('state_id', $record->state->id);
+                    ->options(function (callable $get) {
+                        $state = State::find($get('state_id'));
+                        if (!$state) return [];
+                        return $state->areas()->pluck('name', 'id')->toArray();
                     })
+                    ->reactive()
+                    ->disabled(fn (callable $get): bool => !$get('state_id'))
                     ->required(),
 
             ]);

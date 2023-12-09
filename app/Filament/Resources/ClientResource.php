@@ -7,6 +7,7 @@ use App\Models\City;
 use App\Models\Client;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -33,8 +34,9 @@ class ClientResource extends Resource
                     ->label(__('fields.client.type.name'))
                     ->options(['COMMERCE' => __('fields.client.type.COMMERCE'), 'GOVERMENTAL' => __('fields.client.type.GOVERMENTAL')]),
 
-                Select::make('city_id')
-                    ->label(__('fields.client.city'))
+
+                Select::make('actual_city_id')
+                    ->label(__('fields.client.actual_city'))
                     ->options(fn () => City::take(10)->get()->pluck('name', 'id')->toArray())
                     ->getSearchResultsUsing(fn (string $search) => City::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
                     ->getOptionLabelUsing(fn ($value): ?string => City::find($value)?->name)
@@ -42,8 +44,20 @@ class ClientResource extends Resource
                     ->searchDebounce(500)
                     ->preload(),
 
-                TextInput::make('address')
-                    ->label(__('fields.client.address')),
+                Select::make('legal_city_id')
+                    ->label(__('fields.client.legal_city'))
+                    ->options(fn () => City::take(10)->get()->pluck('name', 'id')->toArray())
+                    ->getSearchResultsUsing(fn (string $search) => City::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                    ->getOptionLabelUsing(fn ($value): ?string => City::find($value)?->name)
+                    ->searchable()
+                    ->searchDebounce(500)
+                    ->preload(),
+
+                TextInput::make('actual_address')
+                    ->label(__('fields.client.actual_address')),
+
+                TextInput::make('legal_address')
+                    ->label(__('fields.client.legal_address')),
 
                 TextInput::make('IIK')
                     ->label(__('fields.client.IIK')),
@@ -59,6 +73,12 @@ class ClientResource extends Resource
 
                 TextInput::make('KBE')
                     ->label(__('fields.client.KBE')),
+
+                TextInput::make('manager')
+                    ->label(__('fields.client.manager')),
+
+                Textarea::make('contacts')
+                    ->label(__('fields.client.contacts')),
 
             ]);
     }
@@ -76,14 +96,16 @@ class ClientResource extends Resource
                     ->enum(['COMMERCE' => __('fields.client.type.COMMERCE'), 'GOVERMENTAL' => __('fields.client.type.GOVERMENTAL')])
                     ->sortable(),
 
-                TextColumn::make('city.area.name')
-                    ->label(__('fields.client.area')),
-                TextColumn::make('city.district.name')
-                    ->label(__('fields.client.district')),
-                TextColumn::make('city.name')
-                    ->label(__('fields.client.city')),
-                TextColumn::make('address')
-                    ->label(__('fields.client.address')),
+                TextColumn::make('actual_city.name')
+                    ->label(__('fields.client.actual_city')),
+                TextColumn::make('actual_address')
+                    ->label(__('fields.client.actual_address')),
+
+
+                TextColumn::make('legal_city.name')
+                    ->label(__('fields.client.legal_city')),
+                TextColumn::make('legal_address')
+                    ->label(__('fields.client.legal_address')),
 
                 TextColumn::make('IIK')
                     ->label(__('fields.client.IIK')),
@@ -95,6 +117,9 @@ class ClientResource extends Resource
                     ->label(__('fields.client.BANK')),
                 TextColumn::make('KBE')
                     ->label(__('fields.client.KBE')),
+
+                TextColumn::make('manager')
+                    ->label(__('fields.client.manager')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

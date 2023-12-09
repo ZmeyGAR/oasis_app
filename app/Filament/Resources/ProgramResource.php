@@ -6,6 +6,7 @@ use App\Filament\Resources\ProgramResource\Pages;
 use App\Filament\Resources\ProgramResource\RelationManagers;
 use App\Models\Program;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -30,6 +31,12 @@ class ProgramResource extends Resource
                     ->maxValue(255)
                     ->autofocus()
                     ->required(),
+
+                Select::make('program_types_id')
+                    ->label(__('fields.program.program_type'))
+                    ->relationship('program_type', 'name')
+                    ->reactive()
+                    ->required(),
             ]);
     }
 
@@ -41,6 +48,9 @@ class ProgramResource extends Resource
                     ->label(__('fields.program.name'))
                     ->sortable()
                     ->searchable(),
+
+                TextColumn::make('program_type.name')->label(__('fields.program.program_type')),
+
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

@@ -132,6 +132,10 @@ return [
 
     'program'   => [
         'name'  => 'Program name',
+        'program_type'  => 'Program type name',
+    ],
+    'program_type'   => [
+        'name'  => 'Program type name',
     ],
     'indicator'   => [
         'name'  => 'Indicator name',
@@ -202,13 +206,19 @@ return [
         'area'  => 'Client area',
         'district'  => 'Client district',
         'city'  => 'Client city',
+        'actual_city' => 'Actual city',
+        'legal_city'    => 'Legal city',
         'address'  => 'Client address',
+        'actual_address'    => 'Actual address',
+        'legal_address'     => 'Legal address',
         'RNN'  => 'Client RNN',
         'IIK'  => 'Client IIK',
         'BIN'  => 'Client BIN',
         'BIK'  => 'Client BIK',
         'BANK'  => 'Client BANK',
         'KBE'  => 'Client KBE',
+        'manager'   => 'Manager',
+        'contacts'  => 'Contacts',
     ],
 
     'debit' => [

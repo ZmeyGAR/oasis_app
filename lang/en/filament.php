@@ -38,6 +38,10 @@ return [
             'label'         => 'Program',
             'plural_label'  => 'Programs',
         ],
+        'program_type'  => [
+            'label'         => 'Program type',
+            'plural_label'  => 'Program types',
+        ],
         'indicator'  => [
             'label'         => 'Indicator',
             'plural_label'  => 'Indicators',
@@ -135,6 +139,10 @@ return [
         'program'  => [
             'label'         => 'Program',
             'plural_label'  => 'Programs',
+        ],
+        'program_type'  => [
+            'label'         => 'Program type',
+            'plural_label'  => 'Program types',
         ],
         'guide'  => [
             'label'         => 'Guide',

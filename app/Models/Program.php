@@ -13,4 +13,9 @@ class Program extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function program_type()
+    {
+        return $this->belongsTo(ProgramType::class);
+    }
 }

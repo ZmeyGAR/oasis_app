@@ -36,25 +36,32 @@ class CityResource extends Resource
                     ->autofocus()
                     ->required(),
 
-                Hidden::make('state_id')
-                    ->required(),
-                Hidden::make('area_id')
+                Select::make('state_id')
+                    ->label(__('fields.state.name'))
+                    ->relationship('state', 'name')
+                    ->reactive()
                     ->required(),
 
+                Select::make('area_id')
+                    ->label(__('fields.area.name'))
+                    ->options(function (callable $get) {
+                        $state = State::find($get('state_id'));
+                        if (!$state) return [];
+                        return $state->areas()->pluck('name', 'id')->toArray();
+                    })
+                    ->reactive()
+                    ->disabled(fn (callable $get): bool => !$get('state_id'))
+                    ->required(),
 
                 Select::make('district_id')
                     ->label(__('fields.district.name'))
-                    ->options(fn () => District::take(10)->get()->pluck('name', 'id'))
-                    ->getSearchResultsUsing(fn (string $search) => District::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
-                    ->getOptionLabelUsing(fn ($value): ?string => District::find($value)?->name)
-                    ->searchable()
-                    ->searchDebounce(500)
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        $record = District::find($state);
-                        if ($record) $set('state_id', $record->state->id);
-                        if ($record) $set('area_id', $record->area->id);
+                    ->options(function (callable $get) {
+                        $area = Area::find($get('area_id'));
+                        if (!$area) return [];
+                        return $area->districts()->pluck('name', 'id')->toArray();
                     })
+                    ->reactive()
+                    ->disabled(fn (callable $get): bool => !$get('area_id'))
                     ->required()
             ]);
     }
