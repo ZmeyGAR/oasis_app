@@ -30,6 +30,6 @@ class ContractServices extends Model
     }
     public function programs(): BelongsToMany
     {
-        return $this->belongsToMany(ProgramType::class);
+        return $this->belongsToMany(Program::class);
     }
 }

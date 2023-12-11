@@ -1,8 +1,7 @@
 <?php
 
 use App\Models\ContractServices;
-use App\Models\ProgramType;
-use App\Models\ServiceType;
+use App\Models\Program;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,10 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contract_services_program_type', function (Blueprint $table) {
+        Schema::create('contract_services_program', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(ContractServices::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignIdFor(ProgramType::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
+            $table->foreignIdFor(Program::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contract_services_program_type');
+        Schema::dropIfExists('contract_services_program');
     }
 };

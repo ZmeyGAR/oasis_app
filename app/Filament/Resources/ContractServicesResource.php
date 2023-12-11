@@ -6,6 +6,7 @@ use App\Filament\Resources\ContractServicesResource\Pages;
 use App\Filament\Resources\ContractServicesResource\RelationManagers;
 use App\Models\Contract;
 use App\Models\ContractServices;
+use App\Models\Program;
 use App\Models\ServiceType;
 use App\Models\ProgramType;
 use App\Models\State;
@@ -59,9 +60,9 @@ class ContractServicesResource extends Resource
                     ->label(__('fields.contract_service.programs'))
                     ->relationship('programs', 'name')
                     ->multiple()
-                    ->options(fn () => ProgramType::take(10)->get()->pluck('name', 'id'))
-                    ->getSearchResultsUsing(fn (string $search) => ProgramType::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
-                    ->getOptionLabelUsing(fn ($value): ?string => ProgramType::find($value)?->name)
+                    ->options(fn () => Program::take(10)->get()->pluck('name', 'id'))
+                    ->getSearchResultsUsing(fn (string $search) => Program::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                    ->getOptionLabelUsing(fn ($value): ?string => Program::find($value)?->name)
                     ->searchable()
                     ->searchDebounce(500)
                     ->reactive(),
