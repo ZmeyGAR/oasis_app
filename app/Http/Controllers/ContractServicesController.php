@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Debit;
-use App\Http\Requests\StoreDebitRequest;
-use App\Http\Requests\UpdateDebitRequest;
+use App\Models\ContractServices;
+use App\Http\Requests\StoreContractServicesRequest;
+use App\Http\Requests\UpdateContractServicesRequest;
 
-class DebitController extends Controller
+class ContractServicesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class DebitController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDebitRequest $request)
+    public function store(StoreContractServicesRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class DebitController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Debit $debit)
+    public function show(ContractServices $contractServices)
     {
         //
     }
@@ -43,7 +43,7 @@ class DebitController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Debit $debit)
+    public function edit(ContractServices $contractServices)
     {
         //
     }
@@ -51,7 +51,7 @@ class DebitController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDebitRequest $request, Debit $debit)
+    public function update(UpdateContractServicesRequest $request, ContractServices $contractServices)
     {
         //
     }
@@ -59,7 +59,7 @@ class DebitController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Debit $debit)
+    public function destroy(ContractServices $contractServices)
     {
         //
     }

@@ -241,4 +241,11 @@ return [
         'services'      => 'Услуги',
         'status'        => 'Статус'
     ],
+    'contract_service'  => [
+        'contract'  => '№ договора',
+        'state'         => 'Филиал',
+        'count'         => 'Кол-во',
+        'services'      => 'Услуги',
+        'programs'      => 'Каналы',
+    ],
 ];

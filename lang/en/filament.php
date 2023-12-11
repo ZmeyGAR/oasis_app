@@ -102,6 +102,10 @@ return [
             'label'         => 'Debit report',
             'plural_label'  => 'Debit reports',
         ],
+        'contract_service'  => [
+            'label'         => 'Contract services',
+            'plural_label'  => 'Contract services',
+        ],
     ],
     'navigation'        => [
         'shop'              => [
@@ -203,6 +207,10 @@ return [
         'debit' => [
             'label'         => 'Debit report',
             'plural_label'  => 'Debit reports',
+        ],
+        'contract_service'  => [
+            'label'         => 'Contract services',
+            'plural_label'  => 'Contract services',
         ],
     ],
 ];

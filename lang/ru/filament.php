@@ -106,6 +106,10 @@ return [
             'label'         => 'Дебит',
             'plural_label'  => 'Дебит',
         ],
+        'contract_service'  => [
+            'label'         => 'Услуги Договора',
+            'plural_label'  => 'Услуги Договора',
+        ],
     ],
     'navigation' => [
         'shop' => [
@@ -215,6 +219,10 @@ return [
         'debit' => [
             'label'         => 'Дебит',
             'plural_label'  => 'Дебит',
+        ],
+        'contract_service'  => [
+            'label'         => 'Услуги Договора',
+            'plural_label'  => 'Услуги Договора',
         ],
     ],
 ];

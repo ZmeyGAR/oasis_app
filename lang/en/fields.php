@@ -242,4 +242,12 @@ return [
         'services'     => 'Services',
         'status'        => 'Status',
     ],
+
+    'contract_service'  => [
+        'contract'  => 'Contract number',
+        'state'     => 'State name',
+        'count'     => 'Count',
+        'services'     => 'Services',
+        'programs'   => 'Program',
+    ],
 ];
