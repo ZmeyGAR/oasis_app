@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ContractServices extends Model
 {
 
     protected $fillable = [
         'contract_id',
+        'service_type_id',
+        'program_id',
         'state_id',
         'count',
     ];
@@ -24,12 +28,12 @@ class ContractServices extends Model
         return $this->belongsTo(Contract::class);
     }
 
-    public function services(): BelongsToMany
+    public function service_type()
     {
-        return $this->belongsToMany(ServiceType::class);
+        return $this->belongsTo(ServiceType::class);
     }
-    public function programs(): BelongsToMany
+    public function program()
     {
-        return $this->belongsToMany(Program::class);
+        return $this->belongsTo(Program::class);
     }
 }

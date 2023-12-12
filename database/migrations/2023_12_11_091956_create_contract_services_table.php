@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Contract;
+use App\Models\Program;
+use App\Models\ServiceType;
 use App\Models\State;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,6 +20,9 @@ return new class extends Migration
             $table->id();
 
             $table->foreignIdFor(Contract::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
+
+            $table->foreignIdFor(ServiceType::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
+            $table->foreignIdFor(Program::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->foreignIdFor(State::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
 
             $table->integer('count')->default(0);

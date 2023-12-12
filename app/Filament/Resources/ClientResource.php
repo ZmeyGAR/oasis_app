@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ClientResource\Pages;
 use App\Models\City;
 use App\Models\Client;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -26,60 +27,71 @@ class ClientResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label(__('fields.client.name'))
-                    ->required(),
 
-                Select::make('type')
-                    ->label(__('fields.client.type.name'))
-                    ->options(['COMMERCE' => __('fields.client.type.COMMERCE'), 'GOVERMENTAL' => __('fields.client.type.GOVERMENTAL')]),
+                Card::make()->schema([
+                    TextInput::make('name')
+                        ->label(__('fields.client.name'))
+                        ->required(),
+
+                    Select::make('type')
+                        ->label(__('fields.client.type.name'))
+                        ->options(['COMMERCE' => __('fields.client.type.COMMERCE'), 'GOVERMENTAL' => __('fields.client.type.GOVERMENTAL')]),
+
+                ])->columns(2),
+
+                Card::make()->schema([
+
+                    Select::make('legal_city_id')
+                        ->label(__('fields.client.legal_city'))
+                        ->options(fn () => City::take(10)->get()->pluck('name', 'id')->toArray())
+                        ->getSearchResultsUsing(fn (string $search) => City::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                        ->getOptionLabelUsing(fn ($value): ?string => City::find($value)?->name)
+                        ->searchable()
+                        ->searchDebounce(500)
+                        ->preload(),
 
 
-                Select::make('actual_city_id')
-                    ->label(__('fields.client.actual_city'))
-                    ->options(fn () => City::take(10)->get()->pluck('name', 'id')->toArray())
-                    ->getSearchResultsUsing(fn (string $search) => City::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
-                    ->getOptionLabelUsing(fn ($value): ?string => City::find($value)?->name)
-                    ->searchable()
-                    ->searchDebounce(500)
-                    ->preload(),
 
-                Select::make('legal_city_id')
-                    ->label(__('fields.client.legal_city'))
-                    ->options(fn () => City::take(10)->get()->pluck('name', 'id')->toArray())
-                    ->getSearchResultsUsing(fn (string $search) => City::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
-                    ->getOptionLabelUsing(fn ($value): ?string => City::find($value)?->name)
-                    ->searchable()
-                    ->searchDebounce(500)
-                    ->preload(),
+                    TextInput::make('legal_address')
+                        ->label(__('fields.client.legal_address')),
 
-                TextInput::make('actual_address')
-                    ->label(__('fields.client.actual_address')),
+                    TextInput::make('IIK')
+                        ->label(__('fields.client.IIK')),
 
-                TextInput::make('legal_address')
-                    ->label(__('fields.client.legal_address')),
+                    TextInput::make('BIN')
+                        ->label(__('fields.client.BIN')),
 
-                TextInput::make('IIK')
-                    ->label(__('fields.client.IIK')),
+                    TextInput::make('BIK')
+                        ->label(__('fields.client.BIK')),
 
-                TextInput::make('BIN')
-                    ->label(__('fields.client.BIN')),
+                    TextInput::make('BANK')
+                        ->label(__('fields.client.BANK')),
 
-                TextInput::make('BIK')
-                    ->label(__('fields.client.BIK')),
+                    TextInput::make('KBE')
+                        ->label(__('fields.client.KBE')),
 
-                TextInput::make('BANK')
-                    ->label(__('fields.client.BANK')),
+                ])->columns(2),
 
-                TextInput::make('KBE')
-                    ->label(__('fields.client.KBE')),
 
-                TextInput::make('manager')
-                    ->label(__('fields.client.manager')),
+                Card::make()->schema([
+                    Select::make('actual_city_id')
+                        ->label(__('fields.client.actual_city'))
+                        ->options(fn () => City::take(10)->get()->pluck('name', 'id')->toArray())
+                        ->getSearchResultsUsing(fn (string $search) => City::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                        ->getOptionLabelUsing(fn ($value): ?string => City::find($value)?->name)
+                        ->searchable()
+                        ->searchDebounce(500)
+                        ->preload(),
+                    TextInput::make('actual_address')
+                        ->label(__('fields.client.actual_address')),
+                    TextInput::make('manager')
+                        ->label(__('fields.client.manager'))
+                        ->columnSpan(2),
 
-                Textarea::make('contacts')
-                    ->label(__('fields.client.contacts')),
-
+                    Textarea::make('contacts')
+                        ->label(__('fields.client.contacts'))
+                        ->columnSpan(2),
+                ])->columns(2),
             ]);
     }
 
@@ -151,8 +163,8 @@ class ClientResource extends Resource
     {
         return [
             'index' => Pages\ListClients::route('/'),
-            // 'create' => Pages\CreateClient::route('/create'),
-            // 'edit' => Pages\EditClient::route('/{record}/edit'),
+            'create' => Pages\CreateClient::route('/create'),
+            'edit' => Pages\EditClient::route('/{record}/edit'),
         ];
     }
 

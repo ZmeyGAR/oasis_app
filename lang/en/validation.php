@@ -166,6 +166,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'contract-service'  => [
+            'unique-together'   => 'The :attribute must be unique for this record.'
+        ]
     ],
 
     /*
