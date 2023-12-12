@@ -10,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -36,7 +37,7 @@ class ContractResource extends Resource
                         ->label(__('fields.contract.number'))
                         ->required(),
 
-                    DateTimePicker::make('date')
+                    DatePicker::make('date')
                         ->label(__('fields.contract.date'))
                         ->required(),
 
@@ -58,11 +59,11 @@ class ContractResource extends Resource
                         ->required(),
 
 
-                    DateTimePicker::make('date_start')
+                    DatePicker::make('date_start')
                         ->label(__('fields.contract.date_start'))
                         ->required(),
 
-                    DateTimePicker::make('date_end')
+                    DatePicker::make('date_end')
                         ->label(__('fields.contract.date_end'))
                         ->required(),
                 ]),
@@ -95,12 +96,17 @@ class ContractResource extends Resource
 
                 TextColumn::make('client.name')
                     ->label(__('fields.contract.client.name')),
+
+
                 TextColumn::make('date')
-                    ->label(__('fields.contract.date')),
+                    ->label(__('fields.contract.date'))
+                    ->date(),
                 TextColumn::make('date_start')
-                    ->label(__('fields.contract.date_start')),
+                    ->label(__('fields.contract.date_start'))
+                    ->date(),
                 TextColumn::make('date_end')
-                    ->label(__('fields.contract.date_end')),
+                    ->label(__('fields.contract.date_end'))
+                    ->date(),
 
 
             ])
