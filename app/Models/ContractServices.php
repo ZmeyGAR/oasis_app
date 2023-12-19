@@ -36,4 +36,9 @@ class ContractServices extends Model
     {
         return $this->belongsTo(Program::class);
     }
+
+    public function debits()
+    {
+        return $this->belongsToMany(Debit::class)->withPivot('count', 'sum')->withTimestamps();
+    }
 }

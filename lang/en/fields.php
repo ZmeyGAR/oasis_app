@@ -240,13 +240,20 @@ return [
         'city'     => 'City',
         'station'     => 'Station',
         'services'     => 'Services',
-        'status'        => 'Status',
+        'status'        => [
+            'label' => 'Status',
+            'values'    => [
+                'open'  => 'Open',
+                'close'  => 'Close',
+            ],
+        ],
     ],
 
     'contract_service'  => [
         'contract'  => 'Contract number',
         'state'     => 'State name',
         'count'     => 'Count',
+        'sum'           => 'Sum',
         'services'     => 'Services',
         'programs'   => 'Program',
     ],

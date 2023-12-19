@@ -29,6 +29,10 @@ use Filament\Notifications\Notification;
 use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Validation\ValidationException;
 use Closure;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\DeleteAction;
+use Illuminate\Database\Eloquent\Model;
 
 class ContractServicesResource extends Resource
 {
@@ -51,13 +55,15 @@ class ContractServicesResource extends Resource
                         ->reactive()
                         ->required()
                         ->rules([
-                            function (Closure $get) {
+                            function (Closure $get, ?Model $record) {
+                                $exclude_record_id = null;
+                                if ($record and $record?->exists) $exclude_record_id = $record->id;
                                 return new UniqueContractServicesColumnsTogether([
                                     'contract_id'           => $get('contract_id'),
                                     'service_type_id'       => $get('service_type_id'),
                                     'program_id'            => $get('program_id'),
                                     'state_id'              => $get('state_id'),
-                                ]);
+                                ], $exclude_record_id);
                             },
                         ])
                         ->columnSpan(2),
@@ -75,13 +81,15 @@ class ContractServicesResource extends Resource
                         ->searchDebounce(500)
                         ->reactive()
                         ->rules([
-                            function (Closure $get) {
+                            function (Closure $get, ?Model $record) {
+                                $exclude_record_id = null;
+                                if ($record and $record?->exists) $exclude_record_id = $record->id;
                                 return new UniqueContractServicesColumnsTogether([
                                     'contract_id'           => $get('contract_id'),
                                     'service_type_id'       => $get('service_type_id'),
                                     'program_id'            => $get('program_id'),
                                     'state_id'              => $get('state_id'),
-                                ]);
+                                ], $exclude_record_id);
                             },
                         ]),
 
@@ -94,13 +102,15 @@ class ContractServicesResource extends Resource
                         ->searchDebounce(500)
                         ->reactive()
                         ->rules([
-                            function (Closure $get) {
+                            function (Closure $get, ?Model $record) {
+                                $exclude_record_id = null;
+                                if ($record and $record?->exists) $exclude_record_id = $record->id;
                                 return new UniqueContractServicesColumnsTogether([
                                     'contract_id'           => $get('contract_id'),
                                     'service_type_id'       => $get('service_type_id'),
                                     'program_id'            => $get('program_id'),
                                     'state_id'              => $get('state_id'),
-                                ]);
+                                ], $exclude_record_id);
                             },
                         ]),
 
@@ -113,13 +123,15 @@ class ContractServicesResource extends Resource
                         ->searchDebounce(500)
                         ->required()
                         ->rules([
-                            function (Closure $get) {
+                            function (Closure $get, ?Model $record) {
+                                $exclude_record_id = null;
+                                if ($record and $record?->exists) $exclude_record_id = $record->id;
                                 return new UniqueContractServicesColumnsTogether([
                                     'contract_id'           => $get('contract_id'),
                                     'service_type_id'       => $get('service_type_id'),
                                     'program_id'            => $get('program_id'),
                                     'state_id'              => $get('state_id'),
-                                ]);
+                                ], $exclude_record_id);
                             },
                         ]),
 
@@ -176,8 +188,8 @@ class ContractServicesResource extends Resource
     {
         return [
             'index' => Pages\ListContractServices::route('/'),
-            // 'create' => Pages\CreateContractServices::route('/create'),
-            // 'edit' => Pages\EditContractServices::route('/{record}/edit'),
+            'create' => Pages\CreateContractServices::route('/create'),
+            'edit' => Pages\EditContractServices::route('/{record}/edit'),
         ];
     }
 

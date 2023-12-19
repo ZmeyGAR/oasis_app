@@ -17,11 +17,13 @@ class UniqueContractServicesColumnsTogether implements ValidationRule
 
     protected $table = 'contract_services';
     protected $columns;
+    protected $exclude_record_id;
 
-    public function __construct(array $columns)
+    public function __construct(array $columns, $exclude_record_id = null)
     {
         $columns = Arr::wrap($columns);
         $this->columns = $columns;
+        $this->exclude_record_id = $exclude_record_id;
     }
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
@@ -31,7 +33,9 @@ class UniqueContractServicesColumnsTogether implements ValidationRule
             $where[] = [$field, '=', $value];
         }
 
-        $exist = ContractServices::where($where)->exists();
+        $exist = ContractServices::where($where)
+            ->whereNot('id', $this->exclude_record_id)
+            ->exists();
         if ($exist) $fail(
             __('validation.custom.contract-service.unique-together')
         );

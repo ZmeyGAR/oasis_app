@@ -213,4 +213,11 @@ return [
             'plural_label'  => 'Contract services',
         ],
     ],
+
+    'debit' => [
+        'period' => [
+            'open'  => 'Open new Period',
+            'close'  => 'Close Period',
+        ]
+    ]
 ];

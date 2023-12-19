@@ -103,8 +103,8 @@ return [
             'plural_label'  => 'Контрагенты',
         ],
         'debit' => [
-            'label'         => 'Дебит',
-            'plural_label'  => 'Дебит',
+            'label'         => 'Доход',
+            'plural_label'  => 'Доходы',
         ],
         'contract_service'  => [
             'label'         => 'Услуги Договора',
@@ -217,12 +217,19 @@ return [
             'plural_label'  => 'Контрагенты',
         ],
         'debit' => [
-            'label'         => 'Дебит',
-            'plural_label'  => 'Дебит',
+            'label'         => 'Доход',
+            'plural_label'  => 'Доходы',
         ],
         'contract_service'  => [
             'label'         => 'Услуги Договора',
             'plural_label'  => 'Услуги Договора',
         ],
     ],
+
+    'debit' => [
+        'period' => [
+            'open'  => 'Открыть период',
+            'close'  => 'Закрыть период',
+        ]
+    ]
 ];

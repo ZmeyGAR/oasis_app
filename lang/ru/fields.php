@@ -239,12 +239,19 @@ return [
         'city'          => 'Город',
         'station'       => 'РТС',
         'services'      => 'Услуги',
-        'status'        => 'Статус'
+        'status'        => [
+            'label' => 'Статус',
+            'values'    => [
+                'open'  => 'Открытый',
+                'close'  => 'Закрытый',
+            ],
+        ],
     ],
     'contract_service'  => [
-        'contract'  => '№ договора',
+        'contract'      => '№ договора',
         'state'         => 'Филиал',
         'count'         => 'Кол-во',
+        'sum'           => 'Сумма',
         'services'      => 'Услуги',
         'programs'      => 'Каналы',
     ],
