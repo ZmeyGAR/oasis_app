@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Component;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
@@ -20,11 +22,18 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\Layout\Grid;
+use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\LazyCollection;
 use Illuminate\Support\Str;
+use Webbingbrasil\FilamentDateFilter\DateFilter;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\Layout;
+use Filament\Tables\Contracts\HasTable;
 
 class DebitResource extends Resource
 {
@@ -71,10 +80,48 @@ class DebitResource extends Resource
                         'open'  => __('fields.debit.status.values.open'),
                         'close'  => __('fields.debit.status.values.close'),
                     ]),
+
+                TextColumn::make('count')
+                    ->label(__('fields.debit.count'))
+                    ->getStateUsing(
+                        static function ($record) {
+                            return $record->contract_services()->withPivot('count')->sum('contract_services_debit.count');
+                        }
+                    ),
+                TextColumn::make('sum')
+                    ->label(__('fields.debit.sum'))
+                    ->getStateUsing(
+                        static function ($record) {
+                            return $record->contract_services()->withPivot('sum')->sum('contract_services_debit.sum');
+                        }
+                    ),
+
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                //
+                Filter::make('period')
+                    ->form([
+                        Fieldset::make('period_from_to')
+                            ->label(__('fields.debit.filter.period.from_to'))
+                            ->schema([
+                                Forms\Components\DatePicker::make('from')
+                                    ->label(__('fields.debit.filter.period.from')),
+                                Forms\Components\DatePicker::make('to')
+                                    ->label(__('fields.debit.filter.period.to')),
+                            ])
+                            ->columns(2)
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['from'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('period', '>=', $date),
+                            )
+                            ->when(
+                                $data['to'],
+                                fn (Builder $query, $date): Builder => $query->whereDate('period', '<=', $date),
+                            );
+                    })
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),

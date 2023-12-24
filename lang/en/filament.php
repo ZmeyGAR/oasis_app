@@ -215,9 +215,13 @@ return [
     ],
 
     'debit' => [
+        'title' => 'Contract Services',
         'period' => [
             'open'  => 'Open new Period',
             'close'  => 'Close Period',
         ]
+    ],
+    'sub_contract'  => [
+        'title' => 'Additional agreements',
     ]
 ];

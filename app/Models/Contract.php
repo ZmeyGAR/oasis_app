@@ -24,4 +24,9 @@ class Contract extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
+    public function sub_contracts()
+    {
+        return $this->hasMany(SubContract::class);
+    }
 }

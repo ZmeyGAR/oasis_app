@@ -5,6 +5,7 @@ namespace App\Filament\Resources\DebitResource\RelationManagers;
 use App\Models\Contract;
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -12,9 +13,12 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\Layout;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\DB;
 
 class ContractServicesRelationManager extends RelationManager
 {
@@ -34,7 +38,13 @@ class ContractServicesRelationManager extends RelationManager
             ->columns([
 
                 TextColumn::make('contract.number')
-                    ->label(__('fields.contract_service.contract')),
+                    ->label(__('fields.contract_service.contract'))
+                    ->searchable(isIndividual: true),
+
+                TextColumn::make('contract.client.name')
+                    ->label(__('fields.contract_service.client.name'))
+                    ->searchable(isIndividual: true),
+
                 TextColumn::make('state.name')
                     ->label(__('fields.contract_service.state')),
                 TextColumn::make('service_type.name')
@@ -53,9 +63,7 @@ class ContractServicesRelationManager extends RelationManager
                     ->disabled(fn (RelationManager $livewire) => $livewire->ownerRecord->status === 'close'),
 
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->headerActions([
                 // ...
                 // Tables\Actions\AttachAction::make()
@@ -69,5 +77,9 @@ class ContractServicesRelationManager extends RelationManager
                 // ...
                 // Tables\Actions\DetachBulkAction::make(),
             ]);
+    }
+    public static function getTitle(): string
+    {
+        return __('filament.debit.title');
     }
 }

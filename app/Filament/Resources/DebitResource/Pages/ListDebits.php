@@ -6,6 +6,7 @@ use App\Filament\Resources\DebitResource;
 use App\Models\Debit;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Tables\Filters\Layout;
 
 class ListDebits extends ListRecords
 {
@@ -20,19 +21,17 @@ class ListDebits extends ListRecords
                 ->disabled(function () {
                     return Debit::where('status', 'open')->count() >= 2;
                 }),
-
-            // Actions\Action::make('closePeriod')
-            //     ->label(__('filament.debit.period.close'))
-            //     ->button()
-            //     ->color('danger')
-            //     ->action(function () {
-            //         $record = Debit::where('status', 'open')->orderBy('period', 'desc')->get()->last();
-            //         $record->status = 'close';
-            //         $record->save();
-            //     })
-            //     ->disabled(function () {
-            //         return Debit::where('status', 'open')->count() <= 1;
-            //     }),
         ];
+    }
+
+
+    protected function getTableFiltersLayout(): ?string
+    {
+        return Layout::AboveContent;
+    }
+
+    protected function getTableFiltersFormColumns(): int
+    {
+        return 1;
     }
 }

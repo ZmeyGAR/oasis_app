@@ -170,6 +170,14 @@ return [
         'date_end'  => 'Contract date end',
         'comment'   => 'Contract comment',
     ],
+    'sub_contract'  => [
+        'number'    => 'Additional Contract number',
+        'date_start'    => 'Date start',
+        'date_end'    => 'Date end',
+        'contract'     => [
+            'number'    => 'Contract number',
+        ],
+    ],
     'type'   => [
         'name'  => 'Type name',
     ],
@@ -234,6 +242,7 @@ return [
         'indicator' => 'Indicator',
         'program'   => 'Program',
         'count'     => 'Count',
+        'sum'     =>    'Sum',
         'state'     => 'State',
         'area'     =>   'Area',
         'district'     => 'Disctrict',
@@ -247,6 +256,13 @@ return [
                 'close'  => 'Close',
             ],
         ],
+        'filter'    => [
+            'period' => [
+                'from_to' => 'Filter by period',
+                'from'      => 'Date from',
+                'to'      => 'Date to',
+            ],
+        ]
     ],
 
     'contract_service'  => [
@@ -256,5 +272,8 @@ return [
         'sum'           => 'Sum',
         'services'     => 'Services',
         'programs'   => 'Program',
+        'client'    => [
+            'name'  => 'Client name'
+        ]
     ],
 ];
