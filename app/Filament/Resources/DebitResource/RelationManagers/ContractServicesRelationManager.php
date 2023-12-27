@@ -40,6 +40,9 @@ class ContractServicesRelationManager extends RelationManager
                 TextColumn::make('contract.number')
                     ->label(__('fields.contract_service.contract'))
                     ->searchable(isIndividual: true),
+                TextColumn::make('sub_contract.number')
+                    ->label(__('fields.contract_service.sub_contract.number'))
+                    ->searchable(isIndividual: true),
 
                 TextColumn::make('contract.client.name')
                     ->label(__('fields.contract_service.client.name'))

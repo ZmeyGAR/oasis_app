@@ -25,6 +25,11 @@ class ContractServices extends Model
         return $this->belongsTo(State::class);
     }
 
+    public function sub_contract()
+    {
+        return $this->belongsTo(SubContract::class);
+    }
+
     public function contract()
     {
         return $this->belongsTo(Contract::class);

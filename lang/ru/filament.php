@@ -66,6 +66,10 @@ return [
             'label'         => 'Договор',
             'plural_label'  => 'Договоры',
         ],
+        'sub_contract'  => [
+            'label'         => 'Доп соглашение',
+            'plural_label'  => 'Доп соглашения',
+        ],
         'type'  => [
             'label'         => 'Тип Контрагента',
             'plural_label'  => 'Типы Контрагентов',
@@ -179,6 +183,10 @@ return [
         'contract'  => [
             'label'         => 'Договор',
             'plural_label'  => 'Договоры',
+        ],
+        'sub_contract'  => [
+            'label'         => 'Доп соглашение',
+            'plural_label'  => 'Доп соглашения',
         ],
         'type'  => [
             'label'         => 'Тип Контрагента',

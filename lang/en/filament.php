@@ -62,6 +62,10 @@ return [
             'label'         => 'Contract',
             'plural_label'  => 'Contracts',
         ],
+        'sub_contract'  => [
+            'label'         => 'Sub Contract',
+            'plural_label'  => 'Sub Contracts',
+        ],
         'type'  => [
             'label'         => 'Type',
             'plural_label'  => 'Types',
@@ -171,6 +175,10 @@ return [
         'contract'  => [
             'label'         => 'Contract',
             'plural_label'  => 'Contracts',
+        ],
+        'sub_contract'  => [
+            'label'         => 'Sub Contract',
+            'plural_label'  => 'Sub Contracts',
         ],
         'type'  => [
             'label'         => 'Type',

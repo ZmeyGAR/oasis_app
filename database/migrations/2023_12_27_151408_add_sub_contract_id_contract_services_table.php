@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Contract;
+use App\Models\SubContract;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -16,11 +17,7 @@ return new class extends Migration
         Schema::table('contract_services', function (Blueprint $table) {
 
             if (!Schema::hasColumn('contract_services', 'sub_contract_id')) {
-                $table->unsignedBigInteger('sub_contract_id')->nullable();
-                $table->foreign('sub_contract_id')
-                    ->on('contracts')
-                    ->references('id')
-                    ->cascadeOnUpdate()->nullOnDelete();
+                $table->foreignIdFor(SubContract::class)->after('contract_id')->nullable()->constrained()->nullOnDelete()->cascadeOnUpdate();
             }
         });
     }
@@ -33,10 +30,7 @@ return new class extends Migration
         Schema::table('contract_services', function (Blueprint $table) {
 
             if (Schema::hasColumn('contract_services', 'sub_contract_id')) {
-                DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-                $table->dropForeign(['sub_contract_id']);
-                $table->dropColumn('sub_contract_id');
-                DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+                $table->dropConstrainedForeignId('sub_contract_id');
             }
         });
     }

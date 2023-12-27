@@ -41,7 +41,7 @@ class CreateContractServices extends CreateRecord
             // Ensure that the form record is anonymized so that relationships aren't loaded.
             $this->form->model($this->record::class);
             $this->record = null;
-            $this->form->fill(collect($this->data)->only(["contract_id", "service_type_id", "state_id", "count"])->toArray());
+            $this->form->fill(collect($this->data)->only(["contract_id", "sub_contract_id", "service_type_id", "state_id", "count", "amount"])->toArray());
             return;
         }
 
