@@ -52,15 +52,34 @@ class ContractServicesRelationManager extends RelationManager
                 TextColumn::make('program.name')
                     ->label(__('fields.contract_service.programs')),
 
-                TextInputColumn::make('count')
+                TextInputColumn::make('pivot.count')
                     ->type('number')
                     ->label(__('fields.contract_service.count'))
-                    ->disabled(fn (RelationManager $livewire) => $livewire->ownerRecord->status === 'close'),
+                    ->disabled(fn (RelationManager $livewire) => $livewire->ownerRecord->status === 'close')
+                    ->updateStateUsing(function ($record, $state) {
+                        $record->pivot->update([
+                            'count' => (int)$state,
+                            'sum'   => (int)$state * (int)$record->pivot->amount,
+                        ]);
+                        return $state;
+                    }),
 
-                TextInputColumn::make('sum')
+                TextInputColumn::make('pivot.amount')
                     ->type('number')
-                    ->label(__('fields.contract_service.sum'))
-                    ->disabled(fn (RelationManager $livewire) => $livewire->ownerRecord->status === 'close'),
+                    ->label(__('fields.contract_service.amount'))
+                    ->disabled(fn (RelationManager $livewire) => $livewire->ownerRecord->status === 'close')
+                    ->updateStateUsing(function ($record, $state) {
+                        $record->pivot->update([
+                            'amount'    => (int)$state,
+                            'sum'       => (int)$state * (int)$record->pivot->count,
+                        ]);
+                        return $state;
+                    }),
+
+                TextColumn::make('pivot.sum')
+
+                    ->money('KZT', true)
+                    ->label(__('fields.contract_service.sum')),
 
             ])
             ->filters([])

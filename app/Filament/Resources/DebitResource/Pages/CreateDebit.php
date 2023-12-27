@@ -29,8 +29,8 @@ class CreateDebit extends CreateRecord
             'period'    => $newPeriod
         ]);
 
-        foreach (ContractServices::select('id', 'count')->lazy() as $contractService) {
-            $this->record->contract_services()->attach([$contractService->id => ['count' => $contractService->count]]);
+        foreach (ContractServices::select('id', 'count', 'amount')->lazy() as $contractService) {
+            $this->record->contract_services()->attach([$contractService->id => ['count' => $contractService->count, 'amount' => $contractService->amount, 'sum' => (int)$contractService->count * (int)$contractService->amount]]);
         }
 
         redirect()->route('filament.resources.debits.edit', $this->record->id);

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(ContractServices::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
 
             $table->integer('count')->nullable()->default(0);
+            $table->integer('amount')->nullable()->default(0);
             $table->integer('sum')->nullable()->default(0);
             $table->timestamps();
         });

@@ -131,9 +131,7 @@ class ContractResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            RelationManagers\SubContractsRelationManager::class
-        ];
+        return [];
     }
 
     public static function getPages(): array

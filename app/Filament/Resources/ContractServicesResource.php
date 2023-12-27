@@ -65,11 +65,17 @@ class ContractServicesResource extends Resource
                                     'state_id'              => $get('state_id'),
                                 ], $exclude_record_id);
                             },
-                        ])
-                        ->columnSpan(2),
+                        ]),
+
+                    Select::make('sub_contract_id')
+                        ->label(__('fields.contract_service.sub_contract.number'))
+                        ->options(fn () => Contract::take(10)->get()->pluck('number', 'id'))
+                        ->getSearchResultsUsing(fn (string $search) => Contract::where('number', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('number', 'id'))
+                        ->getOptionLabelUsing(fn ($value): ?string => Contract::find($value)?->number)
+                        ->searchable()
+                        ->searchDebounce(500)
+                        ->reactive(),
                 ]),
-
-
                 Card::make()->columns(2)->schema([
 
                     Select::make('service_type_id')
@@ -134,9 +140,15 @@ class ContractServicesResource extends Resource
                                 ], $exclude_record_id);
                             },
                         ]),
-
+                ]),
+                Card::make()->columns(2)->schema([
                     TextInput::make('count')
                         ->label(__('fields.contract_service.count'))
+                        ->numeric()
+                        ->default(0)
+                        ->required(),
+                    TextInput::make('amount')
+                        ->label(__('fields.contract_service.amount'))
                         ->numeric()
                         ->default(0)
                         ->required(),
@@ -159,6 +171,8 @@ class ContractServicesResource extends Resource
                     ->label(__('fields.contract_service.programs')),
                 TextColumn::make('count')
                     ->label(__('fields.contract_service.count')),
+                TextColumn::make('amount')
+                    ->label(__('fields.contract_service.amount')),
             ])
             ->filters([
                 //

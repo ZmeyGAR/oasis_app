@@ -12,10 +12,12 @@ class ContractServices extends Model
 
     protected $fillable = [
         'contract_id',
+        'sub_contract_id',
         'service_type_id',
         'program_id',
         'state_id',
         'count',
+        'amount',
     ];
 
     public function state()

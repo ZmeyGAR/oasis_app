@@ -19,7 +19,7 @@ class Debit extends Model
     public function contract_services()
     {
         return $this->belongsToMany(ContractServices::class)
-            ->withPivot('count', 'sum')
+            ->withPivot('count', 'amount', 'sum')
             ->withTimestamps();
     }
 }

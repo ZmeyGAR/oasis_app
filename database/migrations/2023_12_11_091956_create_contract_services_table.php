@@ -26,6 +26,7 @@ return new class extends Migration
             $table->foreignIdFor(State::class)->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
 
             $table->integer('count')->default(0);
+            $table->integer('amount')->default(0);
             $table->timestamps();
         });
     }

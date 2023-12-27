@@ -261,6 +261,10 @@ return [
                 'from_to' => 'Filter by period',
                 'from'      => 'Date from',
                 'to'      => 'Date to',
+                'from_month'    => 'From month',
+                'from_year'     => 'From year',
+                'to_month'      => 'To month',
+                'to_year'       => 'To year',
             ],
         ]
     ],
@@ -269,11 +273,15 @@ return [
         'contract'  => 'Contract number',
         'state'     => 'State name',
         'count'     => 'Count',
+        'amount'     => 'amount',
         'sum'           => 'Sum',
         'services'     => 'Services',
         'programs'   => 'Program',
         'client'    => [
             'name'  => 'Client name'
-        ]
+        ],
+        'sub_contract' => [
+            'number'    => 'Sub Contract number',
+        ],
     ],
 ];

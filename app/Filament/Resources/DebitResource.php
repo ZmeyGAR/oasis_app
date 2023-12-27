@@ -22,7 +22,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Filament\Tables\Columns\Layout\Grid;
+use Filament\Forms\Components\Grid;
 use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ViewColumn;
@@ -34,6 +34,7 @@ use Webbingbrasil\FilamentDateFilter\DateFilter;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\Layout;
 use Filament\Tables\Contracts\HasTable;
+use Illuminate\Support\Facades\DB;
 
 class DebitResource extends Resource
 {
@@ -92,7 +93,7 @@ class DebitResource extends Resource
                     ->label(__('fields.debit.sum'))
                     ->getStateUsing(
                         static function ($record) {
-                            return $record->contract_services()->withPivot('sum')->sum('contract_services_debit.sum');
+                            return money($record->contract_services()->withPivot('sum')->sum('contract_services_debit.sum'), 'KZT', true);
                         }
                     ),
 
@@ -101,25 +102,55 @@ class DebitResource extends Resource
             ->filters([
                 Filter::make('period')
                     ->form([
-                        Fieldset::make('period_from_to')
-                            ->label(__('fields.debit.filter.period.from_to'))
+                        Grid::make(4)
                             ->schema([
-                                Forms\Components\DatePicker::make('from')
-                                    ->label(__('fields.debit.filter.period.from')),
-                                Forms\Components\DatePicker::make('to')
-                                    ->label(__('fields.debit.filter.period.to')),
-                            ])
-                            ->columns(2)
+                                Fieldset::make()
+                                    ->label(__('fields.debit.filter.period.from'))
+                                    ->schema([
+                                        Forms\Components\Select::make('from.month')
+                                            ->label(__('fields.debit.filter.period.from_month'))
+                                            ->options(function () {
+                                                $months = Debit::select(DB::raw('MONTH(period) as month'))->distinct()->orderBy('month')->get();
+                                                return $months->pluck('', 'month')->map(fn ($v, $k) => Str::ucfirst(Carbon::createFromFormat('m', $k)->monthName))->toArray();
+                                            }),
+                                        Forms\Components\Select::make('from.year')
+                                            ->label(__('fields.debit.filter.period.from_year'))
+                                            ->options(function () {
+                                                $years = Debit::select(DB::raw('YEAR(period) as year'))->distinct()->orderBy('year')->get();
+                                                return $years->pluck('year', 'year')->toArray();
+                                            }),
+                                    ])
+                                    ->columnSpan(2),
+                                Fieldset::make()
+                                    ->label(__('fields.debit.filter.period.to'))
+                                    ->schema([
+                                        Forms\Components\Select::make('to.month')
+                                            ->label(__('fields.debit.filter.period.to_month'))
+                                            ->options(function () {
+                                                $months = Debit::select(DB::raw('MONTH(period) as month'))
+                                                    ->distinct()
+                                                    ->orderBy('month')->get();
+                                                return $months->pluck('', 'month')->map(fn ($v, $k) => Str::ucfirst(Carbon::createFromFormat('m', $k)->monthName))->toArray();
+                                            }),
+                                        Forms\Components\Select::make('to.year')
+                                            ->label(__('fields.debit.filter.period.to_year'))
+                                            ->options(function () {
+                                                $years = Debit::select(DB::raw('YEAR(period) as year'))->distinct()->orderBy('year')->get();
+                                                return $years->pluck('year', 'year')->toArray();
+                                            }),
+                                    ])->columnSpan(2),
+                            ])->columns(4),
+
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
                             ->when(
-                                $data['from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('period', '>=', $date),
+                                ($data['from']['year'] and $data['from']['month']) ? Carbon::createFromDate($data['from']['year'], $data['from']['month'], 1)->format('Y-m-d') : null,
+                                fn (Builder $query, $date): Builder => $query->whereDate('period', '>=', $date)
                             )
                             ->when(
-                                $data['to'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('period', '<=', $date),
+                                ($data['to']['year'] and $data['to']['month']) ? Carbon::createFromDate($data['to']['year'], $data['to']['month'], 1)->format('Y-m-d') : null,
+                                fn (Builder $query, $date): Builder => $query->whereDate('period', '<=', $date)
                             );
                     })
             ])
