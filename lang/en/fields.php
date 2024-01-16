@@ -160,7 +160,7 @@ return [
             'label' => 'Contract type',
             'values'    => [
                 'local'     => 'Local type',
-                'central'   => 'Сentralized type',
+                'center'   => 'Сentralized type',
             ]
         ],
         'client'    => [

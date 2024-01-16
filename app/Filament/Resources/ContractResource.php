@@ -45,7 +45,7 @@ class ContractResource extends Resource
                         ->label(__('fields.contract.type.label'))
                         ->options([
                             'local'     => __('fields.contract.type.values.local'),
-                            'central'   => __('fields.contract.type.values.central'),
+                            'center'   => __('fields.contract.type.values.center'),
                         ])
                         ->required(),
 
@@ -90,7 +90,7 @@ class ContractResource extends Resource
                     ->label(__('fields.contract.type.label'))
                     ->enum([
                         'local'     => __('fields.contract.type.values.local'),
-                        'central'   => __('fields.contract.type.values.central'),
+                        'center'   => __('fields.contract.type.values.center'),
                     ])
                     ->sortable(),
 
