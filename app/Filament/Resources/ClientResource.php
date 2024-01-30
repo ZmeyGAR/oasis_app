@@ -96,7 +96,7 @@ class ClientResource extends Resource
                         ->disabled(),
 
                     Select::make('manager_id')
-                        ->label(__('fields.client.manager'))
+                        ->label(__('fields.client.manager.name'))
                         ->options(function (?Model $record) {
                             return User::when(
                                 !auth()->user()->isAdmin(),
