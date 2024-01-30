@@ -58,6 +58,7 @@ class ClientPolicy
             if (auth()->user()->notAdmin() and ($client->manager?->id === auth()->user()->id)) return true;
             return false;
         }
+
         return false;
     }
 

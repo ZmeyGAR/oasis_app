@@ -58,6 +58,7 @@ class ContractPolicy
             if (auth()->user()->notAdmin() and ($contract->manager?->id === auth()->user()->id)) return true;
             return false;
         }
+
         return false;
     }
 
