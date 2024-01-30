@@ -92,10 +92,30 @@ class StationResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                TextColumn::make('state.name')->label(__('fields.state.name')),
-                TextColumn::make('area.name')->label(__('fields.area.name')),
-                TextColumn::make('district.name')->label(__('fields.district.name')),
-                TextColumn::make('city.name')->label(__('fields.city.name')),
+                TextColumn::make('state.name')
+                    ->label(__('fields.state.name'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('area.name')
+                    ->label(__('fields.area.name'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('district.name')
+                    ->label(__('fields.district.name'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('city.name')
+                    ->label(__('fields.city.name'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

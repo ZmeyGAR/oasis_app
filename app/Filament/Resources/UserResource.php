@@ -23,6 +23,7 @@ use Filament\Forms\Components\DatePicker;
 
 use Illuminate\Support\Facades\Hash;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\TagsColumn;
 use Filament\Tables\Columns\BooleanColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UserResource\Pages;
@@ -141,18 +142,17 @@ class UserResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TagsColumn::make('roles.name')
+                TagsColumn::make('roles.name')
                     ->label(trans('filament-user::user.resource.roles'))
                     ->toggleable()
-                    ->wrap()
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('created_at')->label(trans('filament-user::user.resource.created_at'))
+                TextColumn::make('created_at')->label(trans('filament-user::user.resource.created_at'))
                     ->dateTime('M j, Y')
                     ->toggleable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')->label(trans('filament-user::user.resource.updated_at'))
+                TextColumn::make('updated_at')->label(trans('filament-user::user.resource.updated_at'))
                     ->dateTime('M j, Y')
                     ->toggleable()
                     ->sortable(),
