@@ -39,6 +39,8 @@ class IndicatorResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label(__('fields.indicator.name'))
+                    ->toggleable()
+                    ->wrap()
                     ->sortable()
                     ->searchable(),
             ])
@@ -55,9 +57,9 @@ class IndicatorResource extends Resource
                 ])
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ForceDeleteBulkAction::make(),
-                Tables\Actions\RestoreBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\ForceDeleteBulkAction::make(),
+                // Tables\Actions\RestoreBulkAction::make(),
             ]);
     }
 

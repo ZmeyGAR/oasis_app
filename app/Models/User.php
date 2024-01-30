@@ -78,4 +78,13 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasName
     {
         return $this->hasOne(UserPassport::class);
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->roles->pluck('name')->contains('super_admin') || $this->roles->pluck('name')->contains('admin');
+    }
+    public function notAdmin(): bool
+    {
+        return !($this->roles->pluck('name')->contains('super_admin') || $this->roles->pluck('name')->contains('admin'));
+    }
 }

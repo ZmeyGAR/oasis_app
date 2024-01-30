@@ -35,8 +35,10 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\Layout;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 
-class DebitResource extends Resource
+class DebitResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = Debit::class;
 
@@ -73,14 +75,22 @@ class DebitResource extends Resource
             ->columns([
                 TextColumn::make('period')
                     ->label(__('fields.debit.period'))
-                    ->formatStateUsing(fn ($state) => Str::ucfirst(Carbon::createFromDate($state)->monthName) . ' ' . Carbon::createFromDate($state)->year),
+                    ->formatStateUsing(fn ($state) => Str::ucfirst(Carbon::createFromDate($state)->monthName) . ' ' . Carbon::createFromDate($state)->year)
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('status')
                     ->label(__('fields.debit.status.label'))
                     ->enum([
                         'open'  => __('fields.debit.status.values.open'),
                         'close'  => __('fields.debit.status.values.close'),
-                    ]),
+                    ])
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('count')
                     ->label(__('fields.debit.count'))
@@ -88,17 +98,25 @@ class DebitResource extends Resource
                         static function ($record) {
                             return $record->contract_services()->withPivot('count')->sum('contract_services_debit.count');
                         }
-                    ),
+                    )
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('sum')
                     ->label(__('fields.debit.sum'))
                     ->getStateUsing(
                         static function ($record) {
                             return money($record->contract_services()->withPivot('sum')->sum('contract_services_debit.sum'), 'KZT', true);
                         }
-                    ),
+                    )
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
 
             ])
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('period', 'desc')
             ->filters([
                 Filter::make('period')
                     ->form([
@@ -164,12 +182,12 @@ class DebitResource extends Resource
                         $record->update(['status' => 'close']);
                     })
                     ->visible(function ($record) {
-                        return $record->status === 'open';
+                        return auth()->user()->can('close_debit') and $record->status === 'open';
                     })
 
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
@@ -208,4 +226,15 @@ class DebitResource extends Resource
     // {
     //     return __('filament.navigation.guide.label');
     // }
+
+    public static function getPermissionPrefixes(): array
+    {
+        return array_merge(
+            config('filament-shield.permission_prefixes.resource'),
+            [
+                'open',
+                'close'
+            ]
+        );
+    }
 }

@@ -72,12 +72,29 @@ class CityResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label(__('fields.city.name'))
+                    ->toggleable()
+                    ->wrap()
                     ->sortable()
                     ->searchable(),
 
-                TextColumn::make('state.name')->label(__('fields.state.name')),
-                TextColumn::make('area.name')->label(__('fields.area.name')),
-                TextColumn::make('district.name')->label(__('fields.district.name')),
+                TextColumn::make('state.name')
+                    ->label(__('fields.state.name'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('area.name')
+                    ->label(__('fields.area.name'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('district.name')
+                    ->label(__('fields.district.name'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -92,9 +109,9 @@ class CityResource extends Resource
                 ])
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ForceDeleteBulkAction::make(),
-                Tables\Actions\RestoreBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\ForceDeleteBulkAction::make(),
+                // Tables\Actions\RestoreBulkAction::make(),
             ]);
     }
 

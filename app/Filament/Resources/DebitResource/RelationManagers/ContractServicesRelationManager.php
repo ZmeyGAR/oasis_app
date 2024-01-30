@@ -39,21 +39,42 @@ class ContractServicesRelationManager extends RelationManager
 
                 TextColumn::make('contract.number')
                     ->label(__('fields.contract_service.contract'))
-                    ->searchable(isIndividual: true),
+                    ->searchable(isIndividual: true)
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable(),
                 TextColumn::make('sub_contract.number')
                     ->label(__('fields.contract_service.sub_contract.number'))
-                    ->searchable(isIndividual: true),
+                    ->searchable(isIndividual: true)
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable(),
 
                 TextColumn::make('contract.client.name')
                     ->label(__('fields.contract_service.client.name'))
-                    ->searchable(isIndividual: true),
+                    ->searchable(isIndividual: true)
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable(),
 
                 TextColumn::make('state.name')
-                    ->label(__('fields.contract_service.state')),
+                    ->label(__('fields.contract_service.state'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('service_type.name')
-                    ->label(__('fields.contract_service.services')),
+                    ->label(__('fields.contract_service.services'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('program.name')
-                    ->label(__('fields.contract_service.programs')),
+                    ->label(__('fields.contract_service.programs'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
 
                 TextInputColumn::make('pivot.count')
                     ->type('number')
@@ -65,7 +86,10 @@ class ContractServicesRelationManager extends RelationManager
                             'sum'   => (int)$state * (int)$record->pivot->amount,
                         ]);
                         return $state;
-                    }),
+                    })
+                    ->toggleable()
+                    ->sortable()
+                    ->searchable(),
 
                 TextInputColumn::make('pivot.amount')
                     ->type('number')
@@ -77,12 +101,18 @@ class ContractServicesRelationManager extends RelationManager
                             'sum'       => (int)$state * (int)$record->pivot->count,
                         ]);
                         return $state;
-                    }),
+                    })
+                    ->toggleable()
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('pivot.sum')
 
                     ->money('KZT', true)
-                    ->label(__('fields.contract_service.sum')),
+                    ->label(__('fields.contract_service.sum'))
+                    ->toggleable()
+                    ->sortable()
+                    ->searchable(),
 
             ])
             ->filters([])

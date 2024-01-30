@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ClientResource\Pages;
 use App\Models\City;
 use App\Models\Client;
+use App\Models\User;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -16,6 +17,10 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\Page;
 
 class ClientResource extends Resource
 {
@@ -84,9 +89,34 @@ class ClientResource extends Resource
                         ->preload(),
                     TextInput::make('actual_address')
                         ->label(__('fields.client.actual_address')),
-                    TextInput::make('manager')
+
+                    TextInput::make('manager_name')
+                        ->label(__('fields.client.manager_name'))
+                        ->hint('<b>Это поле вскоре будет удалено!</b>')
+                        ->disabled(),
+
+                    Select::make('manager_id')
                         ->label(__('fields.client.manager'))
-                        ->columnSpan(2),
+                        ->options(function (?Model $record) {
+                            return User::when(
+                                !auth()->user()->isAdmin(),
+                                fn ($q) => $q->where('id', auth()->user()->id)
+                            )->get()->pluck('name', 'id');
+                        })
+                        ->default(function (Page $livewire, ?Model $record) {
+                            if ($livewire instanceof CreateRecord) {
+                                return auth()->user()->id;
+                            }
+                            return null;
+                        })
+                        ->disablePlaceholderSelection()
+                        ->disabled(function (Page $livewire) {
+                            if (auth()->user()->isAdmin()) return false;
+                            if ($livewire instanceof CreateRecord) return true;
+                            if ($livewire instanceof EditRecord) return true;
+                        })
+                        ->reactive()
+                        ->required(),
 
                     Textarea::make('contacts')
                         ->label(__('fields.client.contacts'))
@@ -101,37 +131,91 @@ class ClientResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label(__('fields.client.name'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
                     ->searchable(),
 
                 TextColumn::make('type')
                     ->label(__('fields.client.type.name'))
                     ->enum(['COMMERCE' => __('fields.client.type.COMMERCE'), 'GOVERMENTAL' => __('fields.client.type.GOVERMENTAL')])
-                    ->sortable(),
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('actual_city.name')
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable()
                     ->label(__('fields.client.actual_city')),
                 TextColumn::make('actual_address')
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable()
                     ->label(__('fields.client.actual_address')),
 
 
                 TextColumn::make('legal_city.name')
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable()
                     ->label(__('fields.client.legal_city')),
                 TextColumn::make('legal_address')
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable()
                     ->label(__('fields.client.legal_address')),
 
                 TextColumn::make('IIK')
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable()
                     ->label(__('fields.client.IIK')),
                 TextColumn::make('BIN')
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable()
                     ->label(__('fields.client.BIN')),
                 TextColumn::make('BIK')
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable()
                     ->label(__('fields.client.BIK')),
                 TextColumn::make('BANK')
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable()
                     ->label(__('fields.client.BANK')),
                 TextColumn::make('KBE')
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable()
                     ->label(__('fields.client.KBE')),
 
-                TextColumn::make('manager')
-                    ->label(__('fields.client.manager')),
+                TextColumn::make('manager_name')
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable()
+                    ->label(__('fields.client.manager_name')),
+
+                TextColumn::make('manager.name')
+                    ->searchable(isIndividual: true, isGlobal: true)
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable()
+                    ->label(__('fields.client.manager.name')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -146,9 +230,9 @@ class ClientResource extends Resource
                 ])
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ForceDeleteBulkAction::make(),
-                Tables\Actions\RestoreBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\ForceDeleteBulkAction::make(),
+                // Tables\Actions\RestoreBulkAction::make(),
             ]);
     }
 

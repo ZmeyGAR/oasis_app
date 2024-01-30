@@ -46,10 +46,17 @@ class ProgramResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label(__('fields.program.name'))
+                    ->toggleable()
+                    ->wrap()
                     ->sortable()
                     ->searchable(),
 
-                TextColumn::make('program_type.name')->label(__('fields.program.program_type')),
+                TextColumn::make('program_type.name')
+                    ->label(__('fields.program.program_type'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
 
             ])
             ->filters([
@@ -65,9 +72,9 @@ class ProgramResource extends Resource
                 ])
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ForceDeleteBulkAction::make(),
-                Tables\Actions\RestoreBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\ForceDeleteBulkAction::make(),
+                // Tables\Actions\RestoreBulkAction::make(),
             ]);
     }
 

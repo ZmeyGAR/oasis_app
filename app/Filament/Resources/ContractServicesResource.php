@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContractServicesResource\Pages;
 use App\Filament\Resources\ContractServicesResource\RelationManagers;
+use App\Models\Client;
+use App\Models\Indicator;
 use App\Models\Contract;
 use App\Models\SubContract;
 use App\Models\ContractServices;
@@ -45,127 +47,150 @@ class ContractServicesResource extends Resource
     {
         return $form
             ->schema([
-                Card::make()->columns(2)->schema([
-                    Select::make('contract_id')
-                        ->label(__('fields.contract_service.contract'))
-                        ->options(fn () => Contract::take(10)->get()->pluck('number', 'id'))
-                        ->getSearchResultsUsing(fn (string $search) => Contract::where('number', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('number', 'id'))
-                        ->getOptionLabelUsing(fn ($value): ?string => Contract::find($value)?->number)
-                        ->searchable()
-                        ->searchDebounce(500)
-                        ->reactive()
-                        ->required()
-                        ->rules([
-                            function (Closure $get, ?Model $record) {
-                                $exclude_record_id = null;
-                                if ($record and $record?->exists) $exclude_record_id = $record->id;
-                                return new UniqueContractServicesColumnsTogether([
-                                    'contract_id'           => $get('contract_id'),
-                                    'sub_contract_id'       => $get('sub_contract_id'),
-                                    'service_type_id'       => $get('service_type_id'),
-                                    'program_id'            => $get('program_id'),
-                                    'state_id'              => $get('state_id'),
-                                ], $exclude_record_id);
-                            },
-                        ]),
+                Card::make()
+                    ->columns(2)
+                    ->schema([
 
-                    Select::make('sub_contract_id')
-                        ->label(__('fields.contract_service.sub_contract.number'))
-                        ->options(function (callable $get) {
-                            $contract = Contract::find($get('contract_id'));
-                            if (!$contract) return [];
-                            return SubContract::where('contract_id', $contract->id)->pluck('number', 'id')->toArray();
-                        })
-                        ->getSearchResultsUsing(fn (string $search, callable $get) => SubContract::where('number', 'LIKE', '%' . $search .  '%')->where('contract_id', $get('contract_id'))->limit(10)->pluck('number', 'id'))
-                        ->getOptionLabelUsing(fn ($value): ?string => SubContract::find($value)?->number)
-                        ->searchable()
-                        ->searchDebounce(500)
-                        ->reactive()
-                        ->hidden(fn (callable $get): bool => !$get('contract_id'))
-                        ->rules([
-                            function (Closure $get, ?Model $record) {
-                                $exclude_record_id = null;
-                                if ($record and $record?->exists) $exclude_record_id = $record->id;
-                                return new UniqueContractServicesColumnsTogether([
-                                    'contract_id'           => $get('contract_id'),
-                                    'sub_contract_id'       => $get('sub_contract_id'),
-                                    'service_type_id'       => $get('service_type_id'),
-                                    'program_id'            => $get('program_id'),
-                                    'state_id'              => $get('state_id'),
-                                ], $exclude_record_id);
-                            },
-                        ]),
-                ]),
-                Card::make()->columns(2)->schema([
+                        Select::make('client_id')
+                            ->label(__('fields.contract_service.client.name'))
+                            ->options(fn () => Client::take(10)->get()->mapWithKeys(fn ($option) => [$option->getKey() => static::getOptionHTMLTemplate($option)])->toArray())
+                            ->getSearchResultsUsing(fn (string $search) => Client::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                            ->getOptionLabelUsing(fn ($value): ?string => Client::find($value)?->name)
+                            ->searchable()
+                            ->hint(__('fields.contract_service.client.hint'))
+                            ->allowHtml()
+                            ->searchDebounce(500)
+                            ->reactive(),
 
-                    Select::make('service_type_id')
-                        ->label(__('fields.contract_service.services'))
-                        ->options(fn () => ServiceType::take(10)->get()->pluck('name', 'id'))
-                        ->getSearchResultsUsing(fn (string $search) => ServiceType::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
-                        ->getOptionLabelUsing(fn ($value): ?string => ServiceType::find($value)?->name)
-                        ->searchable()
-                        ->searchDebounce(500)
-                        ->reactive()
-                        ->required()
-                        ->rules([
-                            function (Closure $get, ?Model $record) {
-                                $exclude_record_id = null;
-                                if ($record and $record?->exists) $exclude_record_id = $record->id;
-                                return new UniqueContractServicesColumnsTogether([
-                                    'contract_id'           => $get('contract_id'),
-                                    'sub_contract_id'       => $get('sub_contract_id'),
-                                    'service_type_id'       => $get('service_type_id'),
-                                    'program_id'            => $get('program_id'),
-                                    'state_id'              => $get('state_id'),
-                                ], $exclude_record_id);
-                            },
-                        ]),
+                        Select::make('contract_id')
+                            ->label(__('fields.contract_service.contract'))
+                            ->options(fn (Closure $get) => Contract::when($get('client_id'), fn ($q) => $q->where('client_id', $get('client_id')))->take(10)->get()->pluck('number', 'id'))
+                            ->getSearchResultsUsing(fn (string $search, Closure $get) => Contract::where('number', 'LIKE', '%' . $search .  '%')->when($get('client_id'), fn ($q) => $q->where('client_id', $get('client_id')))->limit(10)->pluck('number', 'id'))
+                            ->getOptionLabelUsing(fn ($value): ?string => Contract::find($value)?->number)
+                            ->searchable()
+                            ->searchDebounce(500)
+                            ->reactive()
+                            ->required()
+                            ->rules([
+                                function (Closure $get, ?Model $record) {
+                                    $exclude_record_id = null;
+                                    if ($record and $record?->exists) $exclude_record_id = $record->id;
+                                    return new UniqueContractServicesColumnsTogether([
+                                        'contract_id'           => $get('contract_id'),
+                                        'sub_contract_id'       => $get('sub_contract_id'),
+                                        'service_type_id'       => $get('service_type_id'),
+                                        'program_id'            => $get('program_id'),
+                                        'state_id'              => $get('state_id'),
+                                    ], $exclude_record_id);
+                                },
+                            ]),
 
-                    Select::make('program_id')
-                        ->label(__('fields.contract_service.programs'))
-                        ->options(fn () => Program::take(10)->get()->pluck('name', 'id'))
-                        ->getSearchResultsUsing(fn (string $search) => Program::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
-                        ->getOptionLabelUsing(fn ($value): ?string => Program::find($value)?->name)
-                        ->searchable()
-                        ->searchDebounce(500)
-                        ->reactive()
-                        ->required()
-                        ->rules([
-                            function (Closure $get, ?Model $record) {
-                                $exclude_record_id = null;
-                                if ($record and $record?->exists) $exclude_record_id = $record->id;
-                                return new UniqueContractServicesColumnsTogether([
-                                    'contract_id'           => $get('contract_id'),
-                                    'sub_contract_id'       => $get('sub_contract_id'),
-                                    'service_type_id'       => $get('service_type_id'),
-                                    'program_id'            => $get('program_id'),
-                                    'state_id'              => $get('state_id'),
-                                ], $exclude_record_id);
-                            },
-                        ]),
+                        Select::make('sub_contract_id')
+                            ->label(__('fields.contract_service.sub_contract.number'))
+                            ->options(function (callable $get) {
+                                $contract = Contract::find($get('contract_id'));
+                                if (!$contract) return [];
+                                return SubContract::where('contract_id', $contract->id)->pluck('number', 'id')->toArray();
+                            })
+                            ->getSearchResultsUsing(fn (string $search, callable $get) => SubContract::where('number', 'LIKE', '%' . $search .  '%')->where('contract_id', $get('contract_id'))->limit(10)->pluck('number', 'id'))
+                            ->getOptionLabelUsing(fn ($value): ?string => SubContract::find($value)?->number)
+                            ->searchable()
+                            ->searchDebounce(500)
+                            ->reactive()
+                            ->hidden(fn (callable $get): bool => !$get('contract_id'))
+                            ->rules([
+                                function (Closure $get, ?Model $record) {
+                                    $exclude_record_id = null;
+                                    if ($record and $record?->exists) $exclude_record_id = $record->id;
+                                    return new UniqueContractServicesColumnsTogether([
+                                        'contract_id'           => $get('contract_id'),
+                                        'sub_contract_id'       => $get('sub_contract_id'),
+                                        'service_type_id'       => $get('service_type_id'),
+                                        'program_id'            => $get('program_id'),
+                                        'state_id'              => $get('state_id'),
+                                    ], $exclude_record_id);
+                                },
+                            ]),
+                    ]),
+                Card::make()
+                    ->columns(2)
+                    ->schema([
 
-                    Select::make('state_id')
-                        ->label(__('fields.contract_service.state'))
-                        ->options(fn () => State::take(10)->get()->pluck('name', 'id'))
-                        ->getSearchResultsUsing(fn (string $search) => State::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
-                        ->getOptionLabelUsing(fn ($value): ?string => State::find($value)?->name)
-                        ->searchable()
-                        ->searchDebounce(500)
-                        ->required()
-                        ->rules([
-                            function (Closure $get, ?Model $record) {
-                                $exclude_record_id = null;
-                                if ($record and $record?->exists) $exclude_record_id = $record->id;
-                                return new UniqueContractServicesColumnsTogether([
-                                    'contract_id'           => $get('contract_id'),
-                                    'sub_contract_id'       => $get('sub_contract_id'),
-                                    'service_type_id'       => $get('service_type_id'),
-                                    'program_id'            => $get('program_id'),
-                                    'state_id'              => $get('state_id'),
-                                ], $exclude_record_id);
-                            },
-                        ]),
-                ]),
+                        Select::make('service_type_id')
+                            ->label(__('fields.contract_service.services'))
+                            ->options(fn () => ServiceType::take(10)->get()->pluck('name', 'id'))
+                            ->getSearchResultsUsing(fn (string $search) => ServiceType::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                            ->getOptionLabelUsing(fn ($value): ?string => ServiceType::find($value)?->name)
+                            ->searchable()
+                            ->searchDebounce(500)
+                            ->reactive()
+                            ->required()
+                            ->rules([
+                                function (Closure $get, ?Model $record) {
+                                    $exclude_record_id = null;
+                                    if ($record and $record?->exists) $exclude_record_id = $record->id;
+                                    return new UniqueContractServicesColumnsTogether([
+                                        'contract_id'           => $get('contract_id'),
+                                        'sub_contract_id'       => $get('sub_contract_id'),
+                                        'service_type_id'       => $get('service_type_id'),
+                                        'program_id'            => $get('program_id'),
+                                        'state_id'              => $get('state_id'),
+                                    ], $exclude_record_id);
+                                },
+                            ]),
+
+                        Select::make('program_id')
+                            ->label(__('fields.contract_service.programs'))
+                            ->options(fn () => Program::take(10)->get()->pluck('name', 'id'))
+                            ->getSearchResultsUsing(fn (string $search) => Program::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                            ->getOptionLabelUsing(fn ($value): ?string => Program::find($value)?->name)
+                            ->searchable()
+                            ->searchDebounce(500)
+                            ->reactive()
+                            ->rules([
+                                function (Closure $get, ?Model $record) {
+                                    $exclude_record_id = null;
+                                    if ($record and $record?->exists) $exclude_record_id = $record->id;
+                                    return new UniqueContractServicesColumnsTogether([
+                                        'contract_id'           => $get('contract_id'),
+                                        'sub_contract_id'       => $get('sub_contract_id'),
+                                        'service_type_id'       => $get('service_type_id'),
+                                        'program_id'            => $get('program_id'),
+                                        'state_id'              => $get('state_id'),
+                                    ], $exclude_record_id);
+                                },
+                            ]),
+
+                        Select::make('state_id')
+                            ->label(__('fields.contract_service.state'))
+                            ->options(fn () => State::take(10)->get()->pluck('name', 'id'))
+                            ->searchable()
+                            ->getSearchResultsUsing(fn (string $search) => State::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                            ->getOptionLabelUsing(fn ($value): ?string => State::find($value)?->name)
+                            ->searchDebounce(500)
+                            ->required()
+                            ->rules([
+                                function (Closure $get, ?Model $record) {
+                                    $exclude_record_id = null;
+                                    if ($record and $record?->exists) $exclude_record_id = $record->id;
+                                    return new UniqueContractServicesColumnsTogether([
+                                        'contract_id'           => $get('contract_id'),
+                                        'sub_contract_id'       => $get('sub_contract_id'),
+                                        'service_type_id'       => $get('service_type_id'),
+                                        'program_id'            => $get('program_id'),
+                                        'state_id'              => $get('state_id'),
+                                    ], $exclude_record_id);
+                                },
+                            ]),
+
+                        Select::make('indicator_id')
+                            ->label(__('fields.contract_service.indicator'))
+                            ->options(fn () => Indicator::take(10)->get()->pluck('name', 'id'))
+                            ->searchable()
+                            ->getSearchResultsUsing(fn (string $search) => Indicator::where('name', 'LIKE', '%' . $search .  '%')->limit(10)->pluck('name', 'id'))
+                            ->getOptionLabelUsing(fn ($value): ?string => Indicator::find($value)?->name)
+                            ->searchDebounce(500),
+                    ]),
                 Card::make()->columns(2)->schema([
                     TextInput::make('count')
                         ->label(__('fields.contract_service.count'))
@@ -187,19 +212,47 @@ class ContractServicesResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('contract.number')
-                    ->label(__('fields.contract_service.contract')),
+                    ->label(__('fields.contract_service.contract'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('sub_contract.number')
-                    ->label(__('fields.contract_service.sub_contract.number')),
+                    ->label(__('fields.contract_service.sub_contract.number'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('state.name')
-                    ->label(__('fields.contract_service.state')),
+                    ->label(__('fields.contract_service.state'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('service_type.name')
-                    ->label(__('fields.contract_service.services')),
+                    ->label(__('fields.contract_service.services'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('program.name')
-                    ->label(__('fields.contract_service.programs')),
+                    ->label(__('fields.contract_service.programs'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('count')
-                    ->label(__('fields.contract_service.count')),
+                    ->label(__('fields.contract_service.count'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('amount')
-                    ->label(__('fields.contract_service.amount')),
+                    ->label(__('fields.contract_service.amount'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //
@@ -214,7 +267,7 @@ class ContractServicesResource extends Resource
                 ])
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
@@ -253,4 +306,12 @@ class ContractServicesResource extends Resource
     // {
     //     return __('filament.navigation.state.label');
     // }
+
+    public static function getOptionHTMLTemplate(Model $option): string
+    {
+        return view('filament::components.select-option-template')
+            ->with('value', $option?->name)
+            ->with('description', __('fields.client.contract_count', ['contract_count' => $option->contracts->count()]))
+            ->render();
+    }
 }

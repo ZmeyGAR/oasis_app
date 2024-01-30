@@ -3,11 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContractResource\Pages;
-use App\Filament\Resources\ContractResource\RelationManagers;
 use App\Models\Client;
+use App\Models\User;
 use App\Models\Contract;
-use Filament\Forms;
-use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DatePicker;
@@ -20,6 +18,11 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\Page;
+
 
 class ContractResource extends Resource
 {
@@ -75,6 +78,31 @@ class ContractResource extends Resource
                         ->cols(20)
                         ->label(__('fields.contract.comment')),
                 ]),
+                Card::make()->schema([
+
+                    Select::make('manager_id')
+                        ->label(__('fields.contract_service.manager'))
+                        ->options(function (?Model $record) {
+                            return User::when(
+                                !auth()->user()->isAdmin(),
+                                fn ($q) => $q->where('id', auth()->user()->id)
+                            )->get()->pluck('name', 'id');
+                        })
+                        ->default(function (Page $livewire, ?Model $record) {
+                            if ($livewire instanceof CreateRecord) {
+                                return auth()->user()->id;
+                            }
+                            return null;
+                        })
+                        ->disablePlaceholderSelection()
+                        ->disabled(function (Page $livewire) {
+                            if (auth()->user()->isAdmin()) return false;
+                            if ($livewire instanceof CreateRecord) return true;
+                            if ($livewire instanceof EditRecord) return true;
+                        })
+                        ->reactive()
+                        ->required(),
+                ]),
             ]);
     }
 
@@ -84,6 +112,9 @@ class ContractResource extends Resource
             ->columns([
                 TextColumn::make('number')
                     ->label(__('fields.contract.number'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
                     ->searchable(),
 
                 TextColumn::make('type')
@@ -92,11 +123,25 @@ class ContractResource extends Resource
                         'local'     => __('fields.contract.type.values.local'),
                         'center'   => __('fields.contract.type.values.center'),
                     ])
-                    ->sortable(),
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('client.name')
-                    ->label(__('fields.contract.client.name')),
+                    ->label(__('fields.contract.client.name'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
 
+                TextColumn::make('manager.name')
+                    ->searchable(isIndividual: true, isGlobal: true)
+                    ->label(__('fields.contract.manager.name'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('date')
                     ->label(__('fields.contract.date'))
@@ -123,9 +168,9 @@ class ContractResource extends Resource
                 ])
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ForceDeleteBulkAction::make(),
-                Tables\Actions\RestoreBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\ForceDeleteBulkAction::make(),
+                // Tables\Actions\RestoreBulkAction::make(),
             ]);
     }
 

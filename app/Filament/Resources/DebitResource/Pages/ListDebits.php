@@ -20,6 +20,9 @@ class ListDebits extends ListRecords
                 ->icon('heroicon-o-plus')
                 ->disabled(function () {
                     return Debit::where('status', 'open')->count() >= 2;
+                })
+                ->visible(function ($record) {
+                    return auth()->user()->can('open_debit');
                 }),
         ];
     }

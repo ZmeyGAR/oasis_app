@@ -166,6 +166,9 @@ return [
         'client'    => [
             'name'  => 'Client name',
         ],
+        'manager'    => [
+            'name'  => 'Менеджер',
+        ],
         'date_start'    => 'Contract date start',
         'date_end'  => 'Contract date end',
         'comment'   => 'Contract comment',
@@ -225,8 +228,10 @@ return [
         'BIK'  => 'Client BIK',
         'BANK'  => 'Client BANK',
         'KBE'  => 'Client KBE',
-        'manager'   => 'Manager',
+        'manager_name'   => 'Manager (DEPRECATED)',
+        'manager'   => ['name' => 'Manager'],
         'contacts'  => 'Contacts',
+        'contract_count'    => 'Contracts count: :contract_count',
     ],
 
     'debit' => [
@@ -277,11 +282,14 @@ return [
         'sum'           => 'Sum',
         'services'     => 'Services',
         'programs'   => 'Program',
+        'indicator'     => 'Indicator ID',
         'client'    => [
-            'name'  => 'Client name'
+            'name'  => 'Client name',
+            'hint'      => 'Filter contracts by client name'
         ],
         'sub_contract' => [
             'number'    => 'Sub Contract number',
         ],
+        'manager'       => 'Manager'
     ],
 ];

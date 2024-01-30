@@ -15,6 +15,7 @@ class ContractServices extends Model
         'sub_contract_id',
         'service_type_id',
         'program_id',
+        'indicator_id',
         'state_id',
         'count',
         'amount',
@@ -42,6 +43,11 @@ class ContractServices extends Model
     public function program()
     {
         return $this->belongsTo(Program::class);
+    }
+
+    public function indicator()
+    {
+        return $this->belongsTo(Indicator::class);
     }
 
     public function debits()

@@ -48,10 +48,17 @@ class AreaResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label(__('fields.area.name'))
+                    ->toggleable()
+                    ->wrap()
                     ->sortable()
                     ->searchable(),
 
-                TextColumn::make('state.name')->label(__('fields.state.name')),
+                TextColumn::make('state.name')
+                    ->label(__('fields.state.name'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
 
 
             ])
@@ -68,9 +75,9 @@ class AreaResource extends Resource
                 ])
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ForceDeleteBulkAction::make(),
-                Tables\Actions\RestoreBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\ForceDeleteBulkAction::make(),
+                // Tables\Actions\RestoreBulkAction::make(),
             ]);
     }
 

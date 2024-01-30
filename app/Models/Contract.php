@@ -18,6 +18,7 @@ class Contract extends Model
         'date_start',
         'date_end',
         'comment',
+        'manager_id',
     ];
 
     public function client()
@@ -28,5 +29,10 @@ class Contract extends Model
     public function sub_contracts()
     {
         return $this->hasMany(SubContract::class);
+    }
+
+    public function manager()
+    {
+        return $this->belongsTo(User::class, 'manager_id');
     }
 }

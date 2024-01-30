@@ -51,11 +51,15 @@ class ServiceTypeResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label(__('fields.service_type.name'))
+                    ->toggleable()
+                    ->wrap()
                     ->sortable()
                     ->searchable(),
 
                 TextColumn::make('parent.name')
                     ->label(__('fields.service_type.parent'))
+                    ->toggleable()
+                    ->wrap()
                     ->sortable()
                     ->searchable(),
 
@@ -81,15 +85,15 @@ class ServiceTypeResource extends Resource
                 ])
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make()->after(function (Component $livewire) {
-                    $livewire->emit('updateServiceTypesWidget');
-                }),
-                Tables\Actions\ForceDeleteBulkAction::make()->after(function (Component $livewire) {
-                    $livewire->emit('updateServiceTypesWidget');
-                }),
-                Tables\Actions\RestoreBulkAction::make()->after(function (Component $livewire) {
-                    $livewire->emit('updateServiceTypesWidget');
-                }),
+                // Tables\Actions\DeleteBulkAction::make()->after(function (Component $livewire) {
+                //     $livewire->emit('updateServiceTypesWidget');
+                // }),
+                // Tables\Actions\ForceDeleteBulkAction::make()->after(function (Component $livewire) {
+                //     $livewire->emit('updateServiceTypesWidget');
+                // }),
+                // Tables\Actions\RestoreBulkAction::make()->after(function (Component $livewire) {
+                //     $livewire->emit('updateServiceTypesWidget');
+                // }),
             ]);
     }
 

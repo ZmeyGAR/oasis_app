@@ -35,13 +35,13 @@ class AddAdminSeeder extends Seeder
                 'email'         => 'd.atygaev@kazteleradio.kz',
                 'password'      => 'Aa1234',
             ],
-
         ];
 
         foreach ($users as $user) {
-            $user = User::create([
+            $user = User::firstOrCreate([
                 'name' => $user->name,
                 'email' => $user->email,
+            ], [
                 'password' => Hash::make($user->password),
             ]);
         }

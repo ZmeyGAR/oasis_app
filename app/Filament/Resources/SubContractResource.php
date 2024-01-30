@@ -62,10 +62,17 @@ class SubContractResource extends Resource
             ->columns([
                 TextColumn::make('number')
                     ->label(__('fields.sub_contract.number'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
                     ->searchable(),
 
                 TextColumn::make('contract.number')
-                    ->label(__('fields.sub_contract.contract.number')),
+                    ->label(__('fields.sub_contract.contract.number'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('date_start')
                     ->label(__('fields.sub_contract.date_start'))
@@ -88,7 +95,7 @@ class SubContractResource extends Resource
                 ])
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
@@ -103,8 +110,8 @@ class SubContractResource extends Resource
     {
         return [
             'index' => Pages\ListSubContracts::route('/'),
-            // 'create' => Pages\CreateSubContract::route('/create'),
-            // 'edit' => Pages\EditSubContract::route('/{record}/edit'),
+            'create' => Pages\CreateSubContract::route('/create'),
+            'edit' => Pages\EditSubContract::route('/{record}/edit'),
         ];
     }
 

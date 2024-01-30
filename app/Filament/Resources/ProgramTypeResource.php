@@ -39,6 +39,8 @@ class ProgramTypeResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label(__('fields.program_type.name'))
+                    ->toggleable()
+                    ->wrap()
                     ->sortable()
                     ->searchable(),
             ])
@@ -55,7 +57,7 @@ class ProgramTypeResource extends Resource
                 ])
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

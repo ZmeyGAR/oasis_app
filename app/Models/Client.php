@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Client extends Model
@@ -27,9 +27,15 @@ class Client extends Model
         'BIK',
         'BANK',
         'KBE',
-        'manager',
+        'manager_name', // вскоре будет удалено
+        'manager_id',
         'contacts',
     ];
+
+    public function contracts(): HasMany
+    {
+        return $this->hasMany(Contract::class);
+    }
 
     public function city(): BelongsTo
     {
@@ -43,5 +49,10 @@ class Client extends Model
     public function legal_city()
     {
         return $this->belongsTo(City::class, 'legal_city_id');
+    }
+
+    public function manager()
+    {
+        return $this->belongsTo(User::class, 'manager_id');
     }
 }
