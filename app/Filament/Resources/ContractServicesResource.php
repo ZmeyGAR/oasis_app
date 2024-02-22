@@ -212,7 +212,13 @@ class ContractServicesResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('contract.number')
-                    ->label(__('fields.contract_service.contract'))
+                    ->label(__('fields.contract_service.contract.number'))
+                    ->toggleable()
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('contract.client.name')
+                    ->label(__('fields.contract_service.contract.client.name'))
                     ->toggleable()
                     ->wrap()
                     ->sortable()

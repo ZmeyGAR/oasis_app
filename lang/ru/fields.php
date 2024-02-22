@@ -273,10 +273,15 @@ return [
         ]
     ],
     'contract_service'  => [
-        'contract'      => '№ договора',
+        'contract'  => [
+            'number'      => '№ договора',
+            'client'    => [
+                'name'      => 'Контрагент'
+            ]
+        ],
         'state'         => 'Филиал',
         'count'         => 'Кол-во',
-        'amount'           => 'Стоимость без НДС',
+        'amount'           => 'Стоимость c НДС',
         'sum'           => 'Сумма',
         'services'      => 'Услуги',
         'programs'      => 'Каналы',

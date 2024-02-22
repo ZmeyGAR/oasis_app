@@ -36,6 +36,11 @@ class ContractServices extends Model
         return $this->belongsTo(Contract::class);
     }
 
+    public function contractClient()
+    {
+        return $this->hasOneThrough(Client::class, Contract::class);
+    }
+
     public function service_type()
     {
         return $this->belongsTo(ServiceType::class);

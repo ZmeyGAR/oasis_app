@@ -275,7 +275,12 @@ return [
     ],
 
     'contract_service'  => [
-        'contract'  => 'Contract number',
+        'contract'  => [
+            'number'  => 'Contract number',
+            'client'    => [
+                'name'      => 'Contract Client'
+            ]
+        ],
         'state'     => 'State name',
         'count'     => 'Count',
         'amount'     => 'amount',
